@@ -1,4 +1,3 @@
-<font size=5, face="times">
 ## ERD说明
 ### Strong Entities
 * #### buildings
