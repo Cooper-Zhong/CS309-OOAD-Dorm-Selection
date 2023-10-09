@@ -1,0 +1,8 @@
+package cs309_dorm_backend.api;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import cs309_dorm_backend.domain.Student;
+public interface StudentRepos extends JpaRepository<Student,Long> {
+    public List<Student> findAll();
+}
