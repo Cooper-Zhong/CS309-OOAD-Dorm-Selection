@@ -4,6 +4,10 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
+    #    cooper's setting
+    #    url: jdbc:postgresql://localhost:5432/cs309_ooad
+    #    username: postgres
+    #    password: 1234
     url: jdbc:postgresql://localhost:5432/spring_project
     username: postgres
     password: 2333
