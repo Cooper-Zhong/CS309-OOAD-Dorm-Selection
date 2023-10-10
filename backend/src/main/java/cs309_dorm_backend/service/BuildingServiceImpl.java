@@ -3,14 +3,17 @@ package cs309_dorm_backend.service;
 import cs309_dorm_backend.domain.Building;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+
+import cs309_dorm_backend.api.BuildingRepos;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
     @Autowired
-    private cs309_dorm_backend.api.BuildingRepos BuildingRepos;
+    private BuildingRepos BuildingRepos;
 
-     @Override
+    @Override
     public void deleteById(long id) {
         BuildingRepos.deleteById(id);
     }
@@ -20,7 +23,7 @@ public class BuildingServiceImpl implements BuildingService {
         return null;
     }
 
-    public List<Building> findAll(){
+    public List<Building> findAll() {
         return BuildingRepos.findAll();
     }
 }
