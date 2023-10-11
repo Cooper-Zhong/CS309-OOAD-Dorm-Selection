@@ -1,4 +1,5 @@
 package cs309_dorm_backend.service;
 
-public interface FavoriteRoomService {
+public class FavoriteRoomService {
+
 }
