@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.sql.Time;
+
 @Entity
 public class Selection {
     @Id // primary key
@@ -14,7 +16,16 @@ public class Selection {
     @NotNull // null then cannot be executed
     private int team_id;
     private int room_id;
-    private int slection_period_id;
+    private Time selection_time;
+
+    public Time getSelection_time() {
+        return selection_time;
+    }
+
+    public void setSelection_time(Time selection_time) {
+        this.selection_time = selection_time;
+    }
+
     public long getId() {
         return id;
     }
@@ -22,23 +33,21 @@ public class Selection {
     public void setId(long id) {
         this.id = id;
     }
+
     public int getTeam_id() {
         return team_id;
     }
+
     public void setTeam_id(int team_id) {
         this.team_id = team_id;
     }
+
     public int getRoom_id() {
         return room_id;
     }
+
     public void setRoom_id(int room_id) {
         this.room_id = room_id;
-    }
-    public int getSlection_period_id() {
-        return slection_period_id;
-    }
-    public void setSlection_period_id(int slection_period_id) {
-        this.slection_period_id = slection_period_id;
     }
 
 }
