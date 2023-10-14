@@ -11,14 +11,14 @@ public class Zone {
 
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private long id;
+    private int id;
     @NotNull // null then cannot be executed
     private String zone_name;
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -13,7 +13,7 @@ spring:
   #    password: 2333
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       dialect: org.hibernate.dialect.PostgreSQL92Dialect
     show-sql: true
     properties:

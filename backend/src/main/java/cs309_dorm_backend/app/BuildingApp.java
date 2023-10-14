@@ -26,7 +26,7 @@ public class BuildingApp {
 
     //use requestparam to update a line
     @PutMapping("/record")
-    public Building update(@RequestParam long id,
+    public Building update(@RequestParam int id,
                            @RequestParam int hight,
                            @RequestParam int zone_id) {
         Building building = new Building();
@@ -37,7 +37,7 @@ public class BuildingApp {
     }
 
     @DeleteMapping("record/{id}")
-    public void deleteOne(@PathVariable long id) {
+    public void deleteOne(@PathVariable int id) {
         buildingService.deleteById(id);
     }
 
