@@ -1,9 +1,6 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
@@ -11,32 +8,33 @@ public class TeamMember {
 
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private long id;
+    private int id;
     @NotNull // null then cannot be executed
-    private String team_id;
-    private String student_id;
+    private int team_id;
 
-    public long getId() {
+    private int student_id;
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getTeam_id() {
+    public int getTeam_id() {
         return team_id;
     }
 
-    public void setTeam_id(String team_id) {
+    public void setTeam_id(int team_id) {
         this.team_id = team_id;
     }
 
-    public String getStudent_id() {
+    public int getStudent_id() {
         return student_id;
     }
 
-    public void setStudent_id(String student_id) {
+    public void setStudent_id(int student_id) {
         this.student_id = student_id;
     }
 }

@@ -21,6 +21,7 @@ public class Comment {
     private long student_id;
     private long room_id;
     private String comment_text;
+
     private long parent_comment_id;
 
     public void setId(long id) {

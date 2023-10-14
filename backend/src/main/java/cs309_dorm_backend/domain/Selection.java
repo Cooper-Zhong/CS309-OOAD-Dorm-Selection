@@ -18,6 +18,16 @@ public class Selection {
     private int room_id;
     private Time selection_time;
 
+    public int getSelection_period_id() {
+        return selection_period_id;
+    }
+
+    public void setSelection_period_id(int selection_period_id) {
+        this.selection_period_id = selection_period_id;
+    }
+
+    private int selection_period_id;
+
     public Time getSelection_time() {
         return selection_time;
     }
@@ -25,6 +35,7 @@ public class Selection {
     public void setSelection_time(Time selection_time) {
         this.selection_time = selection_time;
     }
+
 
     public long getId() {
         return id;
@@ -49,6 +60,7 @@ public class Selection {
     public void setRoom_id(int room_id) {
         this.room_id = room_id;
     }
+
 
 }
 
