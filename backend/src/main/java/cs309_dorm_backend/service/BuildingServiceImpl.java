@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import cs309_dorm_backend.api.BuildingRepos;
+import cs309_dorm_backend.api.BuildingRepo;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
     @Autowired
-    private BuildingRepos BuildingRepos;
+    private BuildingRepo BuildingRepos;
 
     @Override
     public void deleteById(long id) {

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface BuildingRepos extends JpaRepository<Building,Long>{
+public interface BuildingRepo extends JpaRepository<Building,Long>{
     public List<Building> findAll();
 }
 
