@@ -1,10 +1,9 @@
 package cs309_dorm_backend.domain;
-
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "team_members")
-public class TeamMember {
+@Table(name = "favorites")
+public class Favorite {
     @Id
     @ManyToOne
     @JoinColumn(name = "team_id")
@@ -12,8 +11,8 @@ public class TeamMember {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     public Team getTeam() {
         return team;
@@ -23,11 +22,11 @@ public class TeamMember {
         this.team = team;
     }
 
-    public Student getStudent() {
-        return student;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 }

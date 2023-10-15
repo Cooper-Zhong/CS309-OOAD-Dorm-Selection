@@ -1,33 +1,22 @@
 package cs309_dorm_backend.domain;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.persistence.Table;
 
 @Entity // declare a class is an Entity class
+@Table(name = "zones")
 public class Zone {
 
     @Id // primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private int id;
-    @NotNull // null then cannot be executed
-    private String zone_name;
-    public long getId() {
-        return id;
+    private String name;
+
+    public String getName() {
+        return name;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getZone_name() {
-        return zone_name;
-    }
-
-    public void setZone_name(String zone_name) {
-        this.zone_name = zone_name;
+    public void setName(String zone_name) {
+        this.name = zone_name;
     }
 }
 

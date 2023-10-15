@@ -1,30 +1,33 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "teams")
 public class Team {
-    @Id // primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private long id;
-    @NotNull // null then cannot be executed
-    private String team_name;
-    private int leader_id;
-    public long getId() {
-        return id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "team_id")
+    private int teamId;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private Student creator;
+
+    public int getTeamId() {
+        return teamId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 
-    public String getTeam_name() { return team_name; }
-    public void setTeam_name(String team_name) { this.team_name = team_name; }
-    public int getLeader_id() { return leader_id; }
-    public void setLeader_id(int leader_id) { this.leader_id = leader_id; }
+    public Student getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Student creator) {
+        this.creator = creator;
+    }
 }
 

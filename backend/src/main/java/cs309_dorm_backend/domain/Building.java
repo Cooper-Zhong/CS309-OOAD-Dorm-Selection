@@ -1,47 +1,49 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.persistence.*;
 
-//id INT PRIMARY KEY,
-//        zone_id INT NOT NULL,
-//        height INT NOT NULL,
-//        FOREIGN KEY (zone_id) REFERENCES Zone(id)
-@Entity // declare a class is an Entity class
+
+//building_id int primary key,
+//        zone_name   varchar(30) references zones (name),
+//        max_height  int not null
+
+@Entity
+@Table(name = "buildings")
 public class Building {
     @Id // primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private long id;
+    private long buildingId;
 
-    @NotNull // null then cannot be executed
-    private int height;
-    private long zone_id;
-    public long getId() {
-        return id;
+    @Column(nullable = false)
+    private int maxHeight;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "zone_name")
+    private Zone zone;
+
+    public long getBuildingId() {
+        return buildingId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setBuildingId(long building_id) {
+        this.buildingId = building_id;
     }
 
-    public long getZone_id() {
-        return zone_id;
+    public int getMaxHeight() {
+        return maxHeight;
     }
 
-    public void setZone_id(long zone_id) {
-        this.zone_id = zone_id;
+    public void setMaxHeight(int max_height) {
+        this.maxHeight = max_height;
     }
 
-    public int getHeight() {
-        return height;
+    public Zone getZone() {
+        return zone;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setZone(Zone zone) {
+        this.zone = zone;
     }
+
 
 }
 
