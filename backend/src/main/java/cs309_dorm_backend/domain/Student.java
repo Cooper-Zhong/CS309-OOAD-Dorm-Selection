@@ -1,60 +1,77 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
+@Table(name = "students")
 public class Student {
-    @Id // primary key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private int student_id;
-    @NotNull // null then cannot be executed
-    private String name;
-    private String sex;
-    private String degree;
-    private String major;
-    private int user_id;
+    @Id
+    @OneToOne
+    @JoinColumn(name = "student_id")
+    private User user;
 
-    public int getStudent_id() {
-        return student_id;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "sex")
+    private int sex;
+
+    @Column(name = "degree")
+    private int degree;
+
+    @Column(name = "major")
+    private String major;
+
+    @Column(name = "info")
+    private String info;
+
+    public User getUser() {
+        return user;
     }
-    public void setStudent_id(int student_id) {
-        this.student_id = student_id;
+
+    public void setUser(User user) {
+        this.user = user;
     }
+
     public String getName() {
         return name;
     }
-    public void setName(String student_name) {
-        this.name = student_name;
+
+    public void setName(String name) {
+        this.name = name;
     }
-    public String getSex(){
+
+    public int getSex() {
         return sex;
     }
-    public void setSex(String sex){
+
+    public void setSex(int sex) {
         this.sex = sex;
     }
-    public String getDegree(){
+
+    public int getDegree() {
         return degree;
     }
-    public void setDegree(String degree){
+
+    public void setDegree(int degree) {
         this.degree = degree;
     }
-    public String getMajor(){
+
+    public String getMajor() {
         return major;
     }
-    public void setMajor(String major){
+
+    public void setMajor(String major) {
         this.major = major;
     }
-    public int getUser_id(){
-        return user_id;
-    }
-    public void setUser_id(int user_id){
-        this.user_id = user_id;
+
+    public String getInfo() {
+        return info;
     }
 
-
+    public void setInfo(String info) {
+        this.info = info;
+    }
 }
 

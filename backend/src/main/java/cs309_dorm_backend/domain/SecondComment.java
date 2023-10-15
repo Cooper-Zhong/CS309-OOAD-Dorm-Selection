@@ -1,24 +1,19 @@
 package cs309_dorm_backend.domain;
-
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "comments")
-public class Comment {
+@Table(name = "second_comments")
+public class SecondComment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private int commentId;
+    @ManyToOne
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
 
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
-
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
 
     @Column(name = "content")
     private String content;
@@ -26,12 +21,12 @@ public class Comment {
     @Column(name = "time")
     private Timestamp time;
 
-    public int getCommentId() {
-        return commentId;
+    public Comment getParentComment() {
+        return parentComment;
     }
 
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
     }
 
     public User getAuthor() {
@@ -40,14 +35,6 @@ public class Comment {
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
     }
 
     public String getContent() {
