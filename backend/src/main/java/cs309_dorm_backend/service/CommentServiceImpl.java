@@ -1,7 +1,7 @@
 package cs309_dorm_backend.service;
 
 import cs309_dorm_backend.domain.Comment;
-import cs309_dorm_backend.api.CommentRepos;
+import cs309_dorm_backend.api.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
     @Autowired
-    private CommentRepos CommentRepos;
+    private CommentRepo CommentRepos;
 
     @Override
     public void deleteById(long id) {
