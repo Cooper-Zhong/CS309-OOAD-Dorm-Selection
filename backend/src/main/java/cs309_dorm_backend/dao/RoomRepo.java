@@ -1,4 +1,4 @@
-package cs309_dorm_backend.api;
+package cs309_dorm_backend.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;

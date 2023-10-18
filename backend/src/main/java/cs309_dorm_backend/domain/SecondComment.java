@@ -1,4 +1,5 @@
 package cs309_dorm_backend.domain;
+
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -11,6 +12,7 @@ public class SecondComment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
@@ -18,6 +20,7 @@ public class SecondComment {
     @Column(name = "content")
     private String content;
 
+    @Id
     @Column(name = "time")
     private Timestamp time;
 

@@ -7,9 +7,8 @@ import org.antlr.v4.runtime.misc.NotNull;
 @Table(name = "students")
 public class Student {
     @Id
-    @OneToOne
-    @JoinColumn(name = "student_id")
-    private User user;
+    @JoinColumn(name = "student_id", referencedColumnName = "campus_id")
+    private String studentId;
 
     @Column(name = "name")
     private String name;
@@ -26,12 +25,24 @@ public class Student {
     @Column(name = "info")
     private String info;
 
-    public User getUser() {
-        return user;
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team; //当学生不属于任何团队时，team 属性将为 null
+
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public String getName() {
