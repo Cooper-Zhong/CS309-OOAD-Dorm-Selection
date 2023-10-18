@@ -2,9 +2,12 @@ package cs309_dorm_backend.domain;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "teams")
 public class Team {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id")
@@ -13,6 +16,9 @@ public class Team {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private Student creator;
+
+    @OneToMany(mappedBy = "team")
+    private List<Student> students;
 
     public int getTeamId() {
         return teamId;

@@ -6,16 +6,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import cs309_dorm_backend.api.BuildingRepo;
+import cs309_dorm_backend.dao.BuildingRepo;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
     @Autowired
-    private BuildingRepo BuildingRepos;
+    private BuildingRepo buildingRepo;
 
     @Override
     public void deleteById(long id) {
-        BuildingRepos.deleteById(id);
+        buildingRepo.deleteById(id);
     }
 
     @Override
@@ -24,6 +24,6 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     public List<Building> findAll() {
-        return BuildingRepos.findAll();
+        return buildingRepo.findAll();
     }
 }

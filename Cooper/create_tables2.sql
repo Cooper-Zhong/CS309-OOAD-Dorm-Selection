@@ -20,6 +20,7 @@ create table rooms
     room_number int not null,
     floor       int not null,
     room_type   int not null check ( room_type in (1, 2, 3, 4) ),
+    gender      int not null check ( gender in (1, 2)),
     -- single, double, triple, quad
     description text
 );
@@ -44,7 +45,7 @@ create table students
 (
     student_id varchar(8) primary key references users (campus_id),
     name       varchar(20) not null,
-    sex        int         not null check ( sex in (1, 2) ),       -- 1: male 2:female
+    gender     int         not null check ( gender in (1, 2) ),    -- 1: male 2:female
     degree     int         not null check ( degree in (1, 2, 3) ), -- 1: master 2: doctor 3: postdoc
     major      varchar(20) not null,
     info       text                                                --personal information
@@ -85,10 +86,11 @@ create table comments
 -- entity
 create table second_comments
 (
-    parent_comment_id int primary key references comments (comment_id),
+    parent_comment_id int references comments (comment_id),
     author_id         varchar(8) not null references users (campus_id),
     content           text       not null,
-    time              timestamp default now()
+    time              timestamp default now(),
+    primary key (parent_comment_id, author_id, time)
 );
 
 -- relationship (one to one)
@@ -107,6 +109,24 @@ create table favorites
     primary key (team_id, room_id)
 );
 
+-- entity
+create table notifications
+(
+    receiver_id varchar(8) references users (campus_id),
+    content     text not null,
+    is_read     boolean   default false,
+    time        timestamp default now(),
+    primary key (receiver_id, time)
+);
+
+-- relationship (many to many)
+create table invitations
+(
+    student_id    varchar(8) not null references students (student_id),
+    team_id       int        not null references teams (team_id),
+    is_invitation boolean    not null,
+    primary key (student_id, team_id, is_invitation)
+);
 
 
 
