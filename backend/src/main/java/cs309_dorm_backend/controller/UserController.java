@@ -1,16 +1,13 @@
 package cs309_dorm_backend.controller;
 
-import cs309_dorm_backend.dao.UserRepo;
 import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")

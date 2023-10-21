@@ -3,7 +3,6 @@ package cs309_dorm_backend.service;
 import cs309_dorm_backend.domain.User;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 用户业务逻辑接口
