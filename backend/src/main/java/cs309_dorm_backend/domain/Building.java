@@ -1,6 +1,11 @@
 package cs309_dorm_backend.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 
 //building_id int primary key,
@@ -8,41 +13,24 @@ import jakarta.persistence.*;
 //        max_height  int not null
 
 @Entity
+@Setter
+@Getter
 @Table(name = "buildings")
 public class Building {
-    @Id // primary key
-    private long buildingId;
 
-    @Column(nullable = false)
+    @Id
+    @Column(name = "building_id")
+    private int buildingId;
+
+    @NotNull
     private int maxHeight;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "zone_name")
+    @ManyToOne(fetch = FetchType.LAZY) // a building belongs to a zone
+    @JoinColumn(name = "zone_name", referencedColumnName = "name")
     private Zone zone;
 
-    public long getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(long building_id) {
-        this.buildingId = building_id;
-    }
-
-    public int getMaxHeight() {
-        return maxHeight;
-    }
-
-    public void setMaxHeight(int max_height) {
-        this.maxHeight = max_height;
-    }
-
-    public Zone getZone() {
-        return zone;
-    }
-
-    public void setZone(Zone zone) {
-        this.zone = zone;
-    }
+    @OneToMany(mappedBy = "building") // a building can have many rooms
+    private List<Room> rooms;
 
 
 }
