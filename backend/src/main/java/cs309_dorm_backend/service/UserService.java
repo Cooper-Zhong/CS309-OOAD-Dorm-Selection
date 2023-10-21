@@ -3,14 +3,21 @@ package cs309_dorm_backend.service;
 import cs309_dorm_backend.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * 用户业务逻辑接口
+ *
+ * @author pan_junbiao
+ **/
 public interface UserService {
+    User findById(int userId);
 
-    public User getUserByCampusId(String campusId);
+    List<User> findAll();
 
-    public User save(User user);
+    User save(User userInfo);
 
-    public void deleteById(long id);
+    boolean deleteById(int userId);
 
-    public List<User> findAll();
+
 }
