@@ -1,22 +1,29 @@
 package cs309_dorm_backend.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Entity
+@Setter
+@Getter
 @Table(name = "second_comments")
 public class SecondComment {
+
     @Id
-    @ManyToOne
-    @JoinColumn(name = "parent_comment_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_comment_id", referencedColumnName = "comment_id")
     private Comment parentComment;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @ManyToOne(fetch = FetchType.LAZY) // a second comment can only belong to one user
+    @JoinColumn(name = "author_id", referencedColumnName = "campus_id")
     private User author;
 
+    @NotNull
     @Column(name = "content")
     private String content;
 
@@ -24,35 +31,4 @@ public class SecondComment {
     @Column(name = "time")
     private Timestamp time;
 
-    public Comment getParentComment() {
-        return parentComment;
-    }
-
-    public void setParentComment(Comment parentComment) {
-        this.parentComment = parentComment;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
 }

@@ -1,88 +1,35 @@
 package cs309_dorm_backend.domain;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "students")
-public class Student {
-    @Id
-    @JoinColumn(name = "student_id", referencedColumnName = "campus_id")
-    private String studentId;
+//@PrimaryKeyJoinColumn(name = "student_id", referencedColumnName = "campus_id")
+public class Student extends User {
+    // student_id refers to campus_id in users table
 
-    @Column(name = "name")
+    @NotNull
     private String name;
 
-    @Column(name = "sex")
-    private int sex;
+    @NotNull
+    private String gender;
 
-    @Column(name = "degree")
-    private int degree;
+    @NotNull
+    private String degree; // b,m, d for bachelor, master, doctor
 
-    @Column(name = "major")
-    private String major;
+    @NotNull
+    private String major; //前端限制好major的名字，要统一
 
-    @Column(name = "info")
     private String info;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // a student can only belong to one team
     @JoinColumn(name = "team_id")
-    private Team team; //当学生不属于任何团队时，team 属性将为 null
+    private Team team; // a student's team, can be null
 
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getSex() {
-        return sex;
-    }
-
-    public void setSex(int sex) {
-        this.sex = sex;
-    }
-
-    public int getDegree() {
-        return degree;
-    }
-
-    public void setDegree(int degree) {
-        this.degree = degree;
-    }
-
-    public String getMajor() {
-        return major;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
 }
 

@@ -1,10 +1,14 @@
 package cs309_dorm_backend.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
+@Setter
+@Getter
 @Table(name = "teams")
 public class Team {
 
@@ -13,27 +17,22 @@ public class Team {
     @Column(name = "team_id")
     private int teamId;
 
-    @ManyToOne
+    @Column(name = "team_name")
+    private String teamName;
+
+    @OneToOne
     @JoinColumn(name = "creator_id")
     private Student creator;
 
     @OneToMany(mappedBy = "team")
-    private List<Student> students;
+    private List<Student> teamMembers;
 
-    public int getTeamId() {
-        return teamId;
-    }
+    @ManyToMany// a team can favorite many rooms
+    @JoinTable(
+            name = "favorite_rooms", // 中间表的名字
+            joinColumns = @JoinColumn(name = "team_id"), // 中间表的外键
+            inverseJoinColumns = @JoinColumn(name = "room_id")) // 中间表的另一个外键
+    private List<Room> favoriteRooms;
 
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
-    public Student getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Student creator) {
-        this.creator = creator;
-    }
 }
 

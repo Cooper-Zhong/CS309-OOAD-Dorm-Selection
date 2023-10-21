@@ -1,78 +1,54 @@
 package cs309_dorm_backend.domain;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Check;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
+@Setter
+@Getter
 @Table(name = "rooms")
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
     private int roomId;
 
-    @ManyToOne
-    @JoinColumn(name = "building_id")
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY) // a room belongs to a building
+    @JoinColumn(name = "building_id", referencedColumnName = "building_id")
     private Building building;
 
+    @NotNull
     @Column(name = "room_number")
     private int roomNumber;
 
-    @Column(name = "floor")
+    @NotNull
     private int floor;
 
-    @Column(name = "room_type")
+    @NotNull
+    @Column(name = "room_type") // 1,2,3,4 for single, double, triple, quad
     private int roomType;
 
-    @Column(name = "description")
+    @NotNull
+    private String gender;
+
     private String description;
 
-    public int getRoomId() {
-        return roomId;
-    }
+    @OneToMany(mappedBy = "room") // a room can have many comments, or no comments
+    private List<Comment> comments;
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
+    @ManyToMany(mappedBy = "favoriteRooms") // a room can be favorited by many teams
+    private List<Team> favoriteTeams;
 
-    public Building getBuilding() {
-        return building;
-    }
+    @OneToOne // a room can be assigned to one team
+    @JoinColumn(name = "team_id", referencedColumnName = "team_id")
+    private Team assignedTeam; // a room can only be assigned to one team
 
-    public void setBuilding(Building building) {
-        this.building = building;
-    }
 
-    public int getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-
-    public void setFloor(int floor) {
-        this.floor = floor;
-    }
-
-    public int getRoomType() {
-        return roomType;
-    }
-
-    public void setRoomType(int roomType) {
-        this.roomType = roomType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
 

@@ -1,42 +1,34 @@
 package cs309_dorm_backend.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
+@Setter
+@Getter
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "users")
 public class User {
     @Id
     @Column(name = "campus_id")
-    private String campusId;
+    private int campusId;
 
-    @Column(name = "password")
+    @NotNull
     private String password;
 
-    @Column(name = "role")
-    private int role;
+    @NotNull
+    private String role;
 
-    public String getCampusId() {
-        return campusId;
-    }
 
-    public void setCampusId(String campusId) {
-        this.campusId = campusId;
-    }
+    @OneToMany(mappedBy = "author") // of a comment
+    private List<Comment> comments; // a user can have many first comments
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
+    @OneToMany(mappedBy = "author") // of a second comment
+    private List<SecondComment> secondComments; // a user can have many second comments
 }
+
 
