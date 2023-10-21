@@ -9,7 +9,4 @@ import java.util.List;
 @Repository
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-//    @Query("select u from User u")
-    List<User> findAll();
-
 }
