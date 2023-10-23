@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "users")
 public class User {
     @Id
@@ -22,7 +21,6 @@ public class User {
 
     @NotNull
     private String role;
-
 
     @OneToMany(mappedBy = "author") // of a comment
     private List<Comment> comments; // a user can have many first comments

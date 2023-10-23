@@ -4,11 +4,6 @@ import cs309_dorm_backend.domain.User;
 
 import java.util.List;
 
-/**
- * 用户业务逻辑接口
- *
- * @author pan_junbiao
- **/
 public interface UserService {
     User findById(int userId);
 
