@@ -1,7 +1,12 @@
 package cs309_dorm_backend.controller;
 
+import cs309_dorm_backend.domain.Student;
+import cs309_dorm_backend.domain.Teacher;
 import cs309_dorm_backend.domain.User;
+import cs309_dorm_backend.service.StudentService;
+import cs309_dorm_backend.service.TeacherService;
 import cs309_dorm_backend.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +20,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private TeacherService teacherService;
 
     @GetMapping("/findAll")
     public List<User> findAll() {
@@ -38,7 +49,7 @@ public class UserController {
     }
 
     /**
-     * add a new user
+     * add a new user，simultaneously add a new student/student.
      *
      * @return success: 200 user info; fail: 400.
      */
@@ -49,7 +60,9 @@ public class UserController {
         int campusId = user.getCampusId();
         if (user1 == null) { // if the user does not exist
             userService.save(user);
-            return ResponseEntity.ok("user " + campusId + " added");
+            String role = user.getRole();
+            return ResponseEntity.ok("user " + campusId + " added" +
+                    " as " + role);
         } else {
             return ResponseEntity.status(400).body(campusId + " already exists");
         }
@@ -58,7 +71,7 @@ public class UserController {
     /**
      * update user password
      *
-     * @return 200: password updated; 404: user not found; 400: same password; 401: old password is wrong.
+     * @return 200: password updated; 404: user not found; 400: wrong password
      */
     @PutMapping("/update")
     public ResponseEntity<String> update(@RequestBody Map<String, String> request) {
@@ -68,16 +81,12 @@ public class UserController {
         User user = userService.findById(campusId);
         if (user == null) {
             return ResponseEntity.notFound().build();
-        } else if (user.getPassword().equals(oldPassword)) {
-            if (user.getPassword().equals(newPassword)) { // same password
-                return ResponseEntity.status(401).body("same password, try new one");
-            } else {
-                user.setPassword(newPassword);
-                userService.save(user);
-                return ResponseEntity.ok("password updated");
-            }
-        } else { // old password is wrong
+        } else if (!user.getPassword().equals(oldPassword)) { // old password is wrong
             return ResponseEntity.status(400).body("wrong password");
+        } else { // update password
+            user.setPassword(newPassword);
+            userService.save(user);
+            return ResponseEntity.ok("password updated");
         }
     }
 
