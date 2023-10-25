@@ -11,13 +11,6 @@ import java.util.List;
 
 @Repository
 @Component
-public interface StudentRepo extends CrudRepository<Student, Integer> {
+public interface StudentRepo extends JpaRepository<Student, Integer> {
 
-    List<Student> findAll();
-
-    Student save(Student studentInfo);
-
-    boolean deleteById(int campusId);
-
-    Student findById(int campusId);
 }

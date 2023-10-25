@@ -1,8 +1,10 @@
 package cs309_dorm_backend.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import cs309_dorm_backend.domain.Teacher;
-import java.util.List;
-public interface TeacherRepo extends JpaRepository<Teacher,Long> {
-    public List<Teacher> findAll();
+
+@Repository
+public interface TeacherRepo extends JpaRepository<Teacher, Integer> {
 }
