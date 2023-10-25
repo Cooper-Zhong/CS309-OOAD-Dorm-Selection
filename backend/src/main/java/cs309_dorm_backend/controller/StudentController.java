@@ -21,8 +21,7 @@ public class StudentController {
 
     @GetMapping("/findAll")
     public List<Student> findAll() {
-        List<Student> students = studentService.findAll();
-        return students;
+        return studentService.findAll();
     }
 
     @GetMapping("/findById/{studentId}")
@@ -41,16 +40,11 @@ public class StudentController {
     public ResponseEntity<String> addOne(@RequestBody Map<String, String> map) {
         int campusId = Integer.parseInt(map.get("studentId"));
         Student student = studentService.findById(campusId);
-        String msg = "user/student" + campusId + " does not exist" + "please create user first!";
+        String msg = "user/student" + campusId + " does not exist " + "please create user first!";
         if (student == null) {
             return ResponseEntity.status(404).body(msg);
         } else {
-            User user = student.getUser();
-            if (user == null) {
-                return ResponseEntity.status(400).body(msg);
-            } else {
-                return ResponseEntity.status(400).body("student " + campusId + " already exists");
-            }
+            return update(map);
         }
     }
 
@@ -65,36 +59,36 @@ public class StudentController {
         Student student = studentService.findById(campusId);
         if (student == null) {
             return ResponseEntity.status(404).body("student " + campusId + " does not exist");
-        } else {
-            map.remove("studentId");
-            AtomicBoolean hasInvalidKey = new AtomicBoolean(false);
-            map.forEach((key, value) -> {
-                switch (key) {
-                    case "name":
-                        student.setName(value);
-                        break;
-                    case "gender":
-                        student.setGender(value);
-                        break;
-                    case "degree":
-                        student.setDegree(value);
-                        break;
-                    case "major":
-                        student.setMajor(value);
-                        break;
-                    case "info":
-                        student.setInfo(value);
-                        break;
-                    default: // invalid key
-                        hasInvalidKey.set(true);
-                }
-            });
-            if (hasInvalidKey.get()) {
-                return ResponseEntity.status(400).body("invalid key");
-            }
-            studentService.save(student);
-            return ResponseEntity.ok("student " + campusId + " updated");
         }
+        map.remove("studentId");
+        AtomicBoolean hasInvalidKey = new AtomicBoolean(false);
+        map.forEach((key, value) -> {
+            switch (key) {
+                case "name":
+                    student.setName(value);
+                    break;
+                case "gender":
+                    student.setGender(value);
+                    break;
+                case "degree":
+                    student.setDegree(value);
+                    break;
+                case "major":
+                    student.setMajor(value);
+                    break;
+                case "info":
+                    student.setInfo(value);
+                    break;
+                default: // invalid key
+                    hasInvalidKey.set(true);
+            }
+        });
+        if (hasInvalidKey.get()) {
+            return ResponseEntity.status(400).body("invalid key");
+        }
+        studentService.save(student);
+        return ResponseEntity.ok("student " + campusId + " updated");
+
     }
 
 
@@ -102,8 +96,8 @@ public class StudentController {
      * delete a student by id
      */
     @DeleteMapping("/deleteById/{campusId}")
-    public void deleteById(@PathVariable int campusId) {
-        studentService.deleteById(campusId);
+    public boolean deleteById(@PathVariable int campusId) {
+        return studentService.deleteById(campusId);
     }
 
 }

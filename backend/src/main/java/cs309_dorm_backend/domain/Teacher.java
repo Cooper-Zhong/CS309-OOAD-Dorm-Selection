@@ -1,7 +1,8 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import javax.persistence.*;
+
+import cs309_dorm_backend.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,10 +10,17 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "teachers")
-//@PrimaryKeyJoinColumn(name = "teacher_id", referencedColumnName = "campus_id")
-public class Teacher extends User {
+public class Teacher {
 
-    @NotNull
+    @Id
+    @Column(name = "teacher_id")
+    private int teacherId;
+
+    @OneToOne
+    @MapsId  // 使用 @MapsId 注解，以便将主键的值映射到外键列
+    @JoinColumn(name = "teacher_id", referencedColumnName = "campus_id")
+    private User user;
+
     @Column(name = "name")
     private String name;
 

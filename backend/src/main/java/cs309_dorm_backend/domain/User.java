@@ -1,10 +1,11 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity

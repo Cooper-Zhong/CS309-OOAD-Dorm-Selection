@@ -1,12 +1,8 @@
 package cs309_dorm_backend.controller;
 
-import cs309_dorm_backend.domain.Student;
-import cs309_dorm_backend.domain.Teacher;
 import cs309_dorm_backend.domain.User;
-import cs309_dorm_backend.service.StudentService;
-import cs309_dorm_backend.service.TeacherService;
 import cs309_dorm_backend.service.UserService;
-import jakarta.transaction.Transactional;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,21 +12,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
+@Api(tags = "User Controller")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private StudentService studentService;
-
-    @Autowired
-    private TeacherService teacherService;
-
     @GetMapping("/findAll")
+    @ApiOperation(value = "Find all users")
+    @ApiResponse(code = 200, message = "OK", response = User.class, responseContainer = "List")
     public List<User> findAll() {
-        List<User> users = userService.findAll();
-        return users;
+        return userService.findAll();
     }
 
     /**
@@ -39,13 +31,11 @@ public class UserController {
      * @return success: 200 user info; fail: 404.
      */
     @GetMapping("/findById/{campusId}")
-    public ResponseEntity<User> findById(@PathVariable int campusId) {
-        User user = userService.findById(campusId);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(user);
-        }
+    @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
+    public User findById(
+            @ApiParam(value = "campus ID", required = true)
+            @PathVariable int campusId) {
+        return userService.findById(campusId);
     }
 
     /**
@@ -54,6 +44,7 @@ public class UserController {
      * @return success: 200 user info; fail: 400.
      */
     @PostMapping("/save")
+    @ApiOperation(value = "Add a new user", notes = "Add a new user to the database.")
     // if the id is not auto-increment, must be manually assigned before calling save():
     public ResponseEntity<String> addOne(@RequestBody User user) {
         User user1 = userService.findById(user.getCampusId());
@@ -74,6 +65,11 @@ public class UserController {
      * @return 200: password updated; 404: user not found; 400: wrong password
      */
     @PutMapping("/update")
+    @ApiOperation(value = "update user password", notes = "update user password")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "password updated", response = String.class),
+            @ApiResponse(code = 400, message = "wrong password"),
+            @ApiResponse(code = 404, message = "user not found")})
     public ResponseEntity<String> update(@RequestBody Map<String, String> request) {
         int campusId = Integer.parseInt(request.get("campusId"));
         String oldPassword = request.get("old");
@@ -96,13 +92,12 @@ public class UserController {
      * @return 200: user deleted; 404: user not found.
      */
     @DeleteMapping("/deleteById/{campusId}")
-    public ResponseEntity<String> deleteById(@PathVariable int campusId) {
-        boolean result = userService.deleteById(campusId);
-        if (result) {
-            return ResponseEntity.ok("user deleted");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "user deleted"),
+            @ApiResponse(code = 404, message = "user not found")})
+    @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
+    public boolean deleteById(@PathVariable int campusId) {
+        return userService.deleteById(campusId);
     }
 
 }

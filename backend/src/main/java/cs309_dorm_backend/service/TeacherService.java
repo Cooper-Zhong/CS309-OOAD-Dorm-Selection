@@ -5,11 +5,11 @@ import cs309_dorm_backend.domain.Teacher;
 import java.util.List;
 
 public interface TeacherService {
-    public List<Teacher> findAll();
+    List<Teacher> findAll();
 
-    public void deleteById(long id);
+    Teacher findById(int teacherId);
 
-    public Teacher save(Teacher teacher);
+    Teacher save(Teacher teacherInfo);
 
-
+    boolean deleteById(int teacherId);
 }

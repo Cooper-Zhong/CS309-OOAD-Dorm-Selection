@@ -2,9 +2,8 @@ package cs309_dorm_backend.dao;
 
 import cs309_dorm_backend.domain.Zone;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface ZoneRepo extends JpaRepository<Zone, Long> {
-    public List<Zone> findAll();
+@Repository
+public interface ZoneRepo extends JpaRepository<Zone, String> {
 }

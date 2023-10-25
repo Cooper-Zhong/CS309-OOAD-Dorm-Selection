@@ -3,7 +3,6 @@ package cs309_dorm_backend.service;
 import cs309_dorm_backend.dao.StudentRepo;
 import cs309_dorm_backend.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +21,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student findById(int id) {
-        Student student = studentRepo.findById(id);
-        return student;
+        return studentRepo.findById(id).orElse(null);
     }
 
     @Override
@@ -33,11 +31,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public boolean deleteById(int id) {
-        try {
+        Optional<Student> studentOptional = studentRepo.findById(id);
+        if (studentOptional.isPresent()) {
             studentRepo.deleteById(id);
-            return true;
-        } catch (Exception e) {
-            return false;
+            return true; // 删除成功
+        } else {
+            return false; // 实体不存在，无法删除
         }
     }
 }

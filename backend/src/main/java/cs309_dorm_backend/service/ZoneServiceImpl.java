@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ZoneServiceImpl implements ZoneService {
@@ -20,8 +21,19 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
-    public void deleteById(String name) {
-        zoneRepo.deleteById(name);
+    public Zone findById(String name) {
+        return zoneRepo.findById(name).orElse(null);
+    }
+
+    @Override
+    public boolean deleteById(String name) {
+        Optional<Zone> zoneOptional = zoneRepo.findById(name);
+        if (zoneOptional.isPresent()) {
+            zoneRepo.deleteById(name);
+            return true; // 删除成功
+        } else {
+            return false; // 实体不存在，无法删除
+        }
     }
 
     @Override
