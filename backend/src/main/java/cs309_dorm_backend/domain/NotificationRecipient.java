@@ -1,6 +1,8 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+import cs309_dorm_backend.domain.User;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,15 +12,17 @@ import java.io.Serializable;
 @Table(name = "notification_recipients")
 @IdClass(NotificationRecipientId.class)
 public class NotificationRecipient {
+    // id, recipient_id 代表了一个用户收到的一个通知，通知的id为notification_id
 
     @Id
-    @ManyToOne // can send one notification to many recipients
+    @ManyToOne // can send one content to many recipients
     @JoinColumn(name = "notification_id", referencedColumnName = "notification_id")
     private NotificationContent notificationContent;
 
     @Id
-    @Column(name = "recipient_id", nullable = false)
-    private int recipientId;
+    @OneToOne
+    @JoinColumn(name = "recipient_id", referencedColumnName = "campus_id")
+    private User recipient;
 
     @Column(name = "is_read")
     private boolean isRead;
@@ -29,8 +33,8 @@ public class NotificationRecipient {
 @Data
 class NotificationRecipientId implements Serializable {
 
-    private Long notificationContent;
-    private Long recipientId;
+    private NotificationContent notificationContent;
+    private User recipient;
 
     // Constructors, getters, setters, and equals/hashCode methods
 }

@@ -28,6 +28,7 @@ public class User {
 
     @OneToMany(mappedBy = "author") // of a second comment
     private List<SecondComment> secondComments; // a user can have many second comments
+
 }
 
 
