@@ -1,6 +1,6 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 

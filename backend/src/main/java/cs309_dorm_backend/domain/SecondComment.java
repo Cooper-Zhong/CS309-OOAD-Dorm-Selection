@@ -1,7 +1,9 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,7 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @Table(name = "second_comments")
+@IdClass(SecondCommentId.class)
 public class SecondComment {
 
     @Id
@@ -31,4 +34,11 @@ public class SecondComment {
     @Column(name = "time")
     private Timestamp time;
 
+}
+
+@Data
+class SecondCommentId implements java.io.Serializable {
+    private Comment parentComment;
+    private User author;
+    private Timestamp time;
 }

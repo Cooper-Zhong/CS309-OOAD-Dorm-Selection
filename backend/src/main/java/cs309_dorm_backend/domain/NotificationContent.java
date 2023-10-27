@@ -1,7 +1,10 @@
 package cs309_dorm_backend.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +28,6 @@ public class NotificationContent {
     private String content;
 
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "time", nullable = false)
     private Timestamp time;
 }

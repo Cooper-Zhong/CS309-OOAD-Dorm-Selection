@@ -32,6 +32,9 @@ public class UserController {
      */
     @GetMapping("/findById/{campusId}")
     @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = User.class),
+            @ApiResponse(code = 404, message = "user not found")})
     public User findById(
             @ApiParam(value = "campus ID", required = true)
             @PathVariable int campusId) {
@@ -45,6 +48,9 @@ public class UserController {
      */
     @PostMapping("/save")
     @ApiOperation(value = "Add a new user", notes = "Add a new user to the database.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = String.class),
+            @ApiResponse(code = 400, message = "user already exists")})
     // if the id is not auto-increment, must be manually assigned before calling save():
     public ResponseEntity<String> addOne(@RequestBody User user) {
         User user1 = userService.findById(user.getCampusId());
