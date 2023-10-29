@@ -1,7 +1,6 @@
 package cs309_dorm_backend.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;

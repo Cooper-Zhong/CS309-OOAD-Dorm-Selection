@@ -3,7 +3,6 @@ package cs309_dorm_backend.domain;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import cs309_dorm_backend.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
