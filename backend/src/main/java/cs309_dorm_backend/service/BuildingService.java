@@ -5,9 +5,11 @@ import cs309_dorm_backend.domain.Building;
 import java.util.List;
 
 public interface BuildingService {
-    public List<Building> findAll();
+    List<Building> findAll();
 
-    public void deleteById(long id);
+    Building findById(int id);
 
-    public Building save(Building building);
+    boolean deleteById(int id);
+
+    Building save(Building building);
 }
