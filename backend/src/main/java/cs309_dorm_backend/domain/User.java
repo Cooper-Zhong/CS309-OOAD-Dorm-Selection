@@ -1,6 +1,5 @@
 package cs309_dorm_backend.domain;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 
