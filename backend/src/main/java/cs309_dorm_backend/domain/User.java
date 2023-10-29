@@ -23,11 +23,12 @@ public class User {
     @NotNull
     private String role;
 
-    @OneToMany(mappedBy = "author") // of a comment
+    @OneToMany(mappedBy = "author",fetch = FetchType.LAZY)
     private List<Comment> comments; // a user can have many first comments
 
-    @OneToMany(mappedBy = "author") // of a second comment
+    @OneToMany(mappedBy = "author",fetch = FetchType.LAZY)
     private List<SecondComment> secondComments; // a user can have many second comments
+
 
 }
 

@@ -2,6 +2,7 @@ package cs309_dorm_backend.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,13 +40,14 @@ public class Room {
 
     private String description;
 
-    @OneToMany(mappedBy = "room") // a room can have many comments, or no comments
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY) // a room can have many comments, or no comments
     private List<Comment> comments;
 
-    @ManyToMany(mappedBy = "favoriteRooms") // a room can be favorited by many teams
+    @ManyToMany(mappedBy = "favoriteRooms", fetch = FetchType.LAZY) // a room can be favorited by many teams
     private List<Team> favoriteTeams;
 
-    @OneToOne // a room can be assigned to one team
+    @OneToOne(fetch = FetchType.LAZY)
+    // a room can be assigned to one team
     @JoinColumn(name = "team_id", referencedColumnName = "team_id")
     private Team assignedTeam; // a room can only be assigned to one team
 

@@ -32,7 +32,7 @@ public class Comment {
     @Column(name = "time")
     private Timestamp time;
 
-    @OneToMany(mappedBy = "parentComment") // a comment can have many second comments, or no second comments
+    @OneToMany(mappedBy = "parentComment",fetch = FetchType.LAZY) // a comment can have many second comments, or no second comments
     private List<SecondComment> secondComments;
 
 }
