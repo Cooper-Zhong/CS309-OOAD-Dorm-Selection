@@ -45,8 +45,10 @@ public class ZoneContoller {
             return ResponseEntity.status(404).body(oldName + " does not exist");
         } else {
             String newName = map.get("newName");
-            zone.setName(newName);
-            zoneService.save(zone);
+            zoneService.deleteById(oldName);
+            Zone newZone = new Zone();
+            newZone.setName(newName);
+            zoneService.save(newZone);
             return ResponseEntity.ok("zone " + oldName + " updated to " + newName);
         }
     }
