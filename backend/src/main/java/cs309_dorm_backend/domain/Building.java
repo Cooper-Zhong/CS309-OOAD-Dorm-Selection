@@ -25,13 +25,11 @@ public class Building {
     @NotNull
     private int maxHeight;
 
-    @ManyToOne(fetch = FetchType.LAZY) // a building belongs to a zone
+    @ManyToOne // a building belongs to a zone
     @JoinColumn(name = "zone_name", referencedColumnName = "name")
     private Zone zone;
 
-    @OneToMany(mappedBy = "building") // a building can have many rooms
+    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY) // a building can have many rooms
     private List<Room> rooms;
-
-
 }
 
