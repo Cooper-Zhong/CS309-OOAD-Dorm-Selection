@@ -2,6 +2,8 @@ package cs309_dorm_backend.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +17,8 @@ public class Student {
     @Column(name = "student_id")
     private int studentId;
 
-    @OneToOne
+    @JsonIgnore //被序列化成JSON时，user字段将被忽略
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId  // 使用 @MapsId 注解，以便将主键的值映射到外键列
     @JoinColumn(name = "student_id", referencedColumnName = "campus_id")
     private User user;
@@ -30,6 +33,7 @@ public class Student {
 
     private String info;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY) // a student can only belong to one team
     @JoinColumn(name = "team_id")
     private Team team; // a student's team, can be null
