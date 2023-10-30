@@ -37,14 +37,16 @@ public class StudentController {
      */
     @PostMapping("/save")
     // if the id is not auto-increment, must be manually assigned before calling save():
-    public ResponseEntity<String> addOne(@RequestBody Map<String, String> map) {
-        int campusId = Integer.parseInt(map.get("studentId"));
-        Student student = studentService.findById(campusId);
-        String msg = "user/student" + campusId + " does not exist " + "please create user first!";
-        if (student == null) {
+    public ResponseEntity<String> addOne(@RequestBody Student student) {
+        int campusId = student.getStudentId();
+        Student student1 = studentService.findById(campusId);
+        if (student1 == null) {
+            String msg = "user/student" + campusId + " does not exist " + "please create user first!";
             return ResponseEntity.status(404).body(msg);
         } else {
-            return update(map);
+            student.setUser(student1.getUser());
+            studentService.save(student);
+            return ResponseEntity.ok("student " + campusId + " updated");
         }
     }
 
@@ -54,41 +56,16 @@ public class StudentController {
      * @return 200: success; 404: student not found; 400: invalid key
      */
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody Map<String, String> map) {
-        int campusId = Integer.parseInt(map.get("studentId"));
-        Student student = studentService.findById(campusId);
-        if (student == null) {
+    public ResponseEntity<String> update(@RequestBody Student student) {
+        int campusId = student.getStudentId();
+        Student student1 = studentService.findById(campusId);
+        if (student1 == null) { // student does not exist
             return ResponseEntity.status(404).body("student " + campusId + " does not exist");
+        } else {
+            student.setUser(student1.getUser()); // change
+            studentService.save(student);
+            return ResponseEntity.ok("student " + campusId + " updated");
         }
-        map.remove("studentId");
-        AtomicBoolean hasInvalidKey = new AtomicBoolean(false);
-        map.forEach((key, value) -> {
-            switch (key) {
-                case "name":
-                    student.setName(value);
-                    break;
-                case "gender":
-                    student.setGender(value);
-                    break;
-                case "degree":
-                    student.setDegree(value);
-                    break;
-                case "major":
-                    student.setMajor(value);
-                    break;
-                case "info":
-                    student.setInfo(value);
-                    break;
-                default: // invalid key
-                    hasInvalidKey.set(true);
-            }
-        });
-        if (hasInvalidKey.get()) {
-            return ResponseEntity.status(400).body("invalid key");
-        }
-        studentService.save(student);
-        return ResponseEntity.ok("student " + campusId + " updated");
-
     }
 
 

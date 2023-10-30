@@ -38,33 +38,19 @@ public class TeacherController {
     /**
      * update teacher info
      *
-     * @param map
      * @return 200: success; 404: teacher not found; 400: invalid key
      */
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody Map<String, String> map) {
-        int teacherId = Integer.parseInt(map.get("teacherId"));
-        Teacher teacher = teacherService.findById(teacherId);
-        if (teacher == null) {
+    public ResponseEntity<String> update(@RequestBody Teacher teacher) {
+        int teacherId = teacher.getTeacherId();
+        Teacher teacher1 = teacherService.findById(teacherId);
+        if (teacher1 == null) {
             return ResponseEntity.status(404).body("teacher " + teacherId + " not found");
+        } else {
+            teacher.setUser(teacher1.getUser()); // user cannot be changed, assign primary key
+            teacherService.save(teacher);
+            return ResponseEntity.ok("teacher " + teacherId + " updated");
         }
-        map.remove("teacherId");
-        AtomicBoolean hasInvalidKey = new AtomicBoolean(false);
-        map.forEach((k, v) -> {
-            switch (k) {
-                case "name":
-                    teacher.setName(v);
-                    break;
-                default:
-                    hasInvalidKey.set(true);
-            }
-        });
-        if (hasInvalidKey.get()) {
-            return ResponseEntity.status(400).body("invalid key");
-        }
-
-        teacherService.save(teacher);
-        return ResponseEntity.ok("teacher " + teacherId + " updated"); // 200
     }
 
 
