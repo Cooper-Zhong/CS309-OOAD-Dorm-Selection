@@ -47,7 +47,7 @@ public class BuildingController {
                 buildingService.save(building);
                 return ResponseEntity.ok("building " + buildingId + " added");
             } catch (Exception e) {
-                return ResponseEntity.status(400).body("invalid building json, failed");
+                return ResponseEntity.status(400).body("invalid building json/zone not exist/..., failed");
             }
         } else {
             return ResponseEntity.status(400).body("building " + buildingId + " already exists");
