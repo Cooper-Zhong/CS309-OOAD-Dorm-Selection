@@ -1,7 +1,8 @@
 package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.Zone;
-import cs309_dorm_backend.service.ZoneService;
+import cs309_dorm_backend.dto.ZoneUpdateDto;
+import cs309_dorm_backend.service.zone.ZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,41 +21,23 @@ public class ZoneContoller {
         return zoneService.findAll();
     }
 
-    @GetMapping("/findById/{name}")
-    public Zone findById(@PathVariable String name) {
-        return zoneService.findById(name);
+    @GetMapping("/findByName/{name}")
+    public Zone findByName(@PathVariable String name) {
+        return zoneService.findByName(name);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> addOne(@RequestBody Zone zone) {
-        Zone zone1 = zoneService.findById(zone.getName());
-        String name = zone.getName();
-        if (zone1 == null) { // if the zone does not exist
-            zoneService.save(zone);
-            return ResponseEntity.ok("zone " + name + " added");
-        } else {
-            return ResponseEntity.status(400).body(name + " already exists");
-        }
+    public Zone addOne(@RequestBody Zone zone) {
+        return zoneService.save(zone);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody Map<String, String> map) {
-        String oldName = map.get("oldName");
-        Zone zone = zoneService.findById(oldName);
-        if (zone == null) {
-            return ResponseEntity.status(404).body(oldName + " does not exist");
-        } else {
-            String newName = map.get("newName");
-            zoneService.deleteById(oldName);
-            Zone newZone = new Zone();
-            newZone.setName(newName);
-            zoneService.save(newZone);
-            return ResponseEntity.ok("zone " + oldName + " updated to " + newName);
-        }
+    public Zone update(@RequestBody ZoneUpdateDto zoneUpdateDto) {
+        return zoneService.update(zoneUpdateDto);
     }
 
-    @DeleteMapping("/deleteById/{name}")
-    public boolean deleteById(@PathVariable String name) {
-        return zoneService.deleteById(name);
+    @DeleteMapping("/deleteByName/{name}")
+    public boolean deleteByName(@PathVariable String name) {
+        return zoneService.deleteByName(name);
     }
 }
