@@ -1,6 +1,7 @@
-package cs309_dorm_backend.service;
+package cs309_dorm_backend.service.room;
 
 import cs309_dorm_backend.domain.Room;
+import cs309_dorm_backend.dto.RoomDto;
 
 import java.util.List;
 
@@ -11,5 +12,9 @@ public interface RoomService {
 
     boolean deleteById(int id);
 
-    Room save(Room building);
+    Room addOne(RoomDto roomDto);
+
+    Room save(Room room);
+
+    Room update(RoomDto roomDto);
 }
