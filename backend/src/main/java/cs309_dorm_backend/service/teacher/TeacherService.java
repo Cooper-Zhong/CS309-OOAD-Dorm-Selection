@@ -1,4 +1,4 @@
-package cs309_dorm_backend.service;
+package cs309_dorm_backend.service.teacher;
 
 import cs309_dorm_backend.domain.Teacher;
 
@@ -10,6 +10,8 @@ public interface TeacherService {
     Teacher findById(int teacherId);
 
     Teacher save(Teacher teacherInfo);
+
+    Teacher update(Teacher teacherInfo);
 
     boolean deleteById(int teacherId);
 }
