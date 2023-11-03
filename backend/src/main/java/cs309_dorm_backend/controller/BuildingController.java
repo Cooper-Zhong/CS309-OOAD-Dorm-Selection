@@ -3,11 +3,15 @@ package cs309_dorm_backend.controller;
 import java.util.List;
 
 import cs309_dorm_backend.domain.Building;
-import cs309_dorm_backend.service.BuildingService;
+import cs309_dorm_backend.dto.BuildingDto;
+import cs309_dorm_backend.service.building.BuildingService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/building")
@@ -32,40 +36,14 @@ public class BuildingController {
         return buildingService.deleteById(buildingId);
     }
 
-    /**
-     * add a new building
-     *
-     * @param building
-     * @return
-     */
     @PostMapping("/save")
-    public ResponseEntity<String> addOne(@RequestBody Building building) {
-        int buildingId = building.getBuildingId();
-        Building building1 = buildingService.findById(buildingId);
-        if (building1 == null) { // if the building does not exist
-            try {
-                buildingService.save(building);
-                return ResponseEntity.ok("building " + buildingId + " added");
-            } catch (Exception e) {
-                return ResponseEntity.status(400).body("invalid building json/zone not exist/..., failed");
-            }
-        } else {
-            return ResponseEntity.status(400).body("building " + buildingId + " already exists");
-        }
-
+    public Building addOne(@RequestBody @Valid BuildingDto buildingDto, BindingResult result) {
+        return buildingService.addOne(buildingDto, result);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody Building building) {
-        int buildingId = building.getBuildingId();
-        Building old = buildingService.findById(buildingId);
-        if (old == null) {
-            return ResponseEntity.status(404).body("buildingId "+buildingId + " does not exist");
-        } else {
-            buildingService.deleteById(buildingId);
-            buildingService.save(building);
-            return ResponseEntity.ok("building " + buildingId + " updated");
-        }
+    public Building update(@RequestBody BuildingDto buildingDto, BindingResult result) {
+        return buildingService.update(buildingDto, result);
     }
 
 
