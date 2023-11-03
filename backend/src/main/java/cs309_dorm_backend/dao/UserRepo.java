@@ -8,5 +8,8 @@ import java.util.List;
 
 @Repository
 public interface UserRepo extends JpaRepository<User, Integer> {
+    User findUserByCampusId(int campusId);
+
+    User findUserByCampusIdAndPassword(int campusId, String password);
 
 }
