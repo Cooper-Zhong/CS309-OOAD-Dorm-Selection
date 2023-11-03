@@ -4,8 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.annotations.ApiModel;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +16,9 @@ import java.util.List;
 
 @Entity
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Table(name = "buildings")
 public class Building {
@@ -28,7 +31,8 @@ public class Building {
     private int maxHeight;
 
     @ManyToOne // a building belongs to a zone
-    @JoinColumn(name = "zone_name", referencedColumnName = "name")
+    @NotNull
+    @JoinColumn(name = "zone_id", referencedColumnName = "zone_id", nullable = false)
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
     @JsonIdentityReference(alwaysAsId = true)
     //将 zone 对象的 name 属性作为字段
