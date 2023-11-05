@@ -1,6 +1,5 @@
 package cs309_dorm_backend.dto;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

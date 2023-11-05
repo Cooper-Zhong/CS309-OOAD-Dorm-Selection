@@ -5,7 +5,6 @@ import cs309_dorm_backend.dao.ZoneRepo;
 import cs309_dorm_backend.domain.Zone;
 import cs309_dorm_backend.dto.ZoneUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
