@@ -1,16 +1,12 @@
 package cs309_dorm_backend.controller;
 
-import cs309_dorm_backend.domain.Building;
 import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.dto.RoomDto;
-import cs309_dorm_backend.service.building.BuildingService;
 import cs309_dorm_backend.service.room.RoomService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Savepoint;
 import java.util.List;
 
 @RestController
@@ -26,14 +22,14 @@ public class RoomController {
         return roomService.findAll();
     }
 
-    @GetMapping("/findOne")
-    public Room findOne(@RequestParam("buildingId") int buildingId, @RequestParam("roomNumber") int roomNumber) {
+    @GetMapping("/findOne/{buildingId}/{roomNumber}")
+    public Room findOne(@PathVariable int buildingId, @PathVariable int roomNumber) {
         return roomService.findOne(buildingId, roomNumber);
     }
 
-    @DeleteMapping("/deleteById/{roomId}")
-    public boolean deleteById(@PathVariable int roomId) {
-        return roomService.deleteById(roomId);
+    @DeleteMapping("/delete/{buildingId}/{roomNumber}")
+    public boolean deleteById(@PathVariable int buildingId, @PathVariable int roomNumber) {
+        return roomService.delete(buildingId, roomNumber);
     }
 
     @PostMapping("/addOne")
