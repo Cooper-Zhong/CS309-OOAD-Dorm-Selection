@@ -2,7 +2,6 @@ package cs309_dorm_backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
