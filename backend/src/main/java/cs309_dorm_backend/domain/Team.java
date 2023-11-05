@@ -1,8 +1,13 @@
 package cs309_dorm_backend.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -17,16 +22,25 @@ public class Team {
     @Column(name = "team_id")
     private int teamId;
 
-    @Column(name = "team_name")
+    @NonNull
+    @NotBlank
+    @Column(name = "team_name", unique = true)
     private String teamName;
 
+
+    @NonNull
+    @NotBlank
     @OneToOne
-    @JoinColumn(name = "creator_id")
+    @JoinColumn(name = "creator_id", unique = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "studentId")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonAlias("creatorId")
     private Student creator;
 
     @OneToMany(mappedBy = "team")
     private List<Student> teamMembers;
 
+    @JsonIgnore
     @ManyToMany// a team can favorite many rooms
     @JoinTable(
             name = "favorite_rooms", // 中间表的名字
