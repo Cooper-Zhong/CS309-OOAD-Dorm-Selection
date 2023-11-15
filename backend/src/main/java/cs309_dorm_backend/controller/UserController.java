@@ -7,6 +7,7 @@ import cs309_dorm_backend.dto.UserUpdateDto;
 import cs309_dorm_backend.service.user.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,39 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+//    @PostMapping("/login")
+//    public ResponseEntity<String> checkLogin(@RequestBody UserDto userDto) {
+//        if (userService.checkLogin(userDto)) {
+//
+//            return ResponseEntity
+//                    .ok()
+//                    .body("Your Response Body");
+//        } else {
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
+
     @PostMapping("/login")
-    public Boolean checkLogin(@RequestBody UserDto userDto) {
-        return userService.checkLogin(userDto);
+    public ResponseEntity<User> checkLogin(@RequestBody UserDto userDto) {
+        if (userService.checkLogin(userDto)) {
+            return ResponseEntity
+                    .ok()
+                    .body(userService.findByCampusId(userDto.getCampusId()));
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
+
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
+
 
     @PostMapping("/register")
     public UserDto registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
