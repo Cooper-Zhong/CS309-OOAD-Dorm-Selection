@@ -40,6 +40,13 @@ public class TeamServiceImpl implements TeamService {
         return teamRepo.findByCreator(creatorId);
     }
 
+
+    /**
+     * delete a team with creatorId = ?
+     *
+     * @param creatorId
+     * @return
+     */
     @Override
     @Transactional
     public boolean deleteByCreator(int creatorId) {
@@ -47,14 +54,13 @@ public class TeamServiceImpl implements TeamService {
         if (team == null) { // if the team does not exist
             throw new MyException(404, "team created by " + creatorId + " does not exist");
         }
-        // set team_id to null for all members
+        // set team_id to null for all members, remove foreign key constraint!
         List<Student> members = team.getTeamMembers();
         for (Student member : members) {
             teamRepo.removeStudentTeam(member.getStudentId());
         }
         teamRepo.deleteByCreator(creatorId); // delete the team
         return true;
-
     }
 
     @Override
@@ -62,6 +68,14 @@ public class TeamServiceImpl implements TeamService {
         return teamRepo.save(team);
     }
 
+
+    /**
+     * add a team with creatorId = ?
+     *
+     * @param team
+     * @param bindingResult
+     * @return
+     */
     @Override
     @Transactional
     public Team addTeam(@Valid Team team, BindingResult bindingResult) {
@@ -83,6 +97,14 @@ public class TeamServiceImpl implements TeamService {
         return team;
     }
 
+
+    /**
+     * add a member to a team with creatorId = ?
+     *
+     * @param teamMemberDto
+     * @param bindingResult
+     * @return
+     */
     @Override
     @Transactional
     public Student addMember(TeamMemberDto teamMemberDto, BindingResult bindingResult) {
@@ -116,13 +138,13 @@ public class TeamServiceImpl implements TeamService {
     }
 
     /**
-     * update team name / creator
+     * update team name
      *
      * @param team
      * @return
      */
     @Override
-    public Team update(Team team) {
+    public Team updateTeamName(Team team) {
         int creatorId = team.getCreator().getStudentId();
         Team oldTeam = findByCreator(creatorId);
         if (oldTeam == null) { // if the team does not exist
@@ -134,5 +156,33 @@ public class TeamServiceImpl implements TeamService {
             save(oldTeam);
             return oldTeam;
         }
+    }
+
+    @Override
+    public Team updateTeamCreator(TeamMemberDto teamMemberDto) {
+        int creatorId = teamMemberDto.getCreatorId();
+        int memberId = teamMemberDto.getStudentId();
+        Student creator = studentService.findById(creatorId);
+        Student member = studentService.findById(memberId);
+        if (creator == null) { // if the creator does not exist
+            throw new MyException(404, "student " + creatorId + " does not exist");
+        }
+        if (member == null) { // if the student does not exist
+            throw new MyException(404, "student " + memberId + " does not exist");
+        }
+        Team team = findByCreator(creatorId);
+        if (team == null) { // if the team does not exist
+            throw new MyException(404, "team created by " + creatorId + " does not exist");
+        }
+        List<Student> members = team.getTeamMembers();
+        Team memberTeam = member.getTeam();
+        if (memberTeam != null) { // if the student is already in a team
+            throw new MyException(404, "student " + memberId + " is already in a team");
+        }
+        if (members.size()>=4) { // if the team is full
+            throw new MyException(404, "team is full");
+        }
+        teamRepo.setTeam(memberId, team.getTeamId());
+        return team;
     }
 }

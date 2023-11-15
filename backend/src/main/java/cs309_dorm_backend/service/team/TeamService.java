@@ -20,5 +20,7 @@ public interface TeamService {
 
     Student addMember(TeamMemberDto teamMemberDto, BindingResult bindingResult);
 
-    Team update(Team team);
+    Team updateTeamName(Team team);
+
+    Team updateTeamCreator(TeamMemberDto teamMemberDto); // admin for this team
 }

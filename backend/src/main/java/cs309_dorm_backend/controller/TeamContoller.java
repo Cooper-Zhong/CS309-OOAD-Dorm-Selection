@@ -2,11 +2,9 @@ package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
-import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.TeamMemberDto;
 import cs309_dorm_backend.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +34,7 @@ public class TeamContoller {
 
     @PutMapping("/update") //
     public Team update(@RequestBody Team team) {
-        return teamService.update(team);
+        return teamService.updateTeamName(team);
     }
 
     @PutMapping("/addMember")
