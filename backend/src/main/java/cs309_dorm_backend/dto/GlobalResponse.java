@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GlobalResponse<T> {
-    int code;
-    String msg;
-    T data; //controller return data
+    public int code;
+    public String msg;
+    public T data;  //controller return data
 }

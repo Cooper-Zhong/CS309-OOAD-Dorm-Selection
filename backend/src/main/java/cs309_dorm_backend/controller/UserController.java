@@ -1,6 +1,7 @@
 package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.User;
+import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.UserDto;
 import cs309_dorm_backend.dto.UserForm;
 import cs309_dorm_backend.dto.UserUpdateDto;
@@ -35,14 +36,18 @@ public class UserController {
 //    }
 
     @PostMapping("/login")
-    public ResponseEntity<User> checkLogin(@RequestBody UserDto userDto) {
+    public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
         if (userService.checkLogin(userDto)) {
-            return ResponseEntity
-                    .ok()
-                    .body(userService.findByCampusId(userDto.getCampusId()));
-        } else {
-            return ResponseEntity.badRequest().build();
+            return GlobalResponse.builder()
+                    .code(0)
+                    .msg("success")
+                    .data(userService.findByCampusId(userDto.getCampusId()))
+                    .build();
         }
+        return GlobalResponse.builder()
+                .code(1)
+                .msg("fail")
+                .build();
     }
 
     // Handling OPTIONS request explicitly
@@ -57,8 +62,13 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public UserDto registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
-        return userService.register(userForm, result);
+    public GlobalResponse registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
+        UserDto userDto = userService.register(userForm, result);
+        return GlobalResponse.builder()
+                .code(0)
+                .msg("success")
+                .data(userDto)
+                .build();
     }
 
     @PostMapping("/updatePassword")
