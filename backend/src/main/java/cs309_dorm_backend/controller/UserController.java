@@ -23,31 +23,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> checkLogin(@RequestBody UserDto userDto) {
-//        if (userService.checkLogin(userDto)) {
-//
-//            return ResponseEntity
-//                    .ok()
-//                    .body("Your Response Body");
-//        } else {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-
     @PostMapping("/login")
     public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
         if (userService.checkLogin(userDto)) {
-            return GlobalResponse.builder()
+            return GlobalResponse.<User>builder()
                     .code(0)
-                    .msg("success")
+                    .msg("Login successfully.")
                     .data(userService.findByCampusId(userDto.getCampusId()))
                     .build();
+        } else {
+            return GlobalResponse.<String>builder()
+                    .code(1)
+                    .msg("login fail")
+                    .build();
         }
-        return GlobalResponse.builder()
-                .code(1)
-                .msg("fail")
-                .build();
     }
 
     // Handling OPTIONS request explicitly
@@ -66,14 +55,19 @@ public class UserController {
         UserDto userDto = userService.register(userForm, result);
         return GlobalResponse.builder()
                 .code(0)
-                .msg("success")
+                .msg("Register successfully.")
                 .data(userDto)
                 .build();
     }
 
     @PostMapping("/updatePassword")
-    public UserDto updatePassword(@RequestBody @Valid UserUpdateDto userUpdateDto, BindingResult result) {
-        return userService.updatePassword(userUpdateDto, result);
+    public GlobalResponse updatePassword(@RequestBody @Valid UserUpdateDto userUpdateDto, BindingResult result) {
+        UserDto userDto = userService.updatePassword(userUpdateDto, result);
+        return GlobalResponse.builder()
+                .code(0)
+                .msg("Edit password successfully.")
+                .data(userDto)
+                .build();
     }
 
     @GetMapping("/findAll")
@@ -86,6 +80,27 @@ public class UserController {
     @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
     public User findById(@PathVariable int campusId) {
         return userService.findByCampusId(campusId);
+    }
+
+    /**
+     * delete a user by id
+     *
+     * @return 200: user deleted; 404: user not found.
+     */
+    @DeleteMapping("/deleteById/{campusId}")
+    @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
+    public GlobalResponse deleteById(@PathVariable int campusId) {
+        if (userService.deleteByCampusId(campusId)) {
+            return GlobalResponse.builder()
+                    .code(0)
+                    .msg("Delete user successfully.")
+                    .build();
+        } else {
+            return GlobalResponse.builder()
+                    .code(1)
+                    .msg("Delete user fail.")
+                    .build();
+        }
     }
 
 //
@@ -111,8 +126,8 @@ public class UserController {
 //        } else {
 //            return ResponseEntity.status(400).body(campusId + " already exists");
 //        }
-//    }
 
+//    }
 ////
 //    /**
 //     * update user password
@@ -139,17 +154,7 @@ public class UserController {
 //            userService.save(user);
 //            return ResponseEntity.ok("password updated");
 //        }
-//    }
 
-    /**
-     * delete a user by id
-     *
-     * @return 200: user deleted; 404: user not found.
-     */
-    @DeleteMapping("/deleteById/{campusId}")
-    @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
-    public boolean deleteById(@PathVariable int campusId) {
-        return userService.deleteByCampusId(campusId);
-    }
+//    }
 
 }
