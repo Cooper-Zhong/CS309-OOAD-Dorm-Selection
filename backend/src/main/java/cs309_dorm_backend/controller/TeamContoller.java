@@ -1,7 +1,9 @@
 package cs309_dorm_backend.controller;
 
+import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
+import cs309_dorm_backend.dto.FavoriteDto;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.TeamMemberDto;
 import cs309_dorm_backend.service.team.TeamService;
@@ -64,7 +66,7 @@ public class TeamContoller {
     }
 
     @PutMapping("/addMember")
-    public GlobalResponse addMember(@ Valid @RequestBody TeamMemberDto teamMemberDto, BindingResult bindingResult) {
+    public GlobalResponse addMember(@Valid @RequestBody TeamMemberDto teamMemberDto, BindingResult bindingResult) {
         Student student = teamService.addMember(teamMemberDto, bindingResult);
         if (student == null) {
             return new GlobalResponse<>(1, "fail", null);
@@ -81,6 +83,16 @@ public class TeamContoller {
             return new GlobalResponse<>(0, "success", null);
         } else {
             return new GlobalResponse<>(1, "team not found", null);
+        }
+    }
+
+    @PostMapping("/favoriteRoom")
+    public GlobalResponse favoriteRoom(@Valid @RequestBody FavoriteDto favoriteDto, BindingResult bindingResult) {
+        Room room = teamService.favoriteRoom(favoriteDto, bindingResult);
+        if (room == null) {
+            return new GlobalResponse<>(1, "fail", null);
+        } else {
+            return new GlobalResponse<>(0, "success", room);
         }
     }
 }

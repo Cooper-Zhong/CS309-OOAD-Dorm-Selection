@@ -2,9 +2,12 @@ package cs309_dorm_backend.service.team;
 
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.TeamRepo;
+import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
+import cs309_dorm_backend.dto.FavoriteDto;
 import cs309_dorm_backend.dto.TeamMemberDto;
+import cs309_dorm_backend.service.room.RoomService;
 import cs309_dorm_backend.service.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,19 +19,20 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TeamServiceImpl implements TeamService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
     private TeamRepo teamRepo;
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private RoomService roomService;
 
     @Override
     public List<Team> findAll() {
@@ -54,7 +58,7 @@ public class TeamServiceImpl implements TeamService {
             throw new MyException(404, "team created by " + creatorId + " does not exist");
         }
         // set team_id to null for all members, remove foreign key constraint!
-        List<Student> members = team.getTeamMembers();
+        Set<Student> members = team.getTeamMembers();
         for (Student member : members) {
             teamRepo.removeStudentTeam(member.getStudentId());
         }
@@ -123,7 +127,7 @@ public class TeamServiceImpl implements TeamService {
         if (team == null) { // if the team does not exist
             throw new MyException(5, "team created by " + creatorId + " does not exist");
         }
-        List<Student> members = team.getTeamMembers();
+        Set<Student> members = team.getTeamMembers();
         Team memberTeam = member.getTeam();
         if (memberTeam != null) { // if the student is already in a team
             throw new MyException(6, "student " + memberId + " is already in a team");
@@ -172,12 +176,36 @@ public class TeamServiceImpl implements TeamService {
         if (team == null) { // if the team does not exist
             throw new MyException(5, "team created by " + creatorId + " does not exist");
         }
-        List<Student> members = team.getTeamMembers();
+        Set<Student> members = team.getTeamMembers();
         Team memberTeam = member.getTeam();
         if (memberTeam == null || memberTeam.getTeamId() != team.getTeamId()) { // if the student is not in this team
             throw new MyException(6, "student " + memberId + " is not in this team");
         }
         teamRepo.updateTeamCreator(creatorId, memberId);
         return team;
+    }
+
+    @Override
+    public Room favoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new MyException(400, bindingResult.getFieldError().getDefaultMessage());
+        }
+        int studentId = favoriteDto.getStudentId();
+        int buildingId = favoriteDto.getBuildingId();
+        int roomNumber = favoriteDto.getRoomNumber();
+        Student student = studentService.findById(studentId);
+        if (student == null) { // if the student does not exist
+            throw new MyException(4, "student " + studentId + " does not exist");
+        }
+        Team team = student.getTeam();
+        if (team == null) { // if the student is not in a team
+            throw new MyException(5, "student " + studentId + " is not in a team");
+        }
+        Room room = roomService.findOne(buildingId, roomNumber);
+        if (room == null) { // if the room does not exist
+            throw new MyException(6, "room " + buildingId + "-" + roomNumber + " does not exist");
+        }
+        teamRepo.addFavoriteRoom(team.getTeamId(), room.getRoomId());
+        return room;
     }
 }
