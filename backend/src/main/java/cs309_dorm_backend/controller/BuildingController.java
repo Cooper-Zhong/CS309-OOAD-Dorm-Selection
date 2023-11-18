@@ -4,6 +4,7 @@ import java.util.List;
 
 import cs309_dorm_backend.domain.Building;
 import cs309_dorm_backend.dto.BuildingDto;
+import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.service.building.BuildingService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,24 +28,42 @@ public class BuildingController {
     }
 
     @GetMapping("/findById/{buildingId}")
-    public Building findById(@PathVariable int buildingId) {
-        return buildingService.findById(buildingId);
+    public GlobalResponse findById(@PathVariable int buildingId) {
+        Building building = buildingService.findById(buildingId);
+        if (building == null) {
+            return new GlobalResponse<>(1, "building not found", null);
+        } else {
+            return new GlobalResponse<>(0, "success", building);
+        }
     }
 
     @DeleteMapping("/deleteById/{buildingId}")
-    public boolean deleteById(@PathVariable int buildingId) {
-        return buildingService.deleteById(buildingId);
+    public GlobalResponse deleteById(@PathVariable int buildingId) {
+        boolean result = buildingService.deleteById(buildingId);
+        if (result) {
+            return new GlobalResponse<>(0, "success", null);
+        } else {
+            return new GlobalResponse<>(1, "building not found", null);
+        }
     }
 
     @PostMapping("/save")
-    public Building addOne(@RequestBody @Valid BuildingDto buildingDto, BindingResult result) {
-        return buildingService.addOne(buildingDto, result);
+    public GlobalResponse addOne(@RequestBody @Valid BuildingDto buildingDto, BindingResult result) {
+        Building building = buildingService.addOne(buildingDto, result);
+        if (building == null) {
+            return new GlobalResponse<>(1, "building already exists", null);
+        } else {
+            return new GlobalResponse<>(0, "success", building);
+        }
     }
 
     @PutMapping("/update")
-    public Building update(@RequestBody BuildingDto buildingDto, BindingResult result) {
-        return buildingService.update(buildingDto, result);
+    public GlobalResponse update(@RequestBody BuildingDto buildingDto, BindingResult result) {
+        Building building = buildingService.update(buildingDto, result);
+        if (building == null) {
+            return new GlobalResponse<>(1, "building not found", null);
+        } else {
+            return new GlobalResponse<>(0, "success", building);
+        }
     }
-
-
 }
