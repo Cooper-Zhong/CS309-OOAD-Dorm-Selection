@@ -1,7 +1,9 @@
 package cs309_dorm_backend.service.team;
 
+import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
+import cs309_dorm_backend.dto.FavoriteDto;
 import cs309_dorm_backend.dto.TeamMemberDto;
 import org.springframework.validation.BindingResult;
 
@@ -23,4 +25,6 @@ public interface TeamService {
     Team updateTeamName(Team team);
 
     Team updateTeamCreator(TeamMemberDto teamMemberDto); // admin for this team
+
+    Room favoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult); // add a favorite room for a team that the student is in
 }

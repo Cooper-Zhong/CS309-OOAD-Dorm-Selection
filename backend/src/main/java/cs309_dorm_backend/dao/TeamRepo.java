@@ -36,4 +36,10 @@ public interface TeamRepo extends JpaRepository<Team, Long> {
     @Transactional
     @Query(value = "update students set team_id = null where student_id = :studentId", nativeQuery = true)
     void removeStudentTeam(int studentId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "insert into favorite_rooms (team_id, room_id) values (:teamId, :roomId)", nativeQuery = true)
+    void addFavoriteRoom(int teamId, int roomId);
+
 }
