@@ -2,6 +2,7 @@ package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
+import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.TeamMemberDto;
 import cs309_dorm_backend.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,28 +24,63 @@ public class TeamContoller {
     }
 
     @GetMapping("/findByCreator/{creatorId}")
-    public Team findById(@PathVariable int creatorId) {
-        return teamService.findByCreator(creatorId);
+    public GlobalResponse findById(@PathVariable int creatorId) {
+        Team team = teamService.findByCreator(creatorId);
+        if (team == null) {
+            return new GlobalResponse<>(1, "team not found", null);
+        } else {
+            return new GlobalResponse<>(0, "success", team);
+        }
     }
 
     @PostMapping("/addTeam")
-    public Team addTeam(@Valid @RequestBody Team team, BindingResult bindingResult) {
-        return teamService.addTeam(team, bindingResult);
+    public GlobalResponse addTeam(@Valid @RequestBody Team team, BindingResult bindingResult) {
+        Team team1 = teamService.addTeam(team, bindingResult);
+        if (team1 == null) {
+            return new GlobalResponse<>(1, "fail", null);
+        } else {
+            return new GlobalResponse<>(0, "success", team1);
+        }
     }
 
-    @PutMapping("/update") //
-    public Team update(@RequestBody Team team) {
-        return teamService.updateTeamName(team);
+    @PutMapping("/updateTeamName") // update team name
+    public GlobalResponse updateTeamName(@RequestBody Team team) {
+        Team team1 = teamService.updateTeamName(team);
+        if (team1 == null) {
+            return new GlobalResponse<>(1, "fail", null);
+        } else {
+            return new GlobalResponse<>(0, "success", team1.getTeamName());
+        }
+    }
+
+    @PutMapping("/updateTeamCreator") // update team creator
+    public GlobalResponse updateTeamCreator(@RequestBody TeamMemberDto teamMemberDto) {
+        Team team1 = teamService.updateTeamCreator(teamMemberDto);
+        if (team1 == null) {
+            return new GlobalResponse<>(1, "fail", null);
+        } else {
+            return new GlobalResponse<>(0, "success", team1.getCreator());
+        }
     }
 
     @PutMapping("/addMember")
-    public Student addMember(@ Valid @RequestBody TeamMemberDto teamMemberDto, BindingResult bindingResult) {
-        return teamService.addMember(teamMemberDto, bindingResult);
+    public GlobalResponse addMember(@ Valid @RequestBody TeamMemberDto teamMemberDto, BindingResult bindingResult) {
+        Student student = teamService.addMember(teamMemberDto, bindingResult);
+        if (student == null) {
+            return new GlobalResponse<>(1, "fail", null);
+        } else {
+            return new GlobalResponse<>(0, "success", student);
+        }
     }
 
 
     @DeleteMapping("/deleteByCreator/{creatorId}")
-    public boolean deleteById(@PathVariable int creatorId) {
-        return teamService.deleteByCreator(creatorId);
+    public GlobalResponse deleteById(@PathVariable int creatorId) {
+        boolean result = teamService.deleteByCreator(creatorId);
+        if (result) {
+            return new GlobalResponse<>(0, "success", null);
+        } else {
+            return new GlobalResponse<>(1, "team not found", null);
+        }
     }
 }
