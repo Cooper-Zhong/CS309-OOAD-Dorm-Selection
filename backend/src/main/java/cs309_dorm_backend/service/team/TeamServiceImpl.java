@@ -40,7 +40,6 @@ public class TeamServiceImpl implements TeamService {
         return teamRepo.findByCreator(creatorId);
     }
 
-
     /**
      * delete a team with creatorId = ?
      *
@@ -85,11 +84,10 @@ public class TeamServiceImpl implements TeamService {
         int creatorId = team.getCreator().getStudentId();
         Student creator = studentService.findById(creatorId);
         if (creator == null) { // if the creator does not exist
-            throw new MyException(404, "student " + creatorId + " does not exist");
+            throw new MyException(4, "student " + creatorId + " does not exist");
         }
-        Team team1 = findByCreator(creatorId);
-        if (team1 != null) { // if the team already exists
-            throw new MyException(400, "team created by " + creatorId + " already exists");
+        if (creator.getTeam() != null) { // if the creator is already in a team
+            throw new MyException(5, "student " + creatorId + " is already in a team");
         }
         team.setCreator(creator);
         team = save(team);
@@ -148,7 +146,7 @@ public class TeamServiceImpl implements TeamService {
         int creatorId = team.getCreator().getStudentId();
         Team oldTeam = findByCreator(creatorId);
         if (oldTeam == null) { // if the team does not exist
-            throw new MyException(404, "team created by " + creatorId + " does not exist");
+            throw new MyException(4, "team created by " + creatorId + " does not exist");
         } else {
             Student creator = team.getCreator();
             oldTeam.setCreator(creator);
@@ -165,24 +163,21 @@ public class TeamServiceImpl implements TeamService {
         Student creator = studentService.findById(creatorId);
         Student member = studentService.findById(memberId);
         if (creator == null) { // if the creator does not exist
-            throw new MyException(404, "student " + creatorId + " does not exist");
+            throw new MyException(4, "student " + creatorId + " does not exist");
         }
         if (member == null) { // if the student does not exist
-            throw new MyException(404, "student " + memberId + " does not exist");
+            throw new MyException(4, "student " + memberId + " does not exist");
         }
         Team team = findByCreator(creatorId);
         if (team == null) { // if the team does not exist
-            throw new MyException(404, "team created by " + creatorId + " does not exist");
+            throw new MyException(5, "team created by " + creatorId + " does not exist");
         }
         List<Student> members = team.getTeamMembers();
         Team memberTeam = member.getTeam();
-        if (memberTeam != null) { // if the student is already in a team
-            throw new MyException(404, "student " + memberId + " is already in a team");
+        if (memberTeam == null || memberTeam.getTeamId() != team.getTeamId()) { // if the student is not in this team
+            throw new MyException(6, "student " + memberId + " is not in this team");
         }
-        if (members.size()>=4) { // if the team is full
-            throw new MyException(404, "team is full");
-        }
-        teamRepo.setTeam(memberId, team.getTeamId());
+        teamRepo.updateTeamCreator(creatorId, memberId);
         return team;
     }
 }
