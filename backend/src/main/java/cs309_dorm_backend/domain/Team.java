@@ -6,10 +6,9 @@ import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.lang.NonNull;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -38,15 +37,15 @@ public class Team {
     private Student creator;
 
     @OneToMany(mappedBy = "team")
-    private List<Student> teamMembers;
+    private Set<Student> teamMembers;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany// a team can favorite many rooms
     @JoinTable(
             name = "favorite_rooms", // 中间表的名字
             joinColumns = @JoinColumn(name = "team_id"), // 中间表的外键
             inverseJoinColumns = @JoinColumn(name = "room_id")) // 中间表的另一个外键
-    private List<Room> favoriteRooms;
+    private Set<Room> favoriteRooms;
 
 }
 

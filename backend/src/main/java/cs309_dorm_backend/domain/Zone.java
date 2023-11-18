@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Set;
 
 @Entity // declare a class is an Entity class
 @Setter
@@ -27,7 +27,7 @@ public class Zone {
 
     @JsonIgnore
     @OneToMany(mappedBy = "zone", fetch = FetchType.LAZY) // a zone can have many buildings
-    private List<Building> buildings;
+    private Set<Building> buildings;
 
 }
 

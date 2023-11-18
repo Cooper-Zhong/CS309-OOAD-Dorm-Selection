@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -33,6 +33,6 @@ public class Comment {
     private Timestamp time;
 
     @OneToMany(mappedBy = "parentComment",fetch = FetchType.LAZY) // a comment can have many second comments, or no second comments
-    private List<SecondComment> secondComments;
+    private Set<SecondComment> secondComments;
 
 }
