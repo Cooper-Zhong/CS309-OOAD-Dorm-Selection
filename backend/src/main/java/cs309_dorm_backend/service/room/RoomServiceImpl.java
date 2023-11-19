@@ -32,6 +32,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Room findById(int id) {
+        return roomRepo.findById(id).orElse(null);
+    }
+
+    @Override
     public boolean delete(int buildingId, int roomNumber) {
         Room room = findOne(buildingId, roomNumber);
         if (room != null) { // room exists

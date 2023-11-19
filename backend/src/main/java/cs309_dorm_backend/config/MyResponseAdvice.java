@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @author Jiachen<zhangjc1999 @ gmail.com>
  * @date   2020/10/30 10:03 下午
  */
-@ControllerAdvice(basePackages  =  "com.example.springproject.controller")
+@ControllerAdvice(basePackages  =  "cs309_dorm_backend.controller")
 public class MyResponseAdvice implements ResponseBodyAdvice<Object> {
 
     @Override

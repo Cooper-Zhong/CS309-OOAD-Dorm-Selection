@@ -1,5 +1,6 @@
 package cs309_dorm_backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,9 +25,11 @@ public class User {
     @Column(name = "role",nullable = false)
     private String role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<Comment> comments; // a user can have many first comments
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<SecondComment> secondComments; // a user can have many second comments
 
