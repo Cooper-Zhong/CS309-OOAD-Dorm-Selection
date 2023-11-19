@@ -10,6 +10,8 @@ public interface RoomService {
 
     Room findOne(int buildingId, int roomNumber);
 
+    Room findById(int id);
+
     boolean delete(int buildingId, int roomNumber);
 
     Room addOne(RoomDto roomDto);
