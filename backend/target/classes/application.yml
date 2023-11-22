@@ -8,9 +8,9 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     #    cooper's database
-    url: jdbc:postgresql://localhost:5432/cs309_ooad
+    url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
     username: postgres
-    password: 1234
+    password: 2333
   #    url: jdbc:postgresql://localhost:5432/spring_project
   #    username: postgres
   #    password: 2333

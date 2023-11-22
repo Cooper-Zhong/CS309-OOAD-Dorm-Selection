@@ -8,9 +8,12 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class RoomDto {
+@AllArgsConstructor
+public class FavoriteDto {
+    @ApiModelProperty
+    @NotBlank
+    private int studentId;
 
     @ApiModelProperty
     @NotBlank
@@ -20,18 +23,4 @@ public class RoomDto {
     @NotBlank
     private int roomNumber;
 
-    @ApiModelProperty
-    @NotBlank
-    private int floor;
-
-    @ApiModelProperty
-    @NotBlank
-    private int roomType;
-
-    @ApiModelProperty
-    @NotBlank
-    private String gender;
-
-    @ApiModelProperty
-    private String description;
 }

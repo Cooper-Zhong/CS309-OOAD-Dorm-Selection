@@ -1,10 +1,11 @@
 package cs309_dorm_backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,11 +25,13 @@ public class User {
     @Column(name = "role",nullable = false)
     private String role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private List<Comment> comments; // a user can have many first comments
+    private Set<Comment> comments; // a user can have many first comments
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private List<SecondComment> secondComments; // a user can have many second comments
+    private Set<SecondComment> secondComments; // a user can have many second comments
 
     public User(int campusId, String password, String role) {
         this.campusId = campusId;

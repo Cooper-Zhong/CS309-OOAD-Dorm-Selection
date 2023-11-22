@@ -1,12 +1,14 @@
 package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.User;
+import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.UserDto;
 import cs309_dorm_backend.dto.UserForm;
 import cs309_dorm_backend.dto.UserUpdateDto;
 import cs309_dorm_backend.service.user.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,18 +24,50 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public Boolean checkLogin(@RequestBody UserDto userDto) {
-        return userService.checkLogin(userDto);
+    public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
+        if (userService.checkLogin(userDto)) {
+            return GlobalResponse.<User>builder()
+                    .code(0)
+                    .msg("Login successfully.")
+                    .data(userService.findByCampusId(userDto.getCampusId()))
+                    .build();
+        } else {
+            return GlobalResponse.<String>builder()
+                    .code(1)
+                    .msg("login fail")
+                    .build();
+        }
     }
 
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
+
+
     @PostMapping("/register")
-    public UserDto registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
-        return userService.register(userForm, result);
+    public GlobalResponse registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
+        UserDto userDto = userService.register(userForm, result);
+        return GlobalResponse.builder()
+                .code(0)
+                .msg("Register successfully.")
+                .data(userDto)
+                .build();
     }
 
     @PostMapping("/updatePassword")
-    public UserDto updatePassword(@RequestBody @Valid UserUpdateDto userUpdateDto, BindingResult result) {
-        return userService.updatePassword(userUpdateDto, result);
+    public GlobalResponse updatePassword(@RequestBody @Valid UserUpdateDto userUpdateDto, BindingResult result) {
+        UserDto userDto = userService.updatePassword(userUpdateDto, result);
+        return GlobalResponse.builder()
+                .code(0)
+                .msg("Edit password successfully.")
+                .data(userDto)
+                .build();
     }
 
     @GetMapping("/findAll")
@@ -46,6 +80,27 @@ public class UserController {
     @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
     public User findById(@PathVariable int campusId) {
         return userService.findByCampusId(campusId);
+    }
+
+    /**
+     * delete a user by id
+     *
+     * @return 200: user deleted; 404: user not found.
+     */
+    @DeleteMapping("/deleteById/{campusId}")
+    @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
+    public GlobalResponse deleteById(@PathVariable int campusId) {
+        if (userService.deleteByCampusId(campusId)) {
+            return GlobalResponse.builder()
+                    .code(0)
+                    .msg("Delete user successfully.")
+                    .build();
+        } else {
+            return GlobalResponse.builder()
+                    .code(1)
+                    .msg("Delete user fail.")
+                    .build();
+        }
     }
 
 //
@@ -71,8 +126,8 @@ public class UserController {
 //        } else {
 //            return ResponseEntity.status(400).body(campusId + " already exists");
 //        }
-//    }
 
+//    }
 ////
 //    /**
 //     * update user password
@@ -99,17 +154,7 @@ public class UserController {
 //            userService.save(user);
 //            return ResponseEntity.ok("password updated");
 //        }
-//    }
 
-    /**
-     * delete a user by id
-     *
-     * @return 200: user deleted; 404: user not found.
-     */
-    @DeleteMapping("/deleteById/{campusId}")
-    @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
-    public boolean deleteById(@PathVariable int campusId) {
-        return userService.deleteByCampusId(campusId);
-    }
+//    }
 
 }

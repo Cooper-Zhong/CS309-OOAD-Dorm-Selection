@@ -1,10 +1,10 @@
 package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.Teacher;
+import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.service.teacher.TeacherService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,18 +23,33 @@ public class TeacherController {
     }
 
     @GetMapping("/findById/{teacherId}")
-    public Teacher findById(@PathVariable int teacherId) {
-        return teacherService.findById(teacherId);
+    public GlobalResponse findById(@PathVariable int teacherId) {
+        Teacher teacher = teacherService.findById(teacherId);
+        if (teacher == null) {
+            return new GlobalResponse<>(1, "teacher not found", null);
+        } else {
+            return new GlobalResponse<>(0, "success", teacher);
+        }
     }
 
     @DeleteMapping("/deleteById/{teacherId}")
-    public boolean deleteById(@PathVariable int teacherId) {
-        return teacherService.deleteById(teacherId);
+    public GlobalResponse deleteById(@PathVariable int teacherId) {
+        boolean result = teacherService.deleteById(teacherId);
+        if (result) {
+            return new GlobalResponse<>(0, "success", null);
+        } else {
+            return new GlobalResponse<>(1, "teacher not found", null);
+        }
     }
 
     @PutMapping("/update")
-    public Teacher update(@RequestBody Teacher teacher) {
-        return teacherService.update(teacher);
+    public GlobalResponse update(@RequestBody Teacher teacher) {
+        Teacher teacher1 = teacherService.update(teacher);
+        if (teacher1 == null) {
+            return new GlobalResponse<>(1, "teacher not found", null);
+        } else {
+            return new GlobalResponse<>(0, "success", teacher1);
+        }
     }
 
 

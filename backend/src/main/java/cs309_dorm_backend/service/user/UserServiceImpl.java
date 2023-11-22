@@ -42,9 +42,12 @@ public class UserServiceImpl implements UserService {
         if (userInfo.getPassword().isEmpty()) {
             throw new MyException(2, "Password shouldn't be null");
         }
-        User user = userRepo.findUserByCampusIdAndPassword(userInfo.getCampusId(), userInfo.getPassword());
+        User user = userRepo.findUserByCampusId(userInfo.getCampusId());
         if (user == null) {
-            throw new MyException(3, "Wrong campus ID or password");
+            throw new MyException(3, "user Not found");
+        }
+        if (!user.getPassword().equals(userInfo.getPassword())) {
+            throw new MyException(4, "Wrong password");
         }
         log.info("User {} login success", userInfo.getCampusId());
         return true;
