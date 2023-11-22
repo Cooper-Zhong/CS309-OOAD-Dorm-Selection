@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="04797e09-3fb5-4e8a-a15c-5e3beae9d6da" name="Changes" comment="team try try">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/CorsConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/HibernateLazyInitializerSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/CommentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/TeamContoller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/SecondCommentRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/CommentDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/FavoriteDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/SecondCommentDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/TeamMemberDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cooper/cooper_design.md" beforeDir="false" afterPath="$PROJECT_DIR$/Cooper/cooper_design.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cooper/create_tables1.1.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Cooper/create_tables1.1.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cooper/create_tables2.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Cooper/create_tables2.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cooper/create_tables3.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Cooper/create_tables3.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cooper/er图.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/Cooper/er图.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EDR说明.md" beforeDir="false" afterPath="$PROJECT_DIR$/EDR说明.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/HELP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/CS309Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/CS309Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/JacksonConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/JacksonConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/MyException.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/MyException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/MyExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/MyExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/MyResponseAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/MyResponseAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/config/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/BuildingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/BuildingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/StudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/TeacherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/TeacherController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/TeamController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/ZoneContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/controller/ZoneContoller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/BuildingRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/BuildingRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/CommentRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/CommentRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/RoomRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/RoomRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/StudentRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/StudentRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/TeacherRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/TeacherRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/TeamRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/TeamRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/UserRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/UserRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/ZoneRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dao/ZoneRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/NotificationContent.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/NotificationContent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/NotificationRecipient.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/NotificationRecipient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/SecondComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/SecondComment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Zone.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/domain/Zone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/BuildingDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/BuildingDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/GlobalResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/GlobalResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/RoomDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/RoomDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/UserForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/UserForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/UserUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/UserUpdateDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/ZoneUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/dto/ZoneUpdateDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/comment/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/comment/CommentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/SelectionPeriodService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/SelectionPeriodServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/SelectionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/SelectionServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/building/BuildingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/building/BuildingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/building/BuildingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/building/BuildingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/room/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/room/RoomService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/room/RoomServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/room/RoomServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/student/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/student/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/student/StudentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/student/StudentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/teacher/TeacherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/teacher/TeacherService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/teacher/TeacherServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/teacher/TeacherServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/team/TeamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/team/TeamService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/team/TeamServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/team/TeamServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/user/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/user/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/user/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/zone/ZoneService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/zone/ZoneService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/zone/ZoneServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/service/zone/ZoneServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/web/hello.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/cs309_dorm_backend/web/hello.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/cs309_dorm_backend/CS309ApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/cs309_dorm_backend/CS309ApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/create_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/create_tables.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/测试.md" beforeDir="false" afterPath="$PROJECT_DIR$/测试.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="cooper" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2XkduO1OKF63MSn9E6lPrDihoil" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+    <option name="sortByType" value="true" />
+    <option name="sortKey" value="BY_TYPE" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/IdeaProjects/CS309-OOAD-Dorm-Selection/backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="CS309Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="cs309_dorm_backend.CS309Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="04797e09-3fb5-4e8a-a15c-5e3beae9d6da" name="Changes" comment="" />
+      <created>1699177233553</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1699177233553</updated>
+      <workItem from="1699177234943" duration="1627000" />
+      <workItem from="1699261646715" duration="2766000" />
+      <workItem from="1700622145570" duration="463000" />
+      <workItem from="1700622623676" duration="181000" />
+    </task>
+    <task id="LOCAL-00001" summary="team try try">
+      <option name="closed" value="true" />
+      <created>1699178779050</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699178779050</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="team try try" />
+    <option name="LAST_COMMIT_MESSAGE" value="team try try" />
+  </component>
+</project>
