@@ -4,10 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.*;
-import io.swagger.annotations.ApiModel;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 
 //building_id int primary key,
@@ -40,6 +39,6 @@ public class Building {
 
     @JsonIgnore
     @OneToMany(mappedBy = "building", fetch = FetchType.LAZY) // a building can have many rooms
-    private List<Room> rooms;
+    private Set<Room> rooms;
 }
 

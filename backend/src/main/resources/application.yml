@@ -7,8 +7,8 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    #    skylar's database
-    url: jdbc:postgresql://localhost:5432/
+    #    cooper's database
+    url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
     username: postgres
     password: 2333
   #    url: jdbc:postgresql://localhost:5432/spring_project

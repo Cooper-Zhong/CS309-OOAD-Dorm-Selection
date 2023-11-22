@@ -1,10 +1,14 @@
 package cs309_dorm_backend.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.NonNull;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -17,22 +21,31 @@ public class Team {
     @Column(name = "team_id")
     private int teamId;
 
-    @Column(name = "team_name")
+    @NonNull
+    @NotBlank
+    @Column(name = "team_name", unique = true)
     private String teamName;
 
+
+    @NonNull
+    @NotBlank
     @OneToOne
-    @JoinColumn(name = "creator_id")
+    @JoinColumn(name = "creator_id", unique = true)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "studentId")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonAlias("creatorId")
     private Student creator;
 
     @OneToMany(mappedBy = "team")
-    private List<Student> teamMembers;
+    private Set<Student> teamMembers;
 
+//    @JsonIgnore
     @ManyToMany// a team can favorite many rooms
     @JoinTable(
             name = "favorite_rooms", // 中间表的名字
             joinColumns = @JoinColumn(name = "team_id"), // 中间表的外键
             inverseJoinColumns = @JoinColumn(name = "room_id")) // 中间表的另一个外键
-    private List<Room> favoriteRooms;
+    private Set<Room> favoriteRooms;
 
 }
 

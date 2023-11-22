@@ -6,11 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class RoomDto {
+@AllArgsConstructor
+public class CommentDto {
+    @ApiModelProperty
+    @NotBlank
+    private int authorId;
 
     @ApiModelProperty
     @NotBlank
@@ -22,16 +26,6 @@ public class RoomDto {
 
     @ApiModelProperty
     @NotBlank
-    private int floor;
+    private String content;
 
-    @ApiModelProperty
-    @NotBlank
-    private int roomType;
-
-    @ApiModelProperty
-    @NotBlank
-    private String gender;
-
-    @ApiModelProperty
-    private String description;
 }

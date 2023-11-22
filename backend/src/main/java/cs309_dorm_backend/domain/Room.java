@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -51,11 +51,11 @@ public class Room {
 
     @JsonIgnore
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY) // a room can have many comments, or no comments
-    private List<Comment> comments;
+    private Set<Comment> comments;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "favoriteRooms", fetch = FetchType.LAZY) // a room can be favorited by many teams
-    private List<Team> favoriteTeams;
+    private Set<Team> favoriteTeams;
 
 
     @JsonIgnore

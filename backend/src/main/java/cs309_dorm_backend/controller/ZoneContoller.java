@@ -1,6 +1,7 @@
 package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.Zone;
+import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.ZoneUpdateDto;
 import cs309_dorm_backend.service.zone.ZoneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +23,42 @@ public class ZoneContoller {
     }
 
     @GetMapping("/findByName/{name}")
-    public Zone findByName(@PathVariable String name) {
-        return zoneService.findByName(name);
+    public GlobalResponse<Zone> findByName(@PathVariable String name) {
+        Zone zone = zoneService.findByName(name);
+        if (zone == null) {
+            return new GlobalResponse<>(1, "zone not found", null);
+        } else {
+            return new GlobalResponse<>(0, "success", zone);
+        }
     }
 
     @PostMapping("/save")
-    public Zone addOne(@RequestBody Zone zone) {
-        return zoneService.save(zone);
+    public GlobalResponse<Zone> addOne(@RequestBody Zone zone) {
+        Zone zone1 = zoneService.save(zone);
+        if (zone1 == null) {
+            return new GlobalResponse<>(1, "zone already exists", null);
+        } else {
+            return new GlobalResponse<>(0, "success", zone1);
+        }
     }
 
     @PutMapping("/update")
-    public Zone update(@RequestBody ZoneUpdateDto zoneUpdateDto) {
-        return zoneService.update(zoneUpdateDto);
+    public GlobalResponse update(@RequestBody ZoneUpdateDto zoneUpdateDto) {
+        Zone zone = zoneService.update(zoneUpdateDto);
+        if (zone == null) {
+            return new GlobalResponse<>(1, "zone not found", null);
+        } else {
+            return new GlobalResponse<>(0, "success", zone);
+        }
     }
 
     @DeleteMapping("/deleteByName/{name}")
-    public boolean deleteByName(@PathVariable String name) {
-        return zoneService.deleteByName(name);
+    public GlobalResponse deleteByName(@PathVariable String name) {
+        boolean result = zoneService.deleteByName(name);
+        if (result) {
+            return new GlobalResponse<>(0, "success", null);
+        } else {
+            return new GlobalResponse<>(1, "zone not found", null);
+        }
     }
 }

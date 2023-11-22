@@ -8,19 +8,15 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class BuildingDto {
+@AllArgsConstructor
+public class TeamMemberDto {
 
     @ApiModelProperty
     @NotBlank
-    private int buildingId;
+    private int creatorId;
 
     @ApiModelProperty
     @NotBlank
-    private int maxHeight;
-
-    @ApiModelProperty
-    @NotBlank
-    private String zoneName;
+    private int studentId; // member or new admin of this team
 }
