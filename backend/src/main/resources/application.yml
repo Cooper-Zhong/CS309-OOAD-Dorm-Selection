@@ -7,13 +7,16 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    #    cooper's database
+    # local database
     url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
+    # for aws
+#    spring.datasource.url: jdbc:postgresql://cs309ooad.cjgxt58rjd8u.us-east-1.rds.amazonaws.com:1433/cs309ooad
+#    spring.datasource.username: postgres
+#    spring.datasource.password: ooad..sustech
+#    spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
     username: postgres
     password: 2333
-  #    url: jdbc:postgresql://localhost:5432/spring_project
-  #    username: postgres
-  #    password: 2333
+
   jpa:
     hibernate:
       ddl-auto: update
