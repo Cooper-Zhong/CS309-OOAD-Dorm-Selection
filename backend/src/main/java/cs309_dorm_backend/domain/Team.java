@@ -37,9 +37,12 @@ public class Team {
     private Student creator;
 
     @OneToMany(mappedBy = "team")
+    // only serialize id.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "studentId")
+    @JsonIdentityReference(alwaysAsId = true)
     private Set<Student> teamMembers;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @ManyToMany// a team can favorite many rooms
     @JoinTable(
             name = "favorite_rooms", // 中间表的名字
