@@ -8,6 +8,7 @@ import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.TeamMemberDto;
 import cs309_dorm_backend.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,16 @@ import java.util.List;
 public class TeamContoller {
     @Autowired
     private TeamService teamService;
+
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
 
     @GetMapping("/findAll")
     public List<Team> findAll() {
