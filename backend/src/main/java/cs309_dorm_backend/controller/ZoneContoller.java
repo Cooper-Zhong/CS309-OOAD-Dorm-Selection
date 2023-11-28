@@ -17,6 +17,16 @@ public class ZoneContoller {
     @Autowired
     private ZoneService zoneService;
 
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
+
     @GetMapping("/findAll")
     public List<Zone> findAll() {
         return zoneService.findAll();

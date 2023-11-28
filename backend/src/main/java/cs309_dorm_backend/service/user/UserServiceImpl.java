@@ -49,7 +49,6 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(userInfo.getPassword())) {
             throw new MyException(4, "Wrong password");
         }
-        log.info("User {} login success", userInfo.getCampusId());
         return true;
     }
 
@@ -66,10 +65,10 @@ public class UserServiceImpl implements UserService {
         }
         if (!user.getPassword().equals(userUpdateDto.getOldPassword())) {
             throw new MyException(5, "Old password is wrong");
-        } else {
-            user.setPassword(userUpdateDto.getNewPassword());
-            return save(user);
         }
+        user.setPassword(userUpdateDto.getNewPassword());
+        return save(user);
+
     }
 
     @Override // create or update
