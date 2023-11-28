@@ -50,10 +50,13 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public boolean deleteById(int id) {
-        Optional<Student> studentOptional = studentRepo.findById(id);
+    public boolean deleteById(int studentId) {
+        // set the corresponding team to null
+
+        studentRepo.removeTeam(studentId);
+        Optional<Student> studentOptional = studentRepo.findById(studentId);
         if (studentOptional.isPresent()) {
-            studentRepo.deleteById(id);
+            studentRepo.deleteById(studentId);
             return true; // 删除成功
         } else {
             return false; // 实体不存在，无法删除

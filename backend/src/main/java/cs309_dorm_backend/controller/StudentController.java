@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j
@@ -65,6 +66,7 @@ public class StudentController {
 
 
     @DeleteMapping("/deleteById/{campusId}")
+    @Transactional
     public GlobalResponse deleteById(@PathVariable int campusId) {
         boolean result = studentService.deleteById(campusId);
         if (result) {
