@@ -86,7 +86,7 @@ public class TeamServiceImpl implements TeamService {
         if (bindingResult.hasErrors()) {
             throw new MyException(400, bindingResult.getFieldError().getDefaultMessage());
         }
-        int creatorId = team.getCreator().getStudentId();
+        int creatorId = team.getCreatorId();
         Student creator = studentService.findById(creatorId);
         if (creator == null) { // if the creator does not exist
             throw new MyException(4, "student " + creatorId + " does not exist");
@@ -94,7 +94,7 @@ public class TeamServiceImpl implements TeamService {
         if (creator.getTeam() != null) { // if the creator is already in a team
             throw new MyException(5, "student " + creatorId + " is already in a team");
         }
-        team.setCreator(creator);
+        team.setCreatorId(creatorId);
         team = save(team);
         teamRepo.setTeam(creatorId, team.getTeamId()); // creator
         return team;
@@ -148,13 +148,13 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     public Team updateTeamName(Team team) {
-        int creatorId = team.getCreator().getStudentId();
+        int creatorId = team.getCreatorId();
         Team oldTeam = findByCreator(creatorId);
         if (oldTeam == null) { // if the team does not exist
             throw new MyException(4, "team created by " + creatorId + " does not exist");
         } else {
-            Student creator = team.getCreator();
-            oldTeam.setCreator(creator);
+            int creatorId1 = team.getCreatorId();
+            oldTeam.setCreatorId(creatorId1);
             oldTeam.setTeamName(team.getTeamName());
             save(oldTeam);
             return oldTeam;

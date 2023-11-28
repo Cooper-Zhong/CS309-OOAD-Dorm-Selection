@@ -29,14 +29,19 @@ public class Team {
     private String teamName;
 
 
+//    @NonNull
+//    @NotBlank
+//    @OneToOne
+//    @JoinColumn(name = "creator_id", unique = true)
+//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "studentId")
+//    @JsonIdentityReference(alwaysAsId = true)
+//    @JsonAlias("creatorId")
+//    private Student creator;
+
     @NonNull
     @NotBlank
-    @OneToOne
-    @JoinColumn(name = "creator_id", unique = true)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "studentId")
-    @JsonIdentityReference(alwaysAsId = true)
-    @JsonAlias("creatorId")
-    private Student creator;
+    @Column(name = "creator_id", unique = true)
+    private int creatorId;
 
     @OneToMany(mappedBy = "team")
     // only serialize id.

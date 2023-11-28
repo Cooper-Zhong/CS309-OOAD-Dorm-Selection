@@ -74,7 +74,7 @@ public class TeamContoller {
         if (team1 == null) {
             return new GlobalResponse<>(1, "fail", null);
         } else {
-            return new GlobalResponse<>(0, "success", team1.getCreator());
+            return new GlobalResponse<>(0, "success", team1.getCreatorId());
         }
     }
 
