@@ -5,6 +5,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -33,7 +35,8 @@ public class Student {
     private String info;
 
     @ManyToOne(fetch = FetchType.LAZY) // a student can only belong to one team
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", referencedColumnName = "team_id",
+            foreignKey = @ForeignKey(name = "fk_student_team", value = ConstraintMode.CONSTRAINT))
     @JsonIgnore
     private Team team; // a student's team, can be null
 
