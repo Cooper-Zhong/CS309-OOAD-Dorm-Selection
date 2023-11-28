@@ -24,6 +24,7 @@ public class SecondComment {
     private int secondCommentId;
 
 
+//    @JsonIgnore
     @JsonAlias("parentCommentId")
     @JsonIdentityReference(alwaysAsId = true) //当序列化 SecondComment 实体时，只会包含 Comment 的 parentCommentId 属性
     //使用 parentCommentId 属性作为标识来识别 Comment 实体。

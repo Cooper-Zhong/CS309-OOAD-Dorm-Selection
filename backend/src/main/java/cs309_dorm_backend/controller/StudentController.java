@@ -3,12 +3,14 @@ package cs309_dorm_backend.controller;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.service.student.StudentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/student")
 public class StudentController {
@@ -56,6 +58,7 @@ public class StudentController {
         if (student1 == null) {
             return new GlobalResponse<>(1, "student not found", null);
         } else {
+            log.info("Student {} updated", student1.getStudentId());
             return new GlobalResponse<>(0, "success", student1);
         }
     }
@@ -65,6 +68,7 @@ public class StudentController {
     public GlobalResponse deleteById(@PathVariable int campusId) {
         boolean result = studentService.deleteById(campusId);
         if (result) {
+            log.info("Student {} deleted", campusId);
             return new GlobalResponse<>(0, "success", null);
         } else {
             return new GlobalResponse<>(1, "student not found", null);
