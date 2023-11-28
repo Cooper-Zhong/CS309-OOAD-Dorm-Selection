@@ -42,4 +42,9 @@ public interface TeamRepo extends JpaRepository<Team, Long> {
     @Query(value = "insert into favorite_rooms (team_id, room_id) values (:teamId, :roomId)", nativeQuery = true)
     void addFavoriteRoom(int teamId, int roomId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "delete from favorite_rooms where team_id = :teamId and room_id = :roomId", nativeQuery = true)
+    void removeFavoriteRoom(int teamId, int roomId);
+
 }

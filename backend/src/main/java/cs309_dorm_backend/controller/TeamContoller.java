@@ -7,6 +7,7 @@ import cs309_dorm_backend.dto.FavoriteDto;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.TeamMemberDto;
 import cs309_dorm_backend.service.team.TeamService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController //类控制器
 @RequestMapping("/team") //请求映射
+@Slf4j
 public class TeamContoller {
     @Autowired
     private TeamService teamService;
@@ -91,6 +93,7 @@ public class TeamContoller {
     public GlobalResponse deleteById(@PathVariable int creatorId) {
         boolean result = teamService.deleteByCreator(creatorId);
         if (result) {
+            log.info("delete team created by " + creatorId);
             return new GlobalResponse<>(0, "success", null);
         } else {
             return new GlobalResponse<>(1, "team not found", null);
@@ -99,11 +102,21 @@ public class TeamContoller {
 
     @PostMapping("/favoriteRoom")
     public GlobalResponse favoriteRoom(@Valid @RequestBody FavoriteDto favoriteDto, BindingResult bindingResult) {
-        Room room = teamService.favoriteRoom(favoriteDto, bindingResult);
-        if (room == null) {
+        boolean res = teamService.favoriteRoom(favoriteDto, bindingResult);
+        if (!res) {
             return new GlobalResponse<>(1, "fail", null);
         } else {
-            return new GlobalResponse<>(0, "success", room);
+            return new GlobalResponse<>(0, "success", "favorite");
+        }
+    }
+
+    @DeleteMapping("/unfavoriteRoom")
+    public GlobalResponse unfavoriteRoom(@Valid @RequestBody FavoriteDto favoriteDto, BindingResult bindingResult) {
+        boolean res = teamService.unfavoriteRoom(favoriteDto, bindingResult);
+        if (!res) {
+            return new GlobalResponse<>(1, "fail", null);
+        } else {
+            return new GlobalResponse<>(0, "success", "unfavorite");
         }
     }
 }
