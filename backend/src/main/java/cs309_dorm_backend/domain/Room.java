@@ -5,6 +5,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
 
@@ -27,7 +29,9 @@ public class Room {
     //使用 buildingId 属性作为标识来识别 Building 实体。
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "buildingId")
     @ManyToOne(fetch = FetchType.LAZY) // a room belongs to a building
-    @JoinColumn(name = "building_id", referencedColumnName = "building_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE) //当删除 building 时，删除该 building 下的所有 room
+    @JoinColumn(name = "building_id", referencedColumnName = "building_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_room_building", value = ConstraintMode.CONSTRAINT))
     private Building building;
 
     @NotNull
@@ -39,7 +43,7 @@ public class Room {
     private int floor;
 
     @NotNull
-    @Column(name = "room_type",nullable = false) // 1,2,3,4 for single, double, triple, quad
+    @Column(name = "room_type", nullable = false) // 1,2,3,4 for single, double, triple, quad
     private int roomType;
 
     @NotNull

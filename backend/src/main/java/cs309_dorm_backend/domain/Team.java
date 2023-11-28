@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
 
 import java.util.Set;
@@ -47,8 +49,9 @@ public class Team {
     @JoinTable(
             name = "favorite_rooms", // 中间表的名字
             joinColumns = @JoinColumn(name = "team_id"), // 中间表的外键
-            inverseJoinColumns = @JoinColumn(name = "room_id")) // 中间表的另一个外键
+            inverseJoinColumns = @JoinColumn(name = "room_id"
+                    , foreignKey = @ForeignKey(name = "fk_favorite_room", value = ConstraintMode.NO_CONSTRAINT))
+    ) // 中间表的另一个外键
     private Set<Room> favoriteRooms;
-
 }
 
