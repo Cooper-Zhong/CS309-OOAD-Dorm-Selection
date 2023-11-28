@@ -26,5 +26,7 @@ public interface TeamService {
 
     Team updateTeamCreator(TeamMemberDto teamMemberDto); // admin for this team
 
-    Room favoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult); // add a favorite room for a team that the student is in
+    boolean favoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult); // add a favorite room for a team that the student is in
+
+    boolean unfavoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult); // remove a favorite room for a team that the student is in
 }

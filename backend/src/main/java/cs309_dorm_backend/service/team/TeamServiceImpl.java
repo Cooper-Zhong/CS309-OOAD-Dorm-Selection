@@ -62,6 +62,7 @@ public class TeamServiceImpl implements TeamService {
         for (Student member : members) {
             teamRepo.removeStudentTeam(member.getStudentId());
         }
+        //remove favorite rooms ( on delete cascade )
         teamRepo.deleteByCreator(creatorId); // delete the team
         return true;
     }
@@ -186,7 +187,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Room favoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult) {
+    public boolean favoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new MyException(400, bindingResult.getFieldError().getDefaultMessage());
         }
@@ -205,7 +206,40 @@ public class TeamServiceImpl implements TeamService {
         if (room == null) { // if the room does not exist
             throw new MyException(6, "room " + buildingId + "-" + roomNumber + " does not exist");
         }
-        teamRepo.addFavoriteRoom(team.getTeamId(), room.getRoomId());
-        return room;
+        try {
+            teamRepo.addFavoriteRoom(team.getTeamId(), room.getRoomId());
+        } catch (Exception e) {
+            // if the room is already in the favorite list, do nothing
+        }
+        return true;
+    }
+
+    @Override
+    public boolean unfavoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new MyException(400, bindingResult.getFieldError().getDefaultMessage());
+        }
+        int studentId = favoriteDto.getStudentId();
+        int buildingId = favoriteDto.getBuildingId();
+        int roomNumber = favoriteDto.getRoomNumber();
+        Student student = studentService.findById(studentId);
+        if (student == null) { // if the student does not exist
+            throw new MyException(4, "student " + studentId + " does not exist");
+        }
+        Team team = student.getTeam();
+        if (team == null) { // if the student is not in a team
+            throw new MyException(5, "student " + studentId + " is not in a team");
+        }
+        Room room = roomService.findOne(buildingId, roomNumber);
+        if (room == null) { // if the room does not exist
+            throw new MyException(6, "room " + buildingId + "-" + roomNumber + " does not exist");
+        }
+        try {
+            teamRepo.removeFavoriteRoom(team.getTeamId(), room.getRoomId());
+        } catch (Exception e) {
+            // if the room is not in the favorite list, do nothing
+        }
+        return true;
+
     }
 }
