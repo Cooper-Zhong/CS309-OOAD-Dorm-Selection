@@ -17,7 +17,7 @@ spring:
     password: cooper
   #    url: jdbc:postgresql://localhost:5432/spring_project
   #    username: postgres
-  #    password: 2333i
+  #    password: 2333
     type: com.alibaba.druid.pool.DruidDataSource
     #   Druid数据源配置
     # 初始连接数
@@ -46,7 +46,7 @@ spring:
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
     #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-    filters: stat,wall,slf4j
+    filters: stat,slf4j
     #合并多个DruidDatasource的监控数据
     useGlobalDataSourceStat: true
     #通过connectProperties属性来打开mergesql功能罗慢sQL记录
