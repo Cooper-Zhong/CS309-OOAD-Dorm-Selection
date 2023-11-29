@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import java.util.List;
 
 public interface TeamService {
+
+    Team findById(int id);
     List<Team> findAll();
 
     Team findByCreator(String creatorId);

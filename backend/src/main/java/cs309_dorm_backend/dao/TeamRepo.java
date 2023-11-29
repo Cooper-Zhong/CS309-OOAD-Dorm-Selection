@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TeamRepo extends JpaRepository<Team, Long> {
+public interface TeamRepo extends JpaRepository<Team, Integer> {
     List<Team> findAll();
 
     @Query(value = "select * from teams where creator_id = ?1", nativeQuery = true)

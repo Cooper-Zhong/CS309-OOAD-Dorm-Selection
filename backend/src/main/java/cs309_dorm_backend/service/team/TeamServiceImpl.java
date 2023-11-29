@@ -35,6 +35,11 @@ public class TeamServiceImpl implements TeamService {
     private RoomService roomService;
 
     @Override
+    public Team findById(int id) {
+        return teamRepo.findById(id).orElse(null);
+    }
+
+    @Override
     public List<Team> findAll() {
         return teamRepo.findAll();
     }
