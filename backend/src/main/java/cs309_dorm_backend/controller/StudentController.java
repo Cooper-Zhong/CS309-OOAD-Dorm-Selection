@@ -1,6 +1,7 @@
 package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.Student;
+import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.service.student.StudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class StudentController {
     }
 
     @GetMapping("/findById/{studentId}")
-    public GlobalResponse findById(@PathVariable int studentId) {
+    public GlobalResponse findById(@PathVariable String studentId) {
         Student student = studentService.findById(studentId);
         if (student == null) {
             return new GlobalResponse<>(1, "student not found", null);
@@ -45,12 +46,15 @@ public class StudentController {
         }
     }
 
-
-//    @PostMapping("/save")
-//    // if the id is not auto-increment, must be manually assigned before calling save():
-//    public Student addOne(@RequestBody Student student) {
-//        return studentService.save(student);
-//    }
+    @GetMapping("/isInTeam/{studentId}")
+    public GlobalResponse isInTeam(@PathVariable String studentId) {
+        Team team = studentService.isInTeam(studentId);
+        if (team == null) {
+            return new GlobalResponse<>(1, "student not in any team", null);
+        } else {
+            return new GlobalResponse<>(0, "success", team);
+        }
+    }
 
 
     @PostMapping("/update")
@@ -67,7 +71,7 @@ public class StudentController {
 
     @DeleteMapping("/deleteById/{campusId}")
     @Transactional
-    public GlobalResponse deleteById(@PathVariable int campusId) {
+    public GlobalResponse deleteById(@PathVariable String campusId) {
         boolean result = studentService.deleteById(campusId);
         if (result) {
             log.info("Student {} deleted", campusId);

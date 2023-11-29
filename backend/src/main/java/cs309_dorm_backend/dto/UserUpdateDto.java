@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 public class UserUpdateDto {
     @ApiModelProperty
     @NotBlank
-    private int campusId;
+    private String campusId;
 
     @ApiModelProperty
     @NotBlank

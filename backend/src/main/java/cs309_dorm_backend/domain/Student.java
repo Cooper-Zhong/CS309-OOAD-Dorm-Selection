@@ -15,8 +15,8 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Student {
     // student_id refers to campus_id in users table
     @Id
-    @Column(name = "student_id")
-    private int studentId;
+    @Column(name = "student_id",length = 10)
+    private String studentId;
 
     @JsonIgnore //被序列化成JSON时，user字段将被忽略
     @OneToOne(fetch = FetchType.LAZY)

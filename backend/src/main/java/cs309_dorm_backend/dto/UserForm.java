@@ -20,7 +20,7 @@ public class UserForm {
 
     @NotBlank(message = "campusId shouldn't be null")
     @ApiModelProperty
-    private int campusId;
+    private String campusId;
 
     @NotBlank(message = "User role shouldn't be null")
     @ApiModelProperty

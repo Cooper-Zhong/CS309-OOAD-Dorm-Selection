@@ -34,7 +34,7 @@ public class TeacherController {
     }
 
     @GetMapping("/findById/{teacherId}")
-    public GlobalResponse findById(@PathVariable int teacherId) {
+    public GlobalResponse findById(@PathVariable String teacherId) {
         Teacher teacher = teacherService.findById(teacherId);
         if (teacher == null) {
             return new GlobalResponse<>(1, "teacher not found", null);
@@ -44,7 +44,7 @@ public class TeacherController {
     }
 
     @DeleteMapping("/deleteById/{teacherId}")
-    public GlobalResponse deleteById(@PathVariable int teacherId) {
+    public GlobalResponse deleteById(@PathVariable String teacherId) {
         boolean result = teacherService.deleteById(teacherId);
         if (result) {
             return new GlobalResponse<>(0, "success", null);

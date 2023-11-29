@@ -14,9 +14,9 @@ public class TeamMemberDto {
 
     @ApiModelProperty
     @NotBlank
-    private int creatorId;
+    private String creatorId;
 
     @ApiModelProperty
     @NotBlank
-    private int studentId; // member or new admin of this team
+    private String studentId; // member or new admin of this team
 }

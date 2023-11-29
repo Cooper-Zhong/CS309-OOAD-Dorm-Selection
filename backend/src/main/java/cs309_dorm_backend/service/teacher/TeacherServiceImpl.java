@@ -17,7 +17,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher update(Teacher teacher) {
-        int teacherId = teacher.getTeacherId();
+        String teacherId = teacher.getTeacherId();
         Teacher teacher1 = findById(teacherId);
         if (teacher1 == null) {
             throw new MyException(404, "teacher " + teacherId + " not found");
@@ -34,7 +34,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher findById(int teacherId) {
+    public Teacher findById(String teacherId) {
         return teacherRepo.findById(teacherId).orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public boolean deleteById(int teacherId) {
+    public boolean deleteById(String teacherId) {
         Optional<Teacher> teacherOptional = teacherRepo.findById(teacherId);
         if (teacherOptional.isPresent()) {
             teacherRepo.deleteById(teacherId);

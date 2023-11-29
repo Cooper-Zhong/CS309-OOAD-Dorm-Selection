@@ -1,6 +1,5 @@
 package cs309_dorm_backend.service.team;
 
-import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.dto.FavoriteDto;
@@ -12,9 +11,11 @@ import java.util.List;
 public interface TeamService {
     List<Team> findAll();
 
-    Team findByCreator(int creatorId);
+    Team findByCreator(String creatorId);
 
-    boolean deleteByCreator(int creatorId);
+    boolean deleteTeamByCreator(String creatorId);
+
+    boolean deleteMember(String studentId);
 
     Team save(Team team);
 

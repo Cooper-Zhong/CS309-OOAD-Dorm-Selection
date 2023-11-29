@@ -30,13 +30,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByCampusId(int campusId) {
+    public User findByCampusId(String campusId) {
         return userRepo.findUserByCampusId(campusId);
     }
 
     @Override
     public Boolean checkLogin(UserDto userInfo) {
-        if (userInfo.getCampusId() == 0) {
+        if (userInfo.getCampusId() == null || userInfo.getCampusId().isEmpty()) {
             throw new MyException(1, "Campus ID shouldn't be null");
         }
         if (userInfo.getPassword().isEmpty()) {
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
             List<FieldError> errors = result.getFieldErrors();
             throw new MyException(4, errors.get(0).getDefaultMessage());
         }
-        int campusId = userUpdateDto.getCampusId();
+        String campusId = userUpdateDto.getCampusId();
         User user = userRepo.findUserByCampusId(campusId);
         if (user == null) {
             throw new MyException(404, "user " + campusId + " not found");
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteByCampusId(int campusId) {
+    public boolean deleteByCampusId(String campusId) {
         Optional<User> userOptional = userRepo.findById(campusId);
         if (userOptional.isPresent()) {
             userRepo.deleteById(campusId);

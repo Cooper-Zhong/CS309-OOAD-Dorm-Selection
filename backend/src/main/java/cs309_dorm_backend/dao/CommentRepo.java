@@ -12,10 +12,10 @@ public interface CommentRepo extends JpaRepository<Comment, Integer> {
     public List<Comment> findAll();
 
     @Query(value = "select * from comments where time = :time and author_id = :authorId", nativeQuery = true)
-    public Comment findComment(Timestamp time, int authorId);
+    public Comment findComment(Timestamp time, String authorId);
 
     @Query(value = "select * from comments where author_id = :authorId", nativeQuery = true)
-    public List<Comment> findCommentsByAuthorId(int authorId);
+    public List<Comment> findCommentsByAuthorId(String authorId);
 
     @Query(value = "select * from comments where room_id = :roomId", nativeQuery = true)
     public List<Comment> findCommentsByRoomId(int roomId);

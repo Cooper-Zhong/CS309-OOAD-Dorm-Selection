@@ -40,7 +40,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team findByCreator(int creatorId) {
+    public Team findByCreator(String creatorId) {
         return teamRepo.findByCreator(creatorId);
     }
 
@@ -52,7 +52,7 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     @Transactional
-    public boolean deleteByCreator(int creatorId) {
+    public boolean deleteTeamByCreator(String creatorId) {
         Team team = findByCreator(creatorId);
         if (team == null) { // if the team does not exist
             throw new MyException(404, "team created by " + creatorId + " does not exist");
@@ -64,6 +64,20 @@ public class TeamServiceImpl implements TeamService {
         }
         //remove favorite rooms ( on delete cascade )
         teamRepo.deleteByCreator(creatorId); // delete the team
+        return true;
+    }
+
+    @Override
+    public boolean deleteMember(String studentId) {
+        Student student = studentService.findById(studentId);
+        if (student == null) { // if the student does not exist
+            throw new MyException(404, "student " + studentId + " does not exist");
+        }
+        Team team = student.getTeam();
+        if (team == null) { // if the student is not in a team
+            throw new MyException(404, "student " + studentId + " is not in a team");
+        }
+        teamRepo.removeStudentTeam(studentId);
         return true;
     }
 
@@ -86,7 +100,7 @@ public class TeamServiceImpl implements TeamService {
         if (bindingResult.hasErrors()) {
             throw new MyException(400, bindingResult.getFieldError().getDefaultMessage());
         }
-        int creatorId = team.getCreatorId();
+        String creatorId = team.getCreatorId();
         Student creator = studentService.findById(creatorId);
         if (creator == null) { // if the creator does not exist
             throw new MyException(4, "student " + creatorId + " does not exist");
@@ -114,8 +128,8 @@ public class TeamServiceImpl implements TeamService {
         if (bindingResult.hasErrors()) {
             throw new MyException(400, bindingResult.getFieldError().getDefaultMessage());
         }
-        int creatorId = teamMemberDto.getCreatorId();
-        int memberId = teamMemberDto.getStudentId();
+        String creatorId = teamMemberDto.getCreatorId();
+        String memberId = teamMemberDto.getStudentId();
         Student creator = studentService.findById(creatorId);
         Student member = studentService.findById(memberId);
         if (creator == null) { // if the creator does not exist
@@ -148,12 +162,12 @@ public class TeamServiceImpl implements TeamService {
      */
     @Override
     public Team updateTeamName(Team team) {
-        int creatorId = team.getCreatorId();
+        String creatorId = team.getCreatorId();
         Team oldTeam = findByCreator(creatorId);
         if (oldTeam == null) { // if the team does not exist
             throw new MyException(4, "team created by " + creatorId + " does not exist");
         } else {
-            int creatorId1 = team.getCreatorId();
+            String creatorId1 = team.getCreatorId();
             oldTeam.setCreatorId(creatorId1);
             oldTeam.setTeamName(team.getTeamName());
             save(oldTeam);
@@ -163,8 +177,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team updateTeamCreator(TeamMemberDto teamMemberDto) {
-        int creatorId = teamMemberDto.getCreatorId();
-        int memberId = teamMemberDto.getStudentId();
+        String creatorId = teamMemberDto.getCreatorId();
+        String memberId = teamMemberDto.getStudentId();
         Student creator = studentService.findById(creatorId);
         Student member = studentService.findById(memberId);
         if (creator == null) { // if the creator does not exist
@@ -191,7 +205,7 @@ public class TeamServiceImpl implements TeamService {
         if (bindingResult.hasErrors()) {
             throw new MyException(400, bindingResult.getFieldError().getDefaultMessage());
         }
-        int studentId = favoriteDto.getStudentId();
+        String studentId = favoriteDto.getStudentId();
         int buildingId = favoriteDto.getBuildingId();
         int roomNumber = favoriteDto.getRoomNumber();
         Student student = studentService.findById(studentId);
@@ -219,7 +233,7 @@ public class TeamServiceImpl implements TeamService {
         if (bindingResult.hasErrors()) {
             throw new MyException(400, bindingResult.getFieldError().getDefaultMessage());
         }
-        int studentId = favoriteDto.getStudentId();
+        String studentId = favoriteDto.getStudentId();
         int buildingId = favoriteDto.getBuildingId();
         int roomNumber = favoriteDto.getRoomNumber();
         Student student = studentService.findById(studentId);

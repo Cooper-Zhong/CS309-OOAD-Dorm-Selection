@@ -13,8 +13,8 @@ import lombok.Setter;
 public class Teacher {
 
     @Id
-    @Column(name = "teacher_id")
-    private int teacherId;
+    @Column(name = "teacher_id",length = 10)
+    private String teacherId;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
