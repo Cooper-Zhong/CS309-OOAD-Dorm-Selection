@@ -71,7 +71,7 @@ public class StudentController {
         boolean result = studentService.deleteById(campusId);
         if (result) {
             log.info("Student {} deleted", campusId);
-            return new GlobalResponse<>(0, "success", null);
+            return new GlobalResponse<>(0, "Delete student " + campusId + " successfully", null);
         } else {
             return new GlobalResponse<>(1, "student not found", null);
         }
