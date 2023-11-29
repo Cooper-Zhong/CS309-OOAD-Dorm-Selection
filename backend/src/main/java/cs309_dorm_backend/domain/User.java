@@ -14,15 +14,15 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
     @Id
-    @Column(name = "campus_id")
-    private int campusId;
+    @Column(name = "campus_id", length = 10)
+    private String campusId;
 
     @NotNull
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @NotNull
-    @Column(name = "role",nullable = false)
+    @Column(name = "role", nullable = false)
     private String role;
 
     @JsonIgnore
@@ -33,7 +33,7 @@ public class User {
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<SecondComment> secondComments; // a user can have many second comments
 
-    public User(int campusId, String password, String role) {
+    public User(String campusId, String password, String role) {
         this.campusId = campusId;
         this.password = password;
         this.role = role;

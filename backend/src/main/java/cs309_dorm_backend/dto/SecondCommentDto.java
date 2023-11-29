@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class SecondCommentDto {
     @ApiModelProperty
     @NotBlank
-    private int authorId;
+    private String authorId;
 
     @ApiModelProperty
     @NotBlank

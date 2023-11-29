@@ -85,7 +85,7 @@ public class UserController {
 
     @GetMapping("/findById/{campusId}")
     @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
-    public User findById(@PathVariable int campusId) {
+    public User findById(@PathVariable String campusId) {
         return userService.findByCampusId(campusId);
     }
 
@@ -96,7 +96,7 @@ public class UserController {
      */
     @DeleteMapping("/deleteById/{campusId}")
     @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
-    public GlobalResponse deleteById(@PathVariable int campusId) {
+    public GlobalResponse deleteById(@PathVariable String campusId) {
         if (userService.deleteByCampusId(campusId)) {
             return GlobalResponse.builder()
                     .code(0)

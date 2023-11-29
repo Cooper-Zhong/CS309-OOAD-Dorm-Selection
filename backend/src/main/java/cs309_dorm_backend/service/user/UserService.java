@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserService {
 
     UserDto updatePassword(UserUpdateDto userUpdateDto, BindingResult result);
-    User findByCampusId(int campusId);
+    User findByCampusId(String campusId);
 
     Boolean checkLogin(UserDto userInfo);
 
@@ -22,7 +22,7 @@ public interface UserService {
 
     UserDto save(User userInfo);
 
-    boolean deleteByCampusId(int campusId);
+    boolean deleteByCampusId(String campusId);
 
 
 }

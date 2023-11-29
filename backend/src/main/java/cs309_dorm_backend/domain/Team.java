@@ -41,7 +41,7 @@ public class Team {
     @NonNull
     @NotBlank
     @Column(name = "creator_id", unique = true)
-    private int creatorId;
+    private String creatorId;
 
     @OneToMany(mappedBy = "team")
     // only serialize id.

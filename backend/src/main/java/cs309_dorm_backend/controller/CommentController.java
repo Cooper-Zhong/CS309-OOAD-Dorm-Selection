@@ -59,7 +59,7 @@ public class CommentController {
     }
 
     @GetMapping("/findCommentsByAuthorId/{authorId}")
-    public List<Comment> findCommentsByAuthorId(@PathVariable int authorId) {
+    public List<Comment> findCommentsByAuthorId(@PathVariable String authorId) {
         return commentService.findCommentsByAuthorId(authorId);
     }
 
@@ -69,7 +69,7 @@ public class CommentController {
     }
 
     @GetMapping("/findComment/{time}/{authorId}")
-    public Comment findComment(@PathVariable Timestamp time, @PathVariable int authorId) {
+    public Comment findComment(@PathVariable Timestamp time, @PathVariable String authorId) {
         return commentService.findComment(time, authorId);
     }
 
@@ -114,7 +114,7 @@ public class CommentController {
     }
 
     @GetMapping("/findSecondCommentsByAuthorId/{authorId}")
-    public List<SecondComment> findSecondCommentsByAuthorId(@PathVariable int authorId) {
+    public List<SecondComment> findSecondCommentsByAuthorId(@PathVariable String authorId) {
         return commentService.findSecondCommentsByAuthorId(authorId);
     }
 
@@ -124,7 +124,7 @@ public class CommentController {
     }
 
     @GetMapping("/findSecondComment/{time}/{authorId}")
-    public GlobalResponse findSecondComment(@PathVariable Timestamp time, @PathVariable int authorId) {
+    public GlobalResponse findSecondComment(@PathVariable Timestamp time, @PathVariable String authorId) {
         SecondComment secondComment = commentService.findSecondComment(time, authorId);
         if (secondComment == null) {
             return GlobalResponse.builder()

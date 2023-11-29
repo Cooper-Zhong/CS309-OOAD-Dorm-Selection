@@ -13,11 +13,11 @@ import java.util.List;
 
 @Repository
 @Component
-public interface StudentRepo extends JpaRepository<Student, Integer> {
+public interface StudentRepo extends JpaRepository<Student, String> {
 
 
     @Modifying
     @Query(value = "update students set team_id = null where student_id = :studentId", nativeQuery = true)
-    void removeTeam(int studentId);
+    void removeTeam(String studentId);
 
 }

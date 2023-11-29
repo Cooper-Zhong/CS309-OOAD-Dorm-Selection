@@ -19,9 +19,9 @@ public interface CommentService {
 
     Comment saveComment(Comment comment);
 
-    Comment findComment(Timestamp time, int authorId);
+    Comment findComment(Timestamp time, String authorId);
 
-    List<Comment> findCommentsByAuthorId(int authorId);
+    List<Comment> findCommentsByAuthorId(String authorId);
 
     List<Comment> findCommentsByRoomId(int roomId);
 
@@ -37,9 +37,9 @@ public interface CommentService {
 
     SecondComment saveSecondComment(SecondComment secondComment);
 
-    SecondComment findSecondComment(Timestamp time, int authorId);
+    SecondComment findSecondComment(Timestamp time, String authorId);
 
-    List<SecondComment> findSecondCommentsByAuthorId(int authorId);
+    List<SecondComment> findSecondCommentsByAuthorId(String authorId);
 
     List<SecondComment> findSecondCommentsByParentId(int parentId);
 

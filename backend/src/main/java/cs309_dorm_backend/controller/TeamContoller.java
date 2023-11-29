@@ -1,6 +1,5 @@
 package cs309_dorm_backend.controller;
 
-import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.dto.FavoriteDto;
@@ -39,7 +38,7 @@ public class TeamContoller {
     }
 
     @GetMapping("/findByCreator/{creatorId}")
-    public GlobalResponse findById(@PathVariable int creatorId) {
+    public GlobalResponse findById(@PathVariable String creatorId) {
         Team team = teamService.findByCreator(creatorId);
         if (team == null) {
             return new GlobalResponse<>(1, "team not found", null);
@@ -90,13 +89,24 @@ public class TeamContoller {
 
 
     @DeleteMapping("/deleteByCreator/{creatorId}")
-    public GlobalResponse deleteById(@PathVariable int creatorId) {
-        boolean result = teamService.deleteByCreator(creatorId);
+    public GlobalResponse deleteTeamByCreator(@PathVariable String creatorId) {
+        boolean result = teamService.deleteTeamByCreator(creatorId);
         if (result) {
             log.info("delete team created by " + creatorId);
-            return new GlobalResponse<>(0, "success", null);
+            return new GlobalResponse<>(0, "delete team created by " + creatorId + " successfully", null);
         } else {
             return new GlobalResponse<>(1, "team not found", null);
+        }
+    }
+
+    @DeleteMapping("/deleteMember/{studentId}")
+    public GlobalResponse deleteMember(@PathVariable String studentId) {
+        boolean result = teamService.deleteMember(studentId);
+        if (result) {
+            log.info("delete student " + studentId + " from team");
+            return new GlobalResponse<>(0, "delete student " + studentId + " from team successfully", null);
+        } else {
+            return new GlobalResponse<>(1, "delete failed.", null);
         }
     }
 

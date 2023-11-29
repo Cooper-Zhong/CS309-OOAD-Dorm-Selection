@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment findComment(Timestamp time, int authorId) {
+    public Comment findComment(Timestamp time, String authorId) {
         if (userService.findByCampusId(authorId) == null) {
             throw new MyException(4, "user " + authorId + " does not exist");
         }
@@ -76,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> findCommentsByAuthorId(int authorId) {
+    public List<Comment> findCommentsByAuthorId(String authorId) {
         if (userService.findByCampusId(authorId) == null) {
             throw new MyException(4, "user " + authorId + " does not exist");
         }
@@ -132,12 +132,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public SecondComment findSecondComment(Timestamp time, int authorId) {
+    public SecondComment findSecondComment(Timestamp time, String authorId) {
         return secondCommentRepo.findSecondComment(time, authorId);
     }
 
     @Override
-    public List<SecondComment> findSecondCommentsByAuthorId(int authorId) {
+    public List<SecondComment> findSecondCommentsByAuthorId(String authorId) {
         if (userService.findByCampusId(authorId) == null) {
             throw new MyException(4, "user " + authorId + " does not exist");
         }

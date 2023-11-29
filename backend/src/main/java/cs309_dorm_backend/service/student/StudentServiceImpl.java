@@ -3,6 +3,7 @@ package cs309_dorm_backend.service.student;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.StudentRepo;
 import cs309_dorm_backend.domain.Student;
+import cs309_dorm_backend.domain.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student findById(int id) {
+    public Student findById(String id) {
         return studentRepo.findById(id).orElse(null);
     }
 
     @Override
     public Student save(Student student) {
-        int campusId = student.getStudentId();
+        String campusId = student.getStudentId();
         Student student1 = studentRepo.findById(campusId).orElse(null);
         if (student1 != null) { // student already exists
             throw new MyException(4, "student " + campusId + " already exists");
@@ -38,7 +39,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student update(Student student) {
-        int campusId = student.getStudentId();
+        String campusId = student.getStudentId();
         Student student1 = studentRepo.findById(campusId).orElse(null);
         if (student1 == null) { // student not found
             throw new MyException(404, "student " + campusId + " not found");
@@ -50,7 +51,7 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public boolean deleteById(int studentId) {
+    public boolean deleteById(String studentId) {
         // set the corresponding team to null
 
         studentRepo.removeTeam(studentId);
@@ -60,6 +61,16 @@ public class StudentServiceImpl implements StudentService {
             return true; // 删除成功
         } else {
             return false; // 实体不存在，无法删除
+        }
+    }
+
+    @Override
+    public Team isInTeam(String studentId) {
+        Student student = findById(studentId);
+        if (student == null) {
+            throw new MyException(4, "student " + studentId + " not found");
+        } else {
+            return student.getTeam();
         }
     }
 }
