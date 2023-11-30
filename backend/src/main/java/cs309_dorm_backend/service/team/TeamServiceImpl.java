@@ -76,11 +76,14 @@ public class TeamServiceImpl implements TeamService {
     public boolean deleteMember(String studentId) {
         Student student = studentService.findById(studentId);
         if (student == null) { // if the student does not exist
-            throw new MyException(404, "student " + studentId + " does not exist");
+            throw new MyException(4, "student " + studentId + " does not exist");
         }
         Team team = student.getTeam();
         if (team == null) { // if the student is not in a team
-            throw new MyException(404, "student " + studentId + " is not in a team");
+            throw new MyException(5, "student " + studentId + " is not in a team");
+        }
+        if (team.getCreatorId().equals(studentId)) { // if the student is the creator of the team
+            throw new MyException(6, "student " + studentId + " is the creator of the team");
         }
         teamRepo.removeStudentTeam(studentId);
         return true;
