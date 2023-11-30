@@ -1,10 +1,16 @@
 package cs309_dorm_backend.controller;
+
 import java.util.List;
+
 import cs309_dorm_backend.domain.Message;
+import cs309_dorm_backend.dto.MessageDto;
 import cs309_dorm_backend.service.message.MessageService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @RestController
@@ -13,6 +19,18 @@ import javax.validation.Valid;
 public class MessageController {
     @Autowired
     private MessageService messageService;
+
+
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
+
 
     @GetMapping("/findAll")
     public List<Message> findAll() {
@@ -24,21 +42,30 @@ public class MessageController {
         return messageService.findById(messageId);
     }
 
-    @DeleteMapping("/deleteById/{messageId}")
+    @GetMapping("/findByReceiverId/{receiverId}")
+    public List<Message> findByReceiverId(@PathVariable String receiverId) {
+        return messageService.findByReceiverId(receiverId);
+    }
 
+    @DeleteMapping("/deleteById/{messageId}")
     public boolean deleteById(@PathVariable int messageId) {
         return messageService.deleteById(messageId);
     }
 
-    @PostMapping("/save")
-    public Message addOne(@RequestBody @Valid Message message) {
-        return messageService.save(message);
+    @DeleteMapping("/deleteByReceiverId/{receiverId}")
+    public boolean deleteByReceiverId(@PathVariable String receiverId) {
+        return messageService.deleteByReceiverId(receiverId);
     }
 
-    @PutMapping("/update")
-    public Message update(@RequestBody @Valid Message message) {
-        return messageService.save(message);
+    @PostMapping("/addOne")
+    public Message addOne(@RequestBody @Valid MessageDto messageDto, BindingResult result) {
+        return messageService.addOne(messageDto, result);
     }
+
+//    @PutMapping("/update")
+//    public Message update(@RequestBody @Valid Message message) {
+//        return messageService.save(message);
+//    }
 
 
 }
