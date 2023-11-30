@@ -17,7 +17,7 @@ public class JacksonConfig {
     }
 
     @Bean
-    public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
+    public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() { // 用于解决 Jackson 序列化时将单元素数组序列化为 JSON 数组的问题。
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
         builder.featuresToEnable(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED);
         return builder;
