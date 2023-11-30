@@ -19,14 +19,14 @@ create or replace function insert_student_or_teacher()
     returns TRIGGER as
 $$
 begin
-    if NEW.role = 'student' then
+    if new.role = 'student' then
         insert into students (student_id)
-        values (NEW.campus_id);
-    elsif NEW.role = 'teacher' then
+        values (new.campus_id);
+    elsif new.role = 'teacher' then
         insert into teachers (teacher_id)
-        values (NEW.campus_id);
+        values (new.campus_id);
     end if;
-    return NEW;
+    return new;
 end;
 $$ language plpgsql;
 
@@ -45,8 +45,8 @@ $$
 begin
     update students
     set team_id = null
-    where team_id = OLD.team_id;
-    return OLD;
+    where team_id = old.team_id;
+    return old;
 end;
 $$ language plpgsql;
 
@@ -65,8 +65,8 @@ $$
 begin
     delete
     from favorite_rooms
-    where team_id = OLD.team_id;
-    return OLD;
+    where team_id = old.team_id;
+    return old;
 end;
 $$ language plpgsql;
 
@@ -97,27 +97,29 @@ create trigger room_delete_favorite_rooms
     for each row
 execute procedure room_delete_favorite_rooms();
 
-CREATE OR REPLACE FUNCTION delete_student()
-RETURNS TRIGGER AS $$
-BEGIN
+create or replace function delete_student()
+    returns TRIGGER as
+$$
+begin
     -- 如果该学生是一个team的creator，则删除该team，并将原来team中的学生的teamId设置为null
-    IF EXISTS (SELECT 1 FROM teams WHERE creator_id = OLD.student_id) THEN
-        DELETE FROM teams WHERE creator_id = OLD.student_id;
-        UPDATE students SET team_id = NULL WHERE team_id = OLD.student_id;
-    ELSE
+    if exists (select 1 from teams where creator_id = old.student_id) then
+        delete from teams where creator_id = old.student_id;
+        update students set team_id = null where team_id = old.team_id;
+    else
         -- 如果该学生不是任何team的creator，则直接删除该学生
-        DELETE FROM students WHERE student_id = OLD.student_id;
-    END IF;
+        delete from students where student_id = old.student_id;
+    end if;
 
-    RETURN OLD;
-END;
-$$ LANGUAGE plpgsql;
+    return old;
+end;
+$$ language plpgsql;
 
 -- 创建触发器，在删除student时触发delete_student函数
-CREATE TRIGGER trg_delete_student
-BEFORE DELETE ON students
-FOR EACH ROW
-EXECUTE FUNCTION delete_student();
+create trigger trg_delete_student
+    before delete
+    on students
+    for each row
+execute function delete_student();
 
 
 

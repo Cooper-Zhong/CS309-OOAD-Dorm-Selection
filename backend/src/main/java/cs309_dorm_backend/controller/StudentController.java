@@ -72,13 +72,13 @@ public class StudentController {
     @DeleteMapping("/deleteById/{campusId}")
     @Transactional
     public GlobalResponse deleteById(@PathVariable String campusId) {
-        boolean result = studentService.deleteById(campusId);
-        if (result) {
-            log.info("Student {} deleted", campusId);
+        try {
+            boolean result = studentService.deleteById(campusId);
             return new GlobalResponse<>(0, "Delete student " + campusId + " successfully", null);
-        } else {
-            return new GlobalResponse<>(1, "student not found", null);
-        }
-    }
+        } catch (Exception e) {
+            return new GlobalResponse<>(1, "delete failed", null);
 
+        }
+
+    }
 }
