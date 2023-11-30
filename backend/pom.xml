@@ -12,11 +12,29 @@
     <artifactId>cs309</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cs309</name>
+<!--    <name>cs309ooad</name>-->
     <description>Project for OOAD</description>
     <properties>
         <java.version>17</java.version>
     </properties>
     <dependencies>
+<!--        &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--        this is for aws rds-->
+<!--        <dependency>-->
+<!--            <groupId>software.amazon.awssdk</groupId>-->
+<!--            <artifactId>rds-presigner</artifactId>-->
+<!--            <version>2.16.57</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>software.amazon.awssdk</groupId>-->
+<!--            <artifactId>rds-auth</artifactId>-->
+<!--            <version>2.16.57</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.postgresql</groupId>-->
+<!--            <artifactId>postgresql</artifactId>-->
+<!--        </dependency>-->
+<!--        &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
