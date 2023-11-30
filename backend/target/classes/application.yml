@@ -7,25 +7,26 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    # for aws
-    #    spring.datasource.url: jdbc:postgresql://cs309ooad.cjgxt58rjd8u.us-east-1.rds.amazonaws.com:1433/cs309ooad
-    #    spring.datasource.username: postgres
-    #    spring.datasource.password: ooad..sustech
-    #    spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-
     #    cooper's database
-    #    url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
-    #    username: postgres
-    #    password: 1234
+#    url: jdbc:postgresql://localhost:5432/cs309_ooad
+#    username: postgres
+#    password: 1234
 
     # cooper's WSL database
     url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
     username: cooper
     password: cooper
 
-    #    url: jdbc:postgresql://localhost:5432/spring_project
-    #    username: postgres
-    #    password: 2333
+    # for aws
+    #    spring.datasource.url: jdbc:postgresql://cs309ooad.cjgxt58rjd8u.us-east-1.rds.amazonaws.com:1433/cs309ooad
+    #    spring.datasource.username: postgres
+    #    spring.datasource.password: ooad..sustech
+    #    spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  #    url: jdbc:postgresql://localhost:5432/spring_project
+  #    username: postgres
+  #    password: 2333
+
     type: com.alibaba.druid.pool.DruidDataSource
     #   Druid数据源配置
     # 初始连接数
@@ -64,12 +65,13 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL92Dialect
     hibernate:
       ddl-auto: update
-    #      dialect: org.hibernate.dialect.PostgreSQL92Dialect
+#      dialect: org.hibernate.dialect.PostgreSQL92Dialect
     show-sql: true
     properties:
       hibernate:
         temp:
           use_jdbc_metadata_defaults: true
+
 
 # Logger Config
 logging:
