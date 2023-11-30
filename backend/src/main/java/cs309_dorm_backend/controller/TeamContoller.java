@@ -57,7 +57,7 @@ public class TeamContoller {
         }
     }
 
-    @PutMapping("/updateTeamName") // update team name
+    @PostMapping("/updateTeamName") // update team name
     public GlobalResponse updateTeamName(@RequestBody Team team) {
         Team team1 = teamService.updateTeamName(team);
         if (team1 == null) {
@@ -67,7 +67,7 @@ public class TeamContoller {
         }
     }
 
-    @PutMapping("/updateTeamCreator") // update team creator
+    @PostMapping("/updateTeamCreator") // update team creator
     public GlobalResponse updateTeamCreator(@RequestBody TeamMemberDto teamMemberDto) {
         Team team1 = teamService.updateTeamCreator(teamMemberDto);
         if (team1 == null) {
@@ -77,7 +77,7 @@ public class TeamContoller {
         }
     }
 
-    @PutMapping("/addMember")
+    @PostMapping("/addMember")
     public GlobalResponse addMember(@Valid @RequestBody TeamMemberDto teamMemberDto, BindingResult bindingResult) {
         Student student = teamService.addMember(teamMemberDto, bindingResult);
         if (student == null) {

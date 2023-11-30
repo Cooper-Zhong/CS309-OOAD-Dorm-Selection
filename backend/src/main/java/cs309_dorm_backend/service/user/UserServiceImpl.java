@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByCampusId(String campusId) {
-        return userRepo.findUserByCampusId(campusId);
+        return userRepo.findById(campusId).orElse(null);
     }
 
     @Override

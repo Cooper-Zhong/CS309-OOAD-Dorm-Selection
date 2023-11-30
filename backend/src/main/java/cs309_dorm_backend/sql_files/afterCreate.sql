@@ -106,8 +106,7 @@ begin
         delete from teams where creator_id = old.student_id;
         update students set team_id = null where team_id = old.team_id;
     else
-        -- 如果该学生不是任何team的creator，则直接删除该学生
-        delete from students where student_id = old.student_id;
+        -- 如果该学生不是任何team的creator，则后面直接删除该学生
     end if;
 
     return old;

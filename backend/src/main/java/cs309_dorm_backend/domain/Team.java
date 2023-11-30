@@ -45,8 +45,8 @@ public class Team {
 
     @OneToMany(mappedBy = "team")
     // only serialize id.
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "studentId")
-    @JsonIdentityReference(alwaysAsId = true)
+//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "studentId")
+//    @JsonIdentityReference(alwaysAsId = true)
     private Set<Student> teamMembers;
 
     //    @JsonIgnore

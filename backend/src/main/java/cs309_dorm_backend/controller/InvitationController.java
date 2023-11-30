@@ -6,6 +6,7 @@ import cs309_dorm_backend.dto.InvitationDto;
 import cs309_dorm_backend.service.invitation.InvitationService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,17 @@ public class InvitationController {
 
     @Autowired
     private InvitationService invitationService;
+
+
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
 
     @GetMapping("/findTeamRelated/{teamId}")
     public GlobalResponse findTeamRelated(@PathVariable int teamId) {
