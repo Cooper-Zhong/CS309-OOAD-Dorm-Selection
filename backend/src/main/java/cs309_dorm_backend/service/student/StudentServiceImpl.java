@@ -57,7 +57,8 @@ public class StudentServiceImpl implements StudentService {
         studentRepo.removeTeam(studentId);
         Optional<Student> studentOptional = studentRepo.findById(studentId);
         if (studentOptional.isPresent()) {
-            studentRepo.deleteById(studentId);
+//            studentRepo.deleteById(studentId);
+            studentRepo.deleteStudent(studentId);
             return true; // 删除成功
         } else {
             return false; // 实体不存在，无法删除

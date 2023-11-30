@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -19,5 +20,10 @@ public interface StudentRepo extends JpaRepository<Student, String> {
     @Modifying
     @Query(value = "update students set team_id = null where student_id = :studentId", nativeQuery = true)
     void removeTeam(String studentId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from students where student_id = :studentId", nativeQuery = true)
+    void deleteStudent(String studentId);
 
 }

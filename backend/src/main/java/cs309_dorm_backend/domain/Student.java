@@ -22,6 +22,7 @@ public class Student {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId  // 使用 @MapsId 注解，以便将主键的值映射到外键列
     @JoinColumn(name = "student_id", referencedColumnName = "campus_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     private String name;
