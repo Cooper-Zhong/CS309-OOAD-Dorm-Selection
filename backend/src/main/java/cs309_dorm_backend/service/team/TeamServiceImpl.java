@@ -45,6 +45,10 @@ public class TeamServiceImpl implements TeamService {
         return teamRepo.findAll();
     }
 
+    public Team isInTeam(String studentId) {
+        return studentService.isInTeam(studentId);
+    }
+
     @Override
     public Team findByCreator(String creatorId) {
         return teamRepo.findByCreator(creatorId);
