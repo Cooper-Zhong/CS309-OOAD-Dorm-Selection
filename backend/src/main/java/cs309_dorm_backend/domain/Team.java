@@ -2,6 +2,7 @@ package cs309_dorm_backend.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
@@ -27,6 +28,13 @@ public class Team {
     @NotBlank
     @Column(name = "team_name", unique = true)
     private String teamName;
+
+
+    private String teamInfo;
+
+    @NotNull
+    @Column(nullable = false)
+    private String gender;
 
 
 //    @NonNull
