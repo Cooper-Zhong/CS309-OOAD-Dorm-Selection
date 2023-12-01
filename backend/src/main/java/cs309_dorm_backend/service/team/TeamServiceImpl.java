@@ -5,6 +5,7 @@ import cs309_dorm_backend.dao.TeamRepo;
 import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
+import cs309_dorm_backend.dto.AlterLeaderDto;
 import cs309_dorm_backend.dto.FavoriteDto;
 import cs309_dorm_backend.dto.TeamMemberDto;
 import cs309_dorm_backend.service.room.RoomService;
@@ -116,7 +117,6 @@ public class TeamServiceImpl implements TeamService {
         if (creator.getTeam() != null) { // if the creator is already in a team
             throw new MyException(5, "student " + creatorId + " is already in a team");
         }
-        team.setCreatorId(creatorId);
         team = save(team);
         teamRepo.setTeam(creatorId, team.getTeamId()); // creator
         return team;
@@ -169,43 +169,45 @@ public class TeamServiceImpl implements TeamService {
      * @return
      */
     @Override
-    public Team updateTeamName(Team team) {
+    public Team updateTeam(Team team) {
         String creatorId = team.getCreatorId();
         Team oldTeam = findByCreator(creatorId);
         if (oldTeam == null) { // if the team does not exist
             throw new MyException(4, "team created by " + creatorId + " does not exist");
         } else {
-            String creatorId1 = team.getCreatorId();
-            oldTeam.setCreatorId(creatorId1);
-            oldTeam.setTeamName(team.getTeamName());
-            save(oldTeam);
-            return oldTeam;
+            team.setTeamId(oldTeam.getTeamId());
+//            String creatorId1 = team.getCreatorId();
+//            oldTeam.setCreatorId(creatorId1);
+//            oldTeam.setTeamName(team.getTeamName());
+//            oldTeam.setTeamInfo(team.getTeamInfo());
+//            save(oldTeam);
+            return save(team);
         }
     }
 
     @Override
-    public Team updateTeamCreator(TeamMemberDto teamMemberDto) {
-        String creatorId = teamMemberDto.getCreatorId();
-        String memberId = teamMemberDto.getStudentId();
-        Student creator = studentService.findById(creatorId);
-        Student member = studentService.findById(memberId);
+    public Student alterLeader(AlterLeaderDto alterLeaderDto) {
+        String oldId = alterLeaderDto.getOldId();
+        String leaderId = alterLeaderDto.getLeaderId();
+
+        Student creator = studentService.findById(oldId);
+        Student newleader = studentService.findById(leaderId);
         if (creator == null) { // if the creator does not exist
-            throw new MyException(4, "student " + creatorId + " does not exist");
+            throw new MyException(4, "student " + oldId + " does not exist");
         }
-        if (member == null) { // if the student does not exist
-            throw new MyException(4, "student " + memberId + " does not exist");
+        if (newleader == null) { // if the student does not exist
+            throw new MyException(4, "student " + leaderId + " does not exist");
         }
-        Team team = findByCreator(creatorId);
+        Team team = findByCreator(oldId);
         if (team == null) { // if the team does not exist
-            throw new MyException(5, "team created by " + creatorId + " does not exist");
+            throw new MyException(5, "team created by " + oldId + " does not exist");
         }
-        Set<Student> members = team.getTeamMembers();
-        Team memberTeam = member.getTeam();
+        Team memberTeam = newleader.getTeam();
         if (memberTeam == null || memberTeam.getTeamId() != team.getTeamId()) { // if the student is not in this team
-            throw new MyException(6, "student " + memberId + " is not in this team");
+            throw new MyException(6, "student " + leaderId + " is not in this team");
         }
-        teamRepo.updateTeamCreator(creatorId, memberId);
-        return team;
+        teamRepo.updateTeamCreator(oldId, leaderId);
+        return newleader;
     }
 
     @Override
