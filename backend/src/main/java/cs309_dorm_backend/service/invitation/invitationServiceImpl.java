@@ -43,7 +43,11 @@ public class invitationServiceImpl implements InvitationService {
     @Override
     public boolean deleteInvitation(InvitationDto invitationDto) {
         try {
-            invitationRepo.deleteInvitation(invitationDto.getTeamId(), invitationDto.getStudentId(), invitationDto.isInvitation());
+            Team team = teamService.findByCreator(invitationDto.getCreatorId());
+            if (team == null) {
+                throw new MyException(1, "team not found");
+            }
+            invitationRepo.deleteInvitation(team.getTeamId(), invitationDto.getStudentId(), invitationDto.isInvitation());
             return true;
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -67,13 +71,17 @@ public class invitationServiceImpl implements InvitationService {
     }
 
     private Invitation convertToInvitation(InvitationDto invitationDto) {
-        Team team = teamService.findById(invitationDto.getTeamId());
+        Student creator = studentService.findById(invitationDto.getCreatorId());
+        if (creator == null) {
+            throw new MyException(4, "creator" + invitationDto.getCreatorId() + " not found");
+        }
+        Team team = teamService.findByCreator(creator.getStudentId());
         if (team == null) {
-            throw new MyException(1, "team not found");
+            throw new MyException(5, "team not found");
         }
         Student student = studentService.findById(invitationDto.getStudentId());
         if (student == null) {
-            throw new MyException(1, "student not found");
+            throw new MyException(6, "student " + invitationDto.getStudentId() + " not found");
         }
         return Invitation.builder()
                 .team(team)
@@ -82,6 +90,4 @@ public class invitationServiceImpl implements InvitationService {
                 .build();
 
     }
-
-
 }

@@ -2,9 +2,11 @@ package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
+import cs309_dorm_backend.dto.AlterLeaderDto;
 import cs309_dorm_backend.dto.FavoriteDto;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.TeamMemberDto;
+import cs309_dorm_backend.service.student.StudentService;
 import cs309_dorm_backend.service.team.TeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,23 +59,23 @@ public class TeamContoller {
         }
     }
 
-    @PostMapping("/updateTeamName") // update team name
+    @PostMapping("/updateTeam") // update team name
     public GlobalResponse updateTeamName(@RequestBody Team team) {
-        Team team1 = teamService.updateTeamName(team);
+        Team team1 = teamService.updateTeam(team);
         if (team1 == null) {
             return new GlobalResponse<>(1, "fail", null);
         } else {
-            return new GlobalResponse<>(0, "success", team1.getTeamName());
+            return new GlobalResponse<>(0, "success", team1);
         }
     }
 
-    @PostMapping("/updateTeamCreator") // update team creator
-    public GlobalResponse updateTeamCreator(@RequestBody TeamMemberDto teamMemberDto) {
-        Team team1 = teamService.updateTeamCreator(teamMemberDto);
-        if (team1 == null) {
+    @PostMapping("/alterLeader") // update team creator
+    public GlobalResponse updateTeamCreator(@RequestBody AlterLeaderDto alterLeaderDto) {
+        Student newleader = teamService.alterLeader(alterLeaderDto);
+        if (newleader == null) {
             return new GlobalResponse<>(1, "fail", null);
         } else {
-            return new GlobalResponse<>(0, "success", team1.getCreatorId());
+            return new GlobalResponse<>(0, "alter leader to " + newleader.getStudentId() + " successfully", newleader);
         }
     }
 
