@@ -16,6 +16,8 @@ public interface TeamService {
 
     Team findByCreator(String creatorId);
 
+    Team isInTeam(String studentId);
+
     boolean deleteTeamByCreator(String creatorId);
 
     boolean deleteMember(String studentId);

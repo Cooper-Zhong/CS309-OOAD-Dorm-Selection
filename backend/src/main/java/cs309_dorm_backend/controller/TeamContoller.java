@@ -49,6 +49,16 @@ public class TeamContoller {
         }
     }
 
+    @GetMapping("/isInTeam/{studentId}")
+    public GlobalResponse isInTeam(@PathVariable String studentId) {
+        Team team = teamService.isInTeam(studentId);
+        if (team == null) {
+            return new GlobalResponse<>(1, studentId + " not in any team", null);
+        } else {
+            return new GlobalResponse<>(0, studentId + " is in a team", team);
+        }
+    }
+
     @PostMapping("/addTeam")
     public GlobalResponse addTeam(@Valid @RequestBody Team team, BindingResult bindingResult) {
         Team team1 = teamService.addTeam(team, bindingResult);
