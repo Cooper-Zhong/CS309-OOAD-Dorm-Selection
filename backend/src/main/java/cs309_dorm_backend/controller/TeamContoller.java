@@ -132,7 +132,7 @@ public class TeamContoller {
         }
     }
 
-    @DeleteMapping("/unfavoriteRoom")
+    @PostMapping("/unfavoriteRoom")
     public GlobalResponse unfavoriteRoom(@Valid @RequestBody FavoriteDto favoriteDto, BindingResult bindingResult) {
         boolean res = teamService.unfavoriteRoom(favoriteDto, bindingResult);
         if (!res) {
