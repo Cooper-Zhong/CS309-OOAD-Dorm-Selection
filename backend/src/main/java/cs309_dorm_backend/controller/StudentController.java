@@ -46,16 +46,6 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/isInTeam/{studentId}")
-    public GlobalResponse isInTeam(@PathVariable String studentId) {
-        Team team = studentService.isInTeam(studentId);
-        if (team == null) {
-            return new GlobalResponse<>(1, "student not in any team", null);
-        } else {
-            return new GlobalResponse<>(0, "success", team);
-        }
-    }
-
 
     @PostMapping("/update")
     public GlobalResponse update(@RequestBody Student student) {
