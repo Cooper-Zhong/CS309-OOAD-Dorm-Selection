@@ -56,7 +56,11 @@ public class InvitationController {
         if (invitation == null) {
             return new GlobalResponse<>(1, "invitation not found", null);
         } else {
-            return new GlobalResponse<>(0, "success", invitation);
+            if (invitation.isInvitation()) {
+                return new GlobalResponse<>(0, "invite student " + invitation.getStudent().getStudentId()+ " successfully", invitation);
+            } else {
+                return new GlobalResponse<>(0, "apply to join team of creator " + invitation.getTeam().getCreatorId() + " successfully", invitation);
+            }
         }
     }
 
