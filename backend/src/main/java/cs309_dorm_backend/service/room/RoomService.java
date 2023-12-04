@@ -2,6 +2,7 @@ package cs309_dorm_backend.service.room;
 
 import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.dto.RoomDto;
+import cs309_dorm_backend.dto.SelectDto;
 
 import java.util.List;
 
@@ -19,4 +20,11 @@ public interface RoomService {
     Room save(Room room);
 
     Room update(RoomDto roomDto);
+
+    Room selectRoom(SelectDto selectDto);
+
+    Room findSelectedRoom(int teamId);
+
+
+
 }
