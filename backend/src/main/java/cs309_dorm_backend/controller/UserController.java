@@ -49,7 +49,6 @@ public class UserController {
                 .build();
     }
 
-
     @PostMapping("/register")
     public GlobalResponse registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
         UserDto userDto = userService.register(userForm, result);

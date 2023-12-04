@@ -1,6 +1,22 @@
 server:
   port: 8082
 spring:
+  redis:
+    database: 0 # redis database index
+    host: localhost
+    password: 2333
+    port: 8082
+    timeout: 3000       # connection timeout, default 3000ms
+    #    cluster:
+    #      nodes: 10.3.1.4:7000,10.3.1.4:7001,...,10.3.1.4:7008
+    pool:
+      max-idle: 8       # max idle connection, default 8
+      min-idle: 0       # min idle connection, default 0
+      max-active: 8     # if max-active = -1, then no limit, default 8
+      # if pool has been allocated max-active jedis instance, then pool status is exhausted
+      max-wait: -1      # wait for valid connection, default -1(no wait)
+      #if pool exhausted, then wait for 3000ms, if still exhausted, then throw JedisConnectionException
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -33,3 +49,15 @@ logging:
   level:
     cs309_dorm_backend: debug
 
+redis:
+  database:
+    fore: cs309
+    wechat: 1
+  host: localhost
+  password: 2333
+  port: 8082
+  timeout: 3000
+  pool:
+    max-idle: 30
+    min-idle: 0
+    max-wait: -1
