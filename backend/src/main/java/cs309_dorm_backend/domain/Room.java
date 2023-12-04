@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "rooms", uniqueConstraints = @UniqueConstraint(columnNames = {"building_id", "room_number"}))
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Room {
 
     @Id
