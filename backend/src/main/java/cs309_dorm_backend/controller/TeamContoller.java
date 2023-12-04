@@ -1,11 +1,10 @@
 package cs309_dorm_backend.controller;
 
+import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
-import cs309_dorm_backend.dto.AlterLeaderDto;
-import cs309_dorm_backend.dto.FavoriteDto;
-import cs309_dorm_backend.dto.GlobalResponse;
-import cs309_dorm_backend.dto.TeamMemberDto;
+import cs309_dorm_backend.dto.*;
+import cs309_dorm_backend.service.room.RoomService;
 import cs309_dorm_backend.service.student.StudentService;
 import cs309_dorm_backend.service.team.TeamService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +45,36 @@ public class TeamContoller {
             return new GlobalResponse<>(1, "team not found", null);
         } else {
             return new GlobalResponse<>(0, "success", team);
+        }
+    }
+
+    @PostMapping("/selectRoom")
+    public GlobalResponse selectRoom(@RequestBody SelectDto selectDto) {
+        Room room = teamService.selectRoom(selectDto);
+        if (room == null) {
+            return new GlobalResponse(1, "Room already been selected by other team!", null);
+        } else {
+            return new GlobalResponse<>(0, "Successfully selected!", room);
+        }
+    }
+
+    @GetMapping("/findSelectedRoom/{teamId}")
+    public GlobalResponse findSelectedRoom(@PathVariable int teamId) {
+        Room room = teamService.findSelectedRoom(teamId);
+        if (room == null) {
+            return new GlobalResponse(1, "not selected any room.", null);
+        } else {
+            return new GlobalResponse<>(0, "You have selected: ", room);
+        }
+    }
+
+    @GetMapping("/isInTeam/{studentId}")
+    public GlobalResponse isInTeam(@PathVariable String studentId) {
+        Team team = teamService.isInTeam(studentId);
+        if (team == null) {
+            return new GlobalResponse<>(1, studentId + " not in any team", null);
+        } else {
+            return new GlobalResponse<>(0, studentId + " is in a team", team);
         }
     }
 
@@ -122,7 +151,7 @@ public class TeamContoller {
         }
     }
 
-    @DeleteMapping("/unfavoriteRoom")
+    @PostMapping("/unfavoriteRoom")
     public GlobalResponse unfavoriteRoom(@Valid @RequestBody FavoriteDto favoriteDto, BindingResult bindingResult) {
         boolean res = teamService.unfavoriteRoom(favoriteDto, bindingResult);
         if (!res) {

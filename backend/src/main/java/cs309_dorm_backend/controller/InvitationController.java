@@ -64,7 +64,7 @@ public class InvitationController {
         }
     }
 
-    @DeleteMapping("/deleteInvitation")
+    @PostMapping("/deleteInvitation")
     @Transactional
     public GlobalResponse deleteInvitation(@RequestBody InvitationDto invitationDto) {
         boolean result = invitationService.deleteInvitation(invitationDto);

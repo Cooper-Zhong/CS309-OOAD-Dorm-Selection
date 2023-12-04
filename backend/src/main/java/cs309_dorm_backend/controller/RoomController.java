@@ -3,6 +3,7 @@ package cs309_dorm_backend.controller;
 import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.RoomDto;
+import cs309_dorm_backend.dto.SelectDto;
 import cs309_dorm_backend.service.room.RoomService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,6 @@ public class RoomController {
             return new GlobalResponse<>(0, "success", room);
         }
     }
+
 }
 

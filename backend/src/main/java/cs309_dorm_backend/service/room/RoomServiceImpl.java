@@ -5,10 +5,12 @@ import cs309_dorm_backend.dao.RoomRepo;
 import cs309_dorm_backend.domain.Building;
 import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.dto.RoomDto;
+import cs309_dorm_backend.dto.SelectDto;
 import cs309_dorm_backend.service.building.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,6 +87,25 @@ public class RoomServiceImpl implements RoomService {
             room.setRoomId(old.getRoomId()); // maintain id
             return save(room);
         }
+    }
+
+    @Override
+    @Transactional
+    public Room selectRoom(SelectDto selectDto) {
+        int RoomId = selectDto.getRoomId();
+        int teamId = selectDto.getTeamId();
+
+        Room room = roomRepo.findRoomWithLock(RoomId);
+        if (room.getAssignedTeam() != null) { // room already assigned
+            return null;
+        }
+        roomRepo.updateRoomAssignedTeam(RoomId, teamId);
+        return room;
+    }
+
+    @Override
+    public Room findSelectedRoom(int teamId) {
+        return roomRepo.findSelectedRoom(teamId);
     }
 
     private Room convertToRoom(RoomDto roomDto) {

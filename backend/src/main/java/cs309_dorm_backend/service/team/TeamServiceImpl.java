@@ -7,6 +7,7 @@ import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.dto.AlterLeaderDto;
 import cs309_dorm_backend.dto.FavoriteDto;
+import cs309_dorm_backend.dto.SelectDto;
 import cs309_dorm_backend.dto.TeamMemberDto;
 import cs309_dorm_backend.service.room.RoomService;
 import cs309_dorm_backend.service.student.StudentService;
@@ -43,6 +44,10 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<Team> findAll() {
         return teamRepo.findAll();
+    }
+
+    public Team isInTeam(String studentId) {
+        return studentService.isInTeam(studentId);
     }
 
     @Override
@@ -208,6 +213,16 @@ public class TeamServiceImpl implements TeamService {
         }
         teamRepo.updateTeamCreator(oldId, leaderId);
         return newleader;
+    }
+
+    @Override
+    public Room selectRoom(SelectDto selectDto) {
+        return roomService.selectRoom(selectDto);
+    }
+
+    @Override
+    public Room findSelectedRoom(int teamId) {
+        return roomService.findSelectedRoom(teamId);
     }
 
     @Override
