@@ -1,5 +1,6 @@
 package cs309_dorm_backend.controller;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.service.student.StudentService;
@@ -15,12 +16,12 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-
+    @AntiReptile
     @GetMapping("/findAll")
     public List<Student> findAll() {
         return studentService.findAll();
     }
-
+    @AntiReptile
     @GetMapping("/findById/{studentId}")
     public GlobalResponse findById(@PathVariable int studentId) {
         Student student = studentService.findById(studentId);

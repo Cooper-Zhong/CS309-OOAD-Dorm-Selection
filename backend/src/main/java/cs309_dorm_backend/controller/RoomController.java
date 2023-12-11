@@ -1,5 +1,6 @@
 package cs309_dorm_backend.controller;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.RoomDto;
@@ -17,12 +18,12 @@ public class RoomController {
 
     @Autowired
     private RoomService roomService;
-
+    @AntiReptile
     @GetMapping("/findAll")
     public List<Room> findAll() {
         return roomService.findAll();
     }
-
+    @AntiReptile
     @GetMapping("/findOne/{buildingId}/{roomNumber}")
     public GlobalResponse findOne(@PathVariable int buildingId, @PathVariable int roomNumber) {
         Room room = roomService.findOne(buildingId, roomNumber);

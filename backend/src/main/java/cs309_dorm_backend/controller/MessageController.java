@@ -1,5 +1,7 @@
 package cs309_dorm_backend.controller;
 import java.util.List;
+
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Message;
 import cs309_dorm_backend.service.message.MessageService;
 import io.swagger.annotations.Api;
@@ -13,12 +15,12 @@ import javax.validation.Valid;
 public class MessageController {
     @Autowired
     private MessageService messageService;
-
+    @AntiReptile
     @GetMapping("/findAll")
     public List<Message> findAll() {
         return messageService.findAll();
     }
-
+    @AntiReptile
     @GetMapping("/findById/{messageId}")
     public Message findById(@PathVariable int messageId) {
         return messageService.findById(messageId);
