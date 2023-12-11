@@ -2,6 +2,7 @@ package cs309_dorm_backend.controller;
 
 import java.util.List;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Building;
 import cs309_dorm_backend.dto.BuildingDto;
 import cs309_dorm_backend.dto.GlobalResponse;
@@ -22,11 +23,13 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
+    @AntiReptile
     @GetMapping("/findAll")
     public List<Building> findAll() {
         return buildingService.findAll();
     }
 
+    @AntiReptile
     @GetMapping("/findById/{buildingId}")
     public GlobalResponse findById(@PathVariable int buildingId) {
         Building building = buildingService.findById(buildingId);
@@ -36,7 +39,7 @@ public class BuildingController {
             return new GlobalResponse<>(0, "success", building);
         }
     }
-
+    @AntiReptile
     @DeleteMapping("/deleteById/{buildingId}")
     public GlobalResponse deleteById(@PathVariable int buildingId) {
         boolean result = buildingService.deleteById(buildingId);

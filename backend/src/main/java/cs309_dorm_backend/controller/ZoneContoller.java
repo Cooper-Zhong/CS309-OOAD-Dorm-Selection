@@ -1,5 +1,6 @@
 package cs309_dorm_backend.controller;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Zone;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.ZoneUpdateDto;
@@ -16,12 +17,12 @@ import java.util.Map;
 public class ZoneContoller {
     @Autowired
     private ZoneService zoneService;
-
+    @AntiReptile
     @GetMapping("/findAll")
     public List<Zone> findAll() {
         return zoneService.findAll();
     }
-
+    @AntiReptile
     @GetMapping("/findByName/{name}")
     public GlobalResponse<Zone> findByName(@PathVariable String name) {
         Zone zone = zoneService.findByName(name);

@@ -1,5 +1,6 @@
 package cs309_dorm_backend.controller;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
@@ -19,12 +20,12 @@ import java.util.List;
 public class TeamContoller {
     @Autowired
     private TeamService teamService;
-
+    @AntiReptile
     @GetMapping("/findAll")
     public List<Team> findAll() {
         return teamService.findAll();
     }
-
+    @AntiReptile
     @GetMapping("/findByCreator/{creatorId}")
     public GlobalResponse findById(@PathVariable int creatorId) {
         Team team = teamService.findByCreator(creatorId);
