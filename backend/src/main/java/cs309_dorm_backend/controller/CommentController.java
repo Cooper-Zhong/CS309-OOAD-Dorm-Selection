@@ -10,6 +10,7 @@ import cs309_dorm_backend.dto.SecondCommentDto;
 import cs309_dorm_backend.service.comment.CommentService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,17 @@ public class CommentController {
 
     @Autowired
     private CommentService commentService;
+
+
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
 
     @AntiReptile
     @GetMapping("/findAll")
@@ -49,7 +61,7 @@ public class CommentController {
     }
     @AntiReptile
     @GetMapping("/findCommentsByAuthorId/{authorId}")
-    public List<Comment> findCommentsByAuthorId(@PathVariable int authorId) {
+    public List<Comment> findCommentsByAuthorId(@PathVariable String authorId) {
         return commentService.findCommentsByAuthorId(authorId);
     }
     @AntiReptile
@@ -59,7 +71,7 @@ public class CommentController {
     }
     @AntiReptile
     @GetMapping("/findComment/{time}/{authorId}")
-    public Comment findComment(@PathVariable Timestamp time, @PathVariable int authorId) {
+    public Comment findComment(@PathVariable Timestamp time, @PathVariable String authorId) {
         return commentService.findComment(time, authorId);
     }
 
@@ -104,7 +116,7 @@ public class CommentController {
     }
     @AntiReptile
     @GetMapping("/findSecondCommentsByAuthorId/{authorId}")
-    public List<SecondComment> findSecondCommentsByAuthorId(@PathVariable int authorId) {
+    public List<SecondComment> findSecondCommentsByAuthorId(@PathVariable String authorId) {
         return commentService.findSecondCommentsByAuthorId(authorId);
     }
     @AntiReptile
@@ -114,7 +126,7 @@ public class CommentController {
     }
     @AntiReptile
     @GetMapping("/findSecondComment/{time}/{authorId}")
-    public GlobalResponse findSecondComment(@PathVariable Timestamp time, @PathVariable int authorId) {
+    public GlobalResponse findSecondComment(@PathVariable Timestamp time, @PathVariable String authorId) {
         SecondComment secondComment = commentService.findSecondComment(time, authorId);
         if (secondComment == null) {
             return GlobalResponse.builder()
