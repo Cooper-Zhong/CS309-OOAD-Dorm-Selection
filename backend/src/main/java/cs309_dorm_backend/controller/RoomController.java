@@ -65,7 +65,7 @@ public class RoomController {
         }
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public GlobalResponse update(@RequestBody RoomDto roomDto) {
         Room room = roomService.update(roomDto);
         if (room == null) {
