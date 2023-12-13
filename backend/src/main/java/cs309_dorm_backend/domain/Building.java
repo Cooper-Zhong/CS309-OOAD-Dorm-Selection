@@ -45,7 +45,6 @@ public class Building {
 
     @JsonIgnore
     @OneToMany(mappedBy = "building", fetch = FetchType.LAZY) // a building can have many rooms
-
     private Set<Room> rooms;
 }
 
