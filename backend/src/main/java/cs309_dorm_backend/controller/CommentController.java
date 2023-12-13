@@ -1,5 +1,6 @@
 package cs309_dorm_backend.controller;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.domain.Comment;
 import cs309_dorm_backend.domain.SecondComment;
@@ -9,7 +10,6 @@ import cs309_dorm_backend.dto.SecondCommentDto;
 import cs309_dorm_backend.service.comment.CommentService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,22 +25,12 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    // Handling OPTIONS request explicitly
-    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
-    public ResponseEntity<Void> handleOptions() {
-        return ResponseEntity
-                .ok()
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
-                .build();
-    }
-
-
+    @AntiReptile
     @GetMapping("/findAll")
     public List<Comment> findAllComments() {
         return commentService.findAllComments();
     }
-
+    @AntiReptile
     @GetMapping("/delete/{commentId}")
     public GlobalResponse deleteComment(@PathVariable int commentId) {
         Comment comment = commentService.findCommentById(commentId);
@@ -57,19 +47,19 @@ public class CommentController {
                     .data(comment).build();
         }
     }
-
+    @AntiReptile
     @GetMapping("/findCommentsByAuthorId/{authorId}")
-    public List<Comment> findCommentsByAuthorId(@PathVariable String authorId) {
+    public List<Comment> findCommentsByAuthorId(@PathVariable int authorId) {
         return commentService.findCommentsByAuthorId(authorId);
     }
-
+    @AntiReptile
     @GetMapping("/findCommentsByRoomId/{roomId}")
     public List<Comment> findCommentsByRoomId(@PathVariable int roomId) {
         return commentService.findCommentsByRoomId(roomId);
     }
-
+    @AntiReptile
     @GetMapping("/findComment/{time}/{authorId}")
-    public Comment findComment(@PathVariable Timestamp time, @PathVariable String authorId) {
+    public Comment findComment(@PathVariable Timestamp time, @PathVariable int authorId) {
         return commentService.findComment(time, authorId);
     }
 
@@ -90,12 +80,12 @@ public class CommentController {
     }
 
     // second comment ============================================================
-
+    @AntiReptile
     @GetMapping("/findAllSecondComments")
     public List<SecondComment> findAllSecondComments() {
         return commentService.findAllSecondComments();
     }
-
+    @AntiReptile
     @GetMapping("/deleteSecondComment/{secondCommentId}")
     public GlobalResponse deleteSecondComment(@PathVariable int secondCommentId) {
         SecondComment secondComment = commentService.findSecondCommentById(secondCommentId);
@@ -112,19 +102,19 @@ public class CommentController {
                     .data(secondComment).build();
         }
     }
-
+    @AntiReptile
     @GetMapping("/findSecondCommentsByAuthorId/{authorId}")
-    public List<SecondComment> findSecondCommentsByAuthorId(@PathVariable String authorId) {
+    public List<SecondComment> findSecondCommentsByAuthorId(@PathVariable int authorId) {
         return commentService.findSecondCommentsByAuthorId(authorId);
     }
-
+    @AntiReptile
     @GetMapping("/findSecondCommentsByParentId/{parentId}")
     public List<SecondComment> findSecondCommentsByParentId(@PathVariable int parentId) {
         return commentService.findSecondCommentsByParentId(parentId);
     }
-
+    @AntiReptile
     @GetMapping("/findSecondComment/{time}/{authorId}")
-    public GlobalResponse findSecondComment(@PathVariable Timestamp time, @PathVariable String authorId) {
+    public GlobalResponse findSecondComment(@PathVariable Timestamp time, @PathVariable int authorId) {
         SecondComment secondComment = commentService.findSecondComment(time, authorId);
         if (secondComment == null) {
             return GlobalResponse.builder()

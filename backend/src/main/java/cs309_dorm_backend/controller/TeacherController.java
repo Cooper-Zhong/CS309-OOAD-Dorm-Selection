@@ -1,5 +1,6 @@
 package cs309_dorm_backend.controller;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Teacher;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.service.teacher.TeacherService;
@@ -28,11 +29,13 @@ public class TeacherController {
                 .build();
     }
 
+    @AntiReptile
     @GetMapping("/findAll")
     public List<Teacher> findAll() {
         return teacherService.findAll();
     }
 
+    @AntiReptile
     @GetMapping("/findById/{teacherId}")
     public GlobalResponse findById(@PathVariable String teacherId) {
         Teacher teacher = teacherService.findById(teacherId);

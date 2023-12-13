@@ -1,80 +1,54 @@
-#server:
-#  port: 8082
-#spring:
-#  mvc:
-#    pathmatch:
-#      matching-strategy: ant_path_matcher
-#
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    #    cooper's database
-##    url: jdbc:postgresql://localhost:5432/cs309_ooad
-##    username: postgres
-##    password: 1234
-#
-#    # cooper's WSL database
-#    url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
-#    username: cooper
-#    password: cooper
-#
-#    # for aws
-#    #    spring.datasource.url: jdbc:postgresql://cs309ooad.cjgxt58rjd8u.us-east-1.rds.amazonaws.com:1433/cs309ooad
-#    #    spring.datasource.username: postgres
-#    #    spring.datasource.password: ooad..sustech
-#    #    spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-#
-#  #    url: jdbc:postgresql://localhost:5432/spring_project
-#  #    username: postgres
-#  #    password: 2333
-#
-#    type: com.alibaba.druid.pool.DruidDataSource
-#    #   Druid数据源配置
-#    # 初始连接数
-#    initialSize: 5
-#    # 最小连接池数量
-#    minIdle: 10
-#    # 最大连接池数量
-#    maxActive: 20
-#    # 配置获取连接等待超时的时间
-#    maxWait: 60000
-#    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-#    timeBetweenEvictionRunsMillis: 60000
-#    # 配置一个连接在池中最小生存的时间，单位是毫秒
-#    minEvictableIdleTimeMillis: 200000
-#    # 配置一个连接在池中最大生存的时间，单位是毫秒
-#    maxEvictableIdleTimeMillis: 700000
-#    # 配置检测连接是否有效
-#    validationQuery: SELECT 1 FROM test LIMIT 1
-#    #申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
-#    testWhileIdle: true
-#    #配置从连接池获取连接时，是否检查连接有效性，true每次都检查；false不检查。做了这个配置会降低性能。
-#    testOnBorrow: false
-#    #配置向连接池归还连接时，是否检查连接有效性，true每次都检查；false不检查。做了这个配置会降低性能。
-#    testOnReturn: false
-#    #打开PsCache，并且指定每个连接上PSCache的大小
-#    poolPreparedStatements: true
-#    maxPoolPreparedStatementPerConnectionSize: 20
-#    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-#    filters: stat,slf4j
-#    #合并多个DruidDatasource的监控数据
-#    useGlobalDataSourceStat: true
-#    #通过connectProperties属性来打开mergesql功能罗慢sQL记录
-#    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500;
-#
-#  jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQL92Dialect
-#    hibernate:
-#      ddl-auto: update
-##      dialect: org.hibernate.dialect.PostgreSQL92Dialect
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        temp:
-#          use_jdbc_metadata_defaults: true
-#
-#
-## Logger Config
-#logging:
-#  level:
-#    cs309_dorm_backend: debug
-#
+server:
+  port: 8082
+spring:
+  redis:
+    database: 0 # redis database index
+    host: localhost
+    password: 2333
+    port: 8082
+    timeout: 3000       # connection timeout, default 3000ms
+    #    cluster:
+    #      nodes: 10.3.1.4:7000,10.3.1.4:7001,...,10.3.1.4:7008
+    pool:
+      max-idle: 8       # max idle connection, default 8
+      min-idle: 0       # min idle connection, default 0
+      max-active: 8     # if max-active = -1, then no limit, default 8
+      # if pool has been allocated max-active jedis instance, then pool status is exhausted
+      max-wait: -1      # wait for valid connection, default -1(no wait)
+      #if pool exhausted, then wait for 3000ms, if still exhausted, then throw JedisConnectionException
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # local database
+    url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
+    # for aws
+#    spring.datasource.url: jdbc:postgresql://cs309ooad.cjgxt58rjd8u.us-east-1.rds.amazonaws.com:1433/cs309ooad
+#    spring.datasource.username: postgres
+#    spring.datasource.password: ooad..sustech
+#    spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    username: postgres
+    password: 2333
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQL92Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: true
+
+anti:
+  reptile:
+    manager:
+      enabled: true
+#anti.reptile.manager.enabled = true
+# Logger Config
+logging:
+  level:
+    cs309_dorm_backend: debug

@@ -1,5 +1,6 @@
 package cs309_dorm_backend.controller;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.UserDto;
@@ -54,7 +55,6 @@ public class UserController {
                 .build();
     }
 
-
     @PostMapping("/register")
     public GlobalResponse registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
         UserDto userDto = userService.register(userForm, result);
@@ -76,13 +76,13 @@ public class UserController {
                 .data(userDto)
                 .build();
     }
-
+    @AntiReptile
     @GetMapping("/findAll")
     @ApiOperation(value = "Find all users")
     public List<User> findAll() {
         return userService.findAll();
     }
-
+    @AntiReptile
     @GetMapping("/findById/{campusId}")
     @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
     public User findById(@PathVariable String campusId) {
