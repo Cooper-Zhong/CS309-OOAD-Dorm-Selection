@@ -26,9 +26,9 @@ public class Room {
 
     @NotNull
     @JsonAlias("buildingId")
-    @JsonIdentityReference(alwaysAsId = true) //当序列化 Room 实体时，只会包含 Building 的 buildingId 属性
+//    @JsonIdentityReference(alwaysAsId = true) //当序列化 Room 实体时，只会包含 Building 的 buildingId 属性
     //使用 buildingId 属性作为标识来识别 Building 实体。
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "buildingId")
+//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "buildingId")
     @ManyToOne(fetch = FetchType.LAZY) // a room belongs to a building
     @OnDelete(action = OnDeleteAction.CASCADE) //当删除 building 时，删除该 building 下的所有 room
     @JoinColumn(name = "building_id", referencedColumnName = "building_id", nullable = false,
