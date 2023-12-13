@@ -55,7 +55,7 @@ public class ZoneContoller {
         }
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public GlobalResponse update(@RequestBody ZoneUpdateDto zoneUpdateDto) {
         Zone zone = zoneService.update(zoneUpdateDto);
         if (zone == null) {
