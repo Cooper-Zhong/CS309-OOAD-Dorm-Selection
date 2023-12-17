@@ -18,6 +18,10 @@ public class CommentDto {
 
     @ApiModelProperty
     @NotBlank
+    private String authorName;
+
+    @ApiModelProperty
+    @NotBlank
     private int buildingId;
 
     @ApiModelProperty
