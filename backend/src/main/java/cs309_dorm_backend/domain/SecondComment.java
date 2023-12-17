@@ -25,7 +25,6 @@ public class SecondComment {
     @Column(name = "second_comment_id")
     private int secondCommentId;
 
-
     //    @JsonIgnore
     @JsonAlias("parentCommentId")
     @JsonIdentityReference(alwaysAsId = true) //当序列化 SecondComment 实体时，只会包含 Comment 的 parentCommentId 属性
@@ -47,6 +46,10 @@ public class SecondComment {
     @JoinColumn(name = "author_id", referencedColumnName = "campus_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_second_comment_user", value = ConstraintMode.CONSTRAINT))
     private User author;
+
+    // 加一列author_name，用于前端显示
+    @Column(name = "author_name", nullable = false)
+    private String authorName;
 
     @NotNull
     @Column(name = "content", nullable = false)

@@ -2,11 +2,8 @@ package cs309_dorm_backend.service.comment;
 
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.SecondCommentRepo;
-import cs309_dorm_backend.domain.Comment;
+import cs309_dorm_backend.domain.*;
 import cs309_dorm_backend.dao.CommentRepo;
-import cs309_dorm_backend.domain.Room;
-import cs309_dorm_backend.domain.SecondComment;
-import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.CommentDto;
 import cs309_dorm_backend.dto.SecondCommentDto;
 import cs309_dorm_backend.service.room.RoomService;
@@ -169,6 +166,7 @@ public class CommentServiceImpl implements CommentService {
         User author = userService.findByCampusId(commentDto.getAuthorId());
         Room room = roomService.findOne(commentDto.getBuildingId(), commentDto.getRoomNumber());
         return Comment.builder().author(author)
+                .authorName(commentDto.getAuthorName())
                 .room(room)
                 .content(commentDto.getContent())
                 .time(new Timestamp(System.currentTimeMillis())) // current time
@@ -179,11 +177,13 @@ public class CommentServiceImpl implements CommentService {
         User author = userService.findByCampusId(secondCommentDto.getAuthorId());
         Comment parent = commentRepo.findById(secondCommentDto.getParentId()).orElse(null);
         return SecondComment.builder().author(author)
+                .authorName(secondCommentDto.getAuthorName())
                 .parentComment(parent)
                 .content(secondCommentDto.getContent())
                 .time(new Timestamp(System.currentTimeMillis())) // current time
                 .build();
     }
+
 
 
 }

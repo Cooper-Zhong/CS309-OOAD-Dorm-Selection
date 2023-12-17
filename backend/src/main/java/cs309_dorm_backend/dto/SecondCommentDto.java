@@ -18,6 +18,10 @@ public class SecondCommentDto {
 
     @ApiModelProperty
     @NotBlank
+    private String authorName;
+
+    @ApiModelProperty
+    @NotBlank
     private int parentId;
 
     @ApiModelProperty
