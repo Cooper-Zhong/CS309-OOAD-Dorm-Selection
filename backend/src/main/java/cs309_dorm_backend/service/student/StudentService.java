@@ -10,6 +10,8 @@ public interface StudentService {
 
     Student findById(String id);
 
+    String findNameById(String id);
+
     Student save(Student student);
 
     Student update(Student student);

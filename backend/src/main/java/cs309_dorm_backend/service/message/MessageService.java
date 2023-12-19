@@ -21,5 +21,7 @@ public interface MessageService {
 
     Message addOne(MessageDto messageDto, BindingResult result);
 
+    boolean read(int messageId);
+
 //    Message update(MessageDto messageDto, BindingResult result);
 }

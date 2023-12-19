@@ -26,4 +26,7 @@ public interface StudentRepo extends JpaRepository<Student, String> {
     @Query(value = "delete from students where student_id = :studentId", nativeQuery = true)
     void deleteStudent(String studentId);
 
+    @Query(value = "select name from students where student_id = :studentId", nativeQuery = true)
+    String findNameById(String studentId);
+
 }

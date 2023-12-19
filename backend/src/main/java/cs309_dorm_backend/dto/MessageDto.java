@@ -13,21 +13,22 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDto {
-//
-//    @ApiModelProperty
-//    @NotBlank
-//    private boolean isRead;
+
 
     @ApiModelProperty
     @NotBlank
-    private String messageContent;
+    private String senderId;
 
     @ApiModelProperty
     @NotBlank
-    private String messageTitle;
+    private String senderName;
 
     @ApiModelProperty
     @NotBlank
-    private String messageReceiverId;
+    private String receiverId;
+
+    @ApiModelProperty
+    @NotBlank
+    private String content;
 
 }
