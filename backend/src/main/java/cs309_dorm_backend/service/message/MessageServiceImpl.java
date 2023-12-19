@@ -4,14 +4,13 @@ import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.domain.Message;
 import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.MessageDto;
-import cs309_dorm_backend.dto.MessageUpdateDto;
 import cs309_dorm_backend.service.user.UserService;
-import org.springframework.data.domain.Page;
+import cs309_dorm_backend.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +77,23 @@ public class MessageServiceImpl implements MessageService {
         if (result.hasErrors()) {
             throw new MyException(4, result.getFieldError().getDefaultMessage());
         }
+        String receiverId = messageDto.getReceiverId();
+        // send message via websocket, if receiver is online
+        WebSocketServer.sendData(messageDto.getContent(), receiverId);
+
         return save(convertToMessage(messageDto));
+    }
+
+    @Override
+    public boolean read(int messageId) {
+        try {
+            Message message = findById(messageId);
+            message.setRead(true);
+            save(message);
+            return true;
+        } catch (Exception e) {
+            throw new MyException(4, "message " + messageId + " does not exist");
+        }
     }
 
 //    @Override
@@ -103,19 +118,27 @@ public class MessageServiceImpl implements MessageService {
 
 
     private Message convertToMessage(MessageDto messageDto) {
-        String messageContent = messageDto.getMessageContent();
-//        boolean isRead = messageDto.isRead();
-        String receiverId = messageDto.getMessageReceiverId();
+        String messageContent = messageDto.getContent();
+        if (messageContent == null || messageContent.length() == 0) {
+            throw new MyException(4, "message content cannot be empty");
+        }
+        String receiverId = messageDto.getReceiverId();
+        String senderId = messageDto.getSenderId();
+        String senderName = messageDto.getSenderName();
         User receiver = userService.findByCampusId(receiverId);
         if (receiver == null) {
             throw new MyException(4, "User " + receiverId + " does not exist");
         }
+        User sender = userService.findByCampusId(senderId);
+        if (sender == null) {
+            throw new MyException(4, "User " + senderId + " does not exist");
+        }
         return Message.builder()
-                .messageTitle(messageDto.getMessageTitle())
-                .messageContent(messageContent)
-                .messageTime(new Timestamp(System.currentTimeMillis()))
+                .content(messageContent)
+                .time(new Timestamp(System.currentTimeMillis()))
                 .receiver(receiver)
-                .isRead(false)
+                .read(false)
+                .sender(sender)
                 .build();
     }
 }

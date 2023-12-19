@@ -27,6 +27,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public String findNameById(String id) {
+        return studentRepo.findNameById(id);
+    }
+
+    @Override
     public Student save(Student student) {
         String campusId = student.getStudentId();
         Student student1 = studentRepo.findById(campusId).orElse(null);

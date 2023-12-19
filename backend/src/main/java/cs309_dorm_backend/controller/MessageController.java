@@ -5,6 +5,7 @@ import java.util.List;
 import cs309_dorm_backend.domain.Message;
 import cs309_dorm_backend.dto.MessageDto;
 import cs309_dorm_backend.service.message.MessageService;
+import cs309_dorm_backend.websocket.WebSocketServer;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,13 +31,10 @@ public class MessageController {
                 .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
                 .build();
     }
-
-
     @GetMapping("/findAll")
     public List<Message> findAll() {
         return messageService.findAll();
     }
-
     @GetMapping("/findById/{messageId}")
     public Message findById(@PathVariable int messageId) {
         return messageService.findById(messageId);
@@ -60,6 +58,11 @@ public class MessageController {
     @PostMapping("/addOne")
     public Message addOne(@RequestBody @Valid MessageDto messageDto, BindingResult result) {
         return messageService.addOne(messageDto, result);
+    }
+
+    @GetMapping("/read/{messageId}")
+    public boolean read(@PathVariable int messageId) {
+        return messageService.read(messageId);
     }
 
 //    @PutMapping("/update")
