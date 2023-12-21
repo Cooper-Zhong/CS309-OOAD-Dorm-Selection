@@ -25,8 +25,7 @@ public class User {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(name = "name", nullable = false)
-    @NotNull
+    @Column(name = "name")
     private String name;
 
     @JsonIgnore

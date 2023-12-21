@@ -4,6 +4,7 @@ import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.StudentRepo;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
+import cs309_dorm_backend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentRepo studentRepo;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<Student> findAll() {
@@ -50,6 +54,7 @@ public class StudentServiceImpl implements StudentService {
             throw new MyException(404, "student " + campusId + " not found");
         } else {
             student.setUser(student1.getUser());
+            userService.updateName(student1.getStudentId(), student1.getName());
             return studentRepo.save(student);
         }
     }
