@@ -1,19 +1,17 @@
 package cs309_dorm_backend.service.message;
 
+import com.alibaba.fastjson.JSON;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.domain.Message;
 import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.MessageDto;
 import cs309_dorm_backend.service.user.UserService;
-import cs309_dorm_backend.websocket.WebSocketServer;
+import cs309_dorm_backend.websocket.MessageWebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 import cs309_dorm_backend.dao.MessageRepo;
 import org.springframework.validation.BindingResult;
@@ -42,6 +40,11 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> findByReceiverId(String receiverId) {
         return messageRepo.findByReceiverId(receiverId);
+    }
+
+    @Override
+    public List<Message> findBySenderIdAndReceiverId(String senderId, String receiverId) {
+        return messageRepo.findBySenderIdAndReceiverId(senderId, receiverId);
     }
 
     @Override
@@ -78,10 +81,10 @@ public class MessageServiceImpl implements MessageService {
             throw new MyException(4, result.getFieldError().getDefaultMessage());
         }
         String receiverId = messageDto.getReceiverId();
+        Message saved = save(convertToMessage(messageDto));
         // send message via websocket, if receiver is online
-        WebSocketServer.sendData(messageDto.getContent(), receiverId);
-
-        return save(convertToMessage(messageDto));
+        MessageWebSocketServer.sendData(JSON.toJSONString(toDto(saved)), receiverId);
+        return saved;
     }
 
     @Override
@@ -94,6 +97,19 @@ public class MessageServiceImpl implements MessageService {
         } catch (Exception e) {
             throw new MyException(4, "message " + messageId + " does not exist");
         }
+    }
+
+    @Override
+    public MessageDto toDto(Message message) {
+        return MessageDto.builder()
+                .senderId(message.getSender().getCampusId())
+                .senderName(message.getSender().getName())
+                .content(message.getContent())
+                .receiverId(message.getReceiver().getCampusId())
+                .receiverName(message.getReceiver().getName())
+                .read(message.isRead())
+                .messageId(message.getMessageId())
+                .build();
     }
 
 //    @Override

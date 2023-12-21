@@ -10,13 +10,11 @@ import cs309_dorm_backend.dto.SecondCommentDto;
 import cs309_dorm_backend.service.notification.NotificationService;
 import cs309_dorm_backend.service.room.RoomService;
 import cs309_dorm_backend.service.user.UserService;
-import cs309_dorm_backend.websocket.WebSocketServer;
+import cs309_dorm_backend.websocket.MessageWebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
@@ -175,7 +173,7 @@ public class CommentServiceImpl implements CommentService {
         temp.put("timestamp", secondComment.getTime());
         Notification notification = notificationService.createNotification("comment", parent.getAuthor().getCampusId(), temp.toJSONString());
         // websocket
-        WebSocketServer.sendData(JSONObject.toJSONString(notification), parent.getAuthor().getCampusId());
+        MessageWebSocketServer.sendData(JSONObject.toJSONString(notification), parent.getAuthor().getCampusId());
         return secondComment;
     }
 
