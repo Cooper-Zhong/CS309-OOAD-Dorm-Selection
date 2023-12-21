@@ -3,6 +3,7 @@ package cs309_dorm_backend.service.teacher;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.TeacherRepo;
 import cs309_dorm_backend.domain.Teacher;
+import cs309_dorm_backend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class TeacherServiceImpl implements TeacherService {
     @Autowired
     private TeacherRepo teacherRepo;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public Teacher update(Teacher teacher) {
         String teacherId = teacher.getTeacherId();
@@ -23,6 +27,7 @@ public class TeacherServiceImpl implements TeacherService {
             throw new MyException(404, "teacher " + teacherId + " not found");
         } else {
             teacher.setUser(teacher1.getUser()); // user cannot be changed, assign primary key
+            userService.updateName(teacherId, teacher.getName());
             return teacherRepo.save(teacher);
         }
     }
