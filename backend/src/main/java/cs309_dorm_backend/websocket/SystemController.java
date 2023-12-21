@@ -1,9 +1,7 @@
 package cs309_dorm_backend.websocket;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,7 +20,7 @@ public class SystemController {
         Map<String, Object> result = new HashMap<>();
         HashSet<String> sids = new HashSet<>();
         sids.add(cid);
-        WebSocketServer.sendData("服务端推送消息：" + message, sids);
+        MessageWebSocketServer.sendData("服务端推送消息：" + message, sids);
         result.put("code", cid);
         result.put("msg", message);
         return result;

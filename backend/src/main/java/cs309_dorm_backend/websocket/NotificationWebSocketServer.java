@@ -6,11 +6,9 @@ import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.domain.Message;
 import cs309_dorm_backend.domain.Notification;
 import cs309_dorm_backend.service.message.MessageService;
-import cs309_dorm_backend.service.message.MessageServiceImpl;
 import cs309_dorm_backend.service.notification.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.websocket.*;
@@ -34,28 +32,35 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @ServerEndpoint 注解是一个类层次的注解，它的功能主要是将目前的类定义成一个websocket服务器端,
  * 注解的值将被用于监听用户连接的终端访问URL地址,客户端可以通过这个URL来连接到WebSocket服务器端。
  */
-@Component
+//@Component
 @Slf4j
 @Service
-@ServerEndpoint("/api/websocket/{sid}")
-public class WebSocketServer {
+@ServerEndpoint("/api/websocket/notification/{sid}")
+public class NotificationWebSocketServer {
+
 
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static AtomicInteger onlineCount = new AtomicInteger(0);
     //concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。
-    private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<>();
-    private static ConcurrentMap<String, WebSocketServer> webSocketMap = new ConcurrentHashMap<>(); // studentId -> WebSocketServer
+    private static CopyOnWriteArraySet<NotificationWebSocketServer> webSocketSet = new CopyOnWriteArraySet<>();
+    private static ConcurrentMap<String, NotificationWebSocketServer> webSocketMap = new ConcurrentHashMap<>(); // studentId -> WebSocketServer
+
+
+    private static NotificationService notificationService;
+
+    // websocket是多对象的，而bean默认是单例的，所以需要用static修饰
 
     @Autowired
-    private MessageService messageService = new MessageServiceImpl();
+    public void setNotificationService(NotificationService notificationService) {
+        NotificationWebSocketServer.notificationService = notificationService;
+    }
 
-    @Autowired
-    private NotificationService notificationService;
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
     //接收sid
     private String sid = "";
+
 
     /**
      * 连接建立成功调用的方法
@@ -68,8 +73,7 @@ public class WebSocketServer {
         this.sid = sid;
         addOnlineCount();           // 在线数加1
         try {
-            sendData("fuck you");
-            pushMessages();
+            sendData("我是丁真，欢迎加入聊天室");
             pushNotifications();
             log.info("有新客户端开始监听,sid=" + sid + ",当前在线人数为:" + getOnlineCount());
         } catch (IOException e) {
@@ -77,14 +81,6 @@ public class WebSocketServer {
         }
     }
 
-    public void pushMessages() {
-        List<Message> messageList = messageService.findByReceiverId(this.sid);
-        try {
-            sendData(JSON.toJSONString(messageList));
-        } catch (IOException e) {
-            throw new MyException(4, "push messages to " + sid + " failed");
-        }
-    }
 
     public void pushNotifications() {
         List<Notification> notificationList = notificationService.findByReceiverId(this.sid);
@@ -138,7 +134,7 @@ public class WebSocketServer {
      * 群发自定义消息给指定sid
      */
     public static void sendData(String message, HashSet<String> toSids) {
-        WebSocketServer target = null;
+        NotificationWebSocketServer target = null;
         log.info("推送消息到客户端 " + toSids + "，推送内容:" + message);
         for (String sid : toSids) {
             try {
@@ -150,26 +146,13 @@ public class WebSocketServer {
                 continue;
             }
         }
-
-//        for (WebSocketServer item : webSocketSet) {
-//            try {
-//                //这里可以设定只推送给传入的sid，为null则全部推送
-//                if (toSids.size()<=0) {
-//                    item.sendData(message);
-//                } else if (toSids.contains(item.sid)) {
-//                    item.sendData(message);
-//                }
-//            } catch (IOException e) {
-//                continue;
-//            }
-//        }
     }
 
     /**
      * 发自定义消息给指定sid
      */
     public static void sendData(String message, String toSid) {
-        WebSocketServer target = null;
+        NotificationWebSocketServer target = null;
         try {
             target = webSocketMap.get(toSid);
             if (target != null) {
@@ -234,7 +217,7 @@ public class WebSocketServer {
      *
      * @return
      */
-    public static CopyOnWriteArraySet<WebSocketServer> getWebSocketSet() {
+    public static CopyOnWriteArraySet<NotificationWebSocketServer> getWebSocketSet() {
         return webSocketSet;
     }
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import cs309_dorm_backend.domain.Message;
 import cs309_dorm_backend.dto.MessageDto;
 import cs309_dorm_backend.service.message.MessageService;
-import cs309_dorm_backend.websocket.WebSocketServer;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

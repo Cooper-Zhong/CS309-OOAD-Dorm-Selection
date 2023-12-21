@@ -11,7 +11,7 @@ import cs309_dorm_backend.dto.InvitationDto;
 import cs309_dorm_backend.service.notification.NotificationService;
 import cs309_dorm_backend.service.student.StudentService;
 import cs309_dorm_backend.service.team.TeamService;
-import cs309_dorm_backend.websocket.WebSocketServer;
+import cs309_dorm_backend.websocket.MessageWebSocketServer;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,10 +74,10 @@ public class invitationServiceImpl implements InvitationService {
             Notification notification;
             if (invitationDto.isInvitation()) { // invitation
                 notification = notificationService.createNotification("invitation", invitationDto.getStudentId(), temp.toJSONString());
-                WebSocketServer.sendData((JSONObject) JSONObject.toJSON(notification), invitationDto.getStudentId());
+                MessageWebSocketServer.sendData((JSONObject) JSONObject.toJSON(notification), invitationDto.getStudentId());
             } else { // application, send to team creator
                 notification = notificationService.createNotification("invitation", invitationDto.getCreatorId(), temp.toJSONString());
-                WebSocketServer.sendData((JSONObject) JSONObject.toJSON(notification), invitationDto.getCreatorId());
+                MessageWebSocketServer.sendData((JSONObject) JSONObject.toJSON(notification), invitationDto.getCreatorId());
             }
             return invitation;
         } catch (Exception e) {
