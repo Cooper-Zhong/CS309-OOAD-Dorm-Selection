@@ -1,5 +1,6 @@
 package cs309_dorm_backend.service.comment;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.SecondCommentRepo;
@@ -173,7 +174,7 @@ public class CommentServiceImpl implements CommentService {
         temp.put("timestamp", secondComment.getTime());
         Notification notification = notificationService.createNotification("comment", parent.getAuthor().getCampusId(), temp.toJSONString());
         // websocket
-        MessageWebSocketServer.sendData(JSONObject.toJSONString(notification), parent.getAuthor().getCampusId());
+        MessageWebSocketServer.sendData(JSON.toJSONString(notification), parent.getAuthor().getCampusId());
         return secondComment;
     }
 
