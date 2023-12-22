@@ -17,7 +17,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 @Table(name = "second_comments")
-//@IdClass(SecondCommentId.class)
 public class SecondComment {
 
     @Id
@@ -59,7 +58,6 @@ public class SecondComment {
     @Column(name = "time", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8") //beijing time
     private Timestamp time;
-
 }
 
 //@Data

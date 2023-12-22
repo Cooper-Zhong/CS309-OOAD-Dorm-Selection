@@ -1,5 +1,6 @@
 package cs309_dorm_backend.service.invitation;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.InvitationRepo;
@@ -74,10 +75,15 @@ public class invitationServiceImpl implements InvitationService {
             Notification notification;
             if (invitationDto.isInvitation()) { // invitation
                 notification = notificationService.createNotification("invitation", invitationDto.getStudentId(), temp.toJSONString());
-                MessageWebSocketServer.sendData((JSONObject) JSONObject.toJSON(notification), invitationDto.getStudentId());
+                MessageWebSocketServer.sendData(JSON.toJSONString(notification), invitationDto.getStudentId());
             } else { // application, send to team creator
                 notification = notificationService.createNotification("invitation", invitationDto.getCreatorId(), temp.toJSONString());
-                MessageWebSocketServer.sendData((JSONObject) JSONObject.toJSON(notification), invitationDto.getCreatorId());
+                try {
+                    MessageWebSocketServer.sendData(JSON.toJSONString(notification), invitationDto.getCreatorId());
+                } catch (Exception e) {
+                    log.info(e.getMessage());
+                    throw new MyException(3, "websocket notification failed");
+                }
             }
             return invitation;
         } catch (Exception e) {
