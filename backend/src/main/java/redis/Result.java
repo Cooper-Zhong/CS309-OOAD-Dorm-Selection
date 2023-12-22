@@ -1,4 +1,4 @@
-package cs309_dorm_backend.domain;
+package redis;
 
 public class Result {
     private int code;
