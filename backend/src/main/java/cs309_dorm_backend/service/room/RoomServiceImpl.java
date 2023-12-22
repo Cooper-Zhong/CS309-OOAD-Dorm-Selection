@@ -96,6 +96,9 @@ public class RoomServiceImpl implements RoomService {
         int teamId = selectDto.getTeamId();
 
         Room room = roomRepo.findRoomWithLock(RoomId);
+        if (room == null) { // room does not exist
+            throw new MyException(404, "room " + RoomId + " does not exist");
+        }
         if (room.getAssignedTeam() != null) { // room already assigned
             return null;
         }
