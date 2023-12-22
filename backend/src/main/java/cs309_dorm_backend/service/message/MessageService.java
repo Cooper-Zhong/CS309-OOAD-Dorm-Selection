@@ -13,6 +13,8 @@ public interface MessageService {
 
     List<Message> findByReceiverId(String receiverId);
 
+    List<Message> findBySenderIdAndReceiverId(String senderId, String receiverId);
+
     boolean deleteById(int messageId);
 
     boolean deleteByReceiverId(String receiverId);
@@ -20,6 +22,10 @@ public interface MessageService {
     Message save(Message message);
 
     Message addOne(MessageDto messageDto, BindingResult result);
+
+    boolean read(int messageId);
+
+    MessageDto toDto(Message message);
 
 //    Message update(MessageDto messageDto, BindingResult result);
 }

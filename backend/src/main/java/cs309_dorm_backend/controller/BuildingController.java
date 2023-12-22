@@ -70,7 +70,7 @@ public class BuildingController {
         }
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public GlobalResponse update(@RequestBody BuildingDto buildingDto, BindingResult result) {
         Building building = buildingService.update(buildingDto, result);
         if (building == null) {

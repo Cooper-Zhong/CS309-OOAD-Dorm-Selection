@@ -56,7 +56,7 @@ public class TeacherController {
         }
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public GlobalResponse update(@RequestBody Teacher teacher) {
         Teacher teacher1 = teacherService.update(teacher);
         if (teacher1 == null) {

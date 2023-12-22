@@ -1,21 +1,21 @@
 package cs309_dorm_backend.service.comment;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.SecondCommentRepo;
-import cs309_dorm_backend.domain.Comment;
+import cs309_dorm_backend.domain.*;
 import cs309_dorm_backend.dao.CommentRepo;
-import cs309_dorm_backend.domain.Room;
-import cs309_dorm_backend.domain.SecondComment;
-import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.CommentDto;
 import cs309_dorm_backend.dto.SecondCommentDto;
+import cs309_dorm_backend.service.notification.NotificationService;
 import cs309_dorm_backend.service.room.RoomService;
 import cs309_dorm_backend.service.user.UserService;
+import cs309_dorm_backend.websocket.MessageWebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +34,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private NotificationService notificationService;
 
 
     @Override
@@ -153,6 +156,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public SecondComment addSecondComment(SecondCommentDto secondCommentDto) {
         User author = userService.findByCampusId(secondCommentDto.getAuthorId());
         if (author == null) {
@@ -162,13 +166,23 @@ public class CommentServiceImpl implements CommentService {
         if (parent == null) {
             throw new MyException(5, "parent comment " + secondCommentDto.getParentId() + " does not exist");
         }
-        return saveSecondComment(convertToSecondComment(secondCommentDto));
+        SecondComment secondComment = saveSecondComment(convertToSecondComment(secondCommentDto));
+        // send notification to parent comment author
+        JSONObject temp = new JSONObject();
+        temp.put("sender", author.getName());
+        temp.put("content", secondCommentDto.getContent());
+        temp.put("timestamp", secondComment.getTime());
+        Notification notification = notificationService.createNotification("comment", parent.getAuthor().getCampusId(), temp.toJSONString());
+        // websocket
+        MessageWebSocketServer.sendData(JSON.toJSONString(notification), parent.getAuthor().getCampusId());
+        return secondComment;
     }
 
     private Comment convertToComment(CommentDto commentDto) {
         User author = userService.findByCampusId(commentDto.getAuthorId());
         Room room = roomService.findOne(commentDto.getBuildingId(), commentDto.getRoomNumber());
         return Comment.builder().author(author)
+                .authorName(commentDto.getAuthorName())
                 .room(room)
                 .content(commentDto.getContent())
                 .time(new Timestamp(System.currentTimeMillis())) // current time
@@ -179,6 +193,7 @@ public class CommentServiceImpl implements CommentService {
         User author = userService.findByCampusId(secondCommentDto.getAuthorId());
         Comment parent = commentRepo.findById(secondCommentDto.getParentId()).orElse(null);
         return SecondComment.builder().author(author)
+                .authorName(secondCommentDto.getAuthorName())
                 .parentComment(parent)
                 .content(secondCommentDto.getContent())
                 .time(new Timestamp(System.currentTimeMillis())) // current time

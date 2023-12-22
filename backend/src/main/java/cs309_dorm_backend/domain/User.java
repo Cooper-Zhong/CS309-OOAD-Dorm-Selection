@@ -25,6 +25,9 @@ public class User {
     @Column(name = "role", nullable = false)
     private String role;
 
+    @Column(name = "name")
+    private String name;
+
     @JsonIgnore
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<Comment> comments; // a user can have many first comments

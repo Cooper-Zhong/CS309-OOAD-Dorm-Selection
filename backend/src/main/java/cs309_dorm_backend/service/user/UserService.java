@@ -24,5 +24,7 @@ public interface UserService {
 
     boolean deleteByCampusId(String campusId);
 
+    void updateName(String campusId, String name);
+
 
 }

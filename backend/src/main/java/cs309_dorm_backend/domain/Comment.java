@@ -34,6 +34,10 @@ public class Comment {
             foreignKey = @ForeignKey(name = "fk_comment_user", value = ConstraintMode.CONSTRAINT))
     private User author;
 
+    // 加一列author_name，用于前端显示
+    @Column(name = "author_name", nullable = false)
+    private String authorName;
+
     @JsonAlias("roomId")
     @JsonIdentityReference(alwaysAsId = true) //当序列化 Comment 实体时，只会包含 Room 的 roomId 属性
     //使用 roomId 属性作为标识来识别 Room 实体。

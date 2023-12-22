@@ -102,6 +102,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void updateName(String campusId, String name) {
+        User user = userRepo.findUserByCampusId(campusId);
+        if (user == null) {
+            throw new MyException(404, "user " + campusId + " not found");
+        }
+        user.setName(name);
+        save(user);
+    }
+
     private UserDto convertUser(User user) {
         return UserDto.builder()
                 .campusId(user.getCampusId())
