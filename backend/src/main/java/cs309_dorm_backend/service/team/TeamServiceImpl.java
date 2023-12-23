@@ -221,6 +221,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Room unselectRoom(SelectDto selectDto) {
+        return roomService.unselectRoom(selectDto);
+    }
+
+    @Override
     public Room findSelectedRoom(int teamId) {
         return roomService.findSelectedRoom(teamId);
     }

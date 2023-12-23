@@ -57,7 +57,7 @@ public class Team {
 //    @JsonIdentityReference(alwaysAsId = true)
     private Set<Student> teamMembers;
 
-    //    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany// a team can favorite many rooms
     @JoinTable(
             name = "favorite_rooms", // 中间表的名字
@@ -65,6 +65,7 @@ public class Team {
             inverseJoinColumns = @JoinColumn(name = "room_id"
                     , foreignKey = @ForeignKey(name = "fk_favorite_room", value = ConstraintMode.NO_CONSTRAINT))
     ) // 中间表的另一个外键
+    @JsonManagedReference
     private Set<Room> favoriteRooms;
 }
 
