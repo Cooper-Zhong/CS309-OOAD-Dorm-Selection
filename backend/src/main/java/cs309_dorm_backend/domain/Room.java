@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "rooms", uniqueConstraints = @UniqueConstraint(columnNames = {"building_id", "room_number"}))
-@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class Room {
 
     @Id
@@ -63,10 +63,13 @@ public class Room {
     private Set<Team> favoriteTeams;
 
 
-    @JsonIgnore
+    //    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     // a room can be assigned to one team
     @JoinColumn(name = "team_id", referencedColumnName = "team_id")
-    private Team assignedTeam; // a room can only be assigned to one team
+    @JsonProperty("selectedTeamCreatorId")
+    @JsonIdentityReference(alwaysAsId = true) //当序列化 Room 实体时，只会包含 Team 的 creatorId 属性
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "creatorId")
+    private Team selectedTeam; // a room can only be assigned to one team
 }
 

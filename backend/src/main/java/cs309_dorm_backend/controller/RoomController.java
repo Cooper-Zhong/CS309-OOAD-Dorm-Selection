@@ -1,6 +1,7 @@
 package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.domain.Room;
+import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.RoomDto;
 import cs309_dorm_backend.dto.SelectDto;
@@ -45,6 +46,12 @@ public class RoomController {
         }
     }
 
+    @GetMapping("/findAssignedTeam/{roomId}")
+    public GlobalResponse findAssignedTeam(@PathVariable int roomId) {
+        Team team = roomService.findAssignedTeam(roomId);
+        return new GlobalResponse<>(0, "success", team);
+    }
+
     @DeleteMapping("/delete/{buildingId}/{roomNumber}")
     public GlobalResponse deleteById(@PathVariable int buildingId, @PathVariable int roomNumber) {
         boolean result = roomService.delete(buildingId, roomNumber);
@@ -74,6 +81,7 @@ public class RoomController {
             return new GlobalResponse<>(0, "success", room);
         }
     }
+
 
 }
 

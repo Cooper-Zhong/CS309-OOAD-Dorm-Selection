@@ -4,6 +4,7 @@ import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.RoomRepo;
 import cs309_dorm_backend.domain.Building;
 import cs309_dorm_backend.domain.Room;
+import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.dto.RoomDto;
 import cs309_dorm_backend.dto.SelectDto;
 import cs309_dorm_backend.service.building.BuildingService;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -94,21 +94,54 @@ public class RoomServiceImpl implements RoomService {
     public Room selectRoom(SelectDto selectDto) {
         int RoomId = selectDto.getRoomId();
         int teamId = selectDto.getTeamId();
+        Room temp = roomRepo.findSelectedRoom(teamId);
+        if (temp != null) { // team already selected a room
+            throw new MyException(5, "team " + teamId + " already selected room " + temp.getRoomId());
+        }
 
         Room room = roomRepo.findRoomWithLock(RoomId);
         if (room == null) { // room does not exist
             throw new MyException(404, "room " + RoomId + " does not exist");
         }
-        if (room.getAssignedTeam() != null) { // room already assigned
-            return null;
+        if (room.getSelectedTeam() != null) { // room already assigned
+            throw new MyException(5, "room " + RoomId + " already assigned to other team");
         }
         roomRepo.updateRoomAssignedTeam(RoomId, teamId);
         return room;
     }
 
     @Override
+    @Transactional
+    public Room unselectRoom(SelectDto selectDto) {
+        int RoomId = selectDto.getRoomId();
+        int teamId = selectDto.getTeamId();
+
+        Room room = roomRepo.findRoomWithLock(RoomId);
+        if (room == null) { // room does not exist
+            throw new MyException(404, "room " + RoomId + " does not exist");
+        }
+        if (room.getSelectedTeam() == null) { // room not assigned
+            throw new MyException(5, "You didn't select this room: " + RoomId);
+        }
+        if (room.getSelectedTeam().getTeamId() != teamId) { // room not unassigned to this team
+            throw new MyException(400, "room " + RoomId + " not unassigned to team " + teamId);
+        }
+        roomRepo.updateRoomAssignedTeamToNull(teamId);
+        return room;
+    }
+
+    @Override
     public Room findSelectedRoom(int teamId) {
         return roomRepo.findSelectedRoom(teamId);
+    }
+
+    @Override
+    public Team findAssignedTeam(int roomId) {
+        Room room = roomRepo.findById(roomId).orElse(null);
+        if (room == null) {
+            throw new MyException(404, "room " + roomId + " does not exist");
+        }
+        return room.getSelectedTeam();
     }
 
     private Room convertToRoom(RoomDto roomDto) {

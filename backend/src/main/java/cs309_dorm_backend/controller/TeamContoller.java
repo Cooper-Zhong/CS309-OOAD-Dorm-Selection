@@ -58,6 +58,16 @@ public class TeamContoller {
         }
     }
 
+    @PostMapping("/unselectRoom")
+    public GlobalResponse unselectRoom(@RequestBody SelectDto selectDto) {
+        Room room = teamService.unselectRoom(selectDto);
+        if (room == null) {
+            return new GlobalResponse<>(1, "Room already been selected by other team!", null);
+        } else {
+            return new GlobalResponse<>(0, "Successfully unselected!", room);
+        }
+    }
+
     @GetMapping("/findSelectedRoom/{teamId}")
     public GlobalResponse findSelectedRoom(@PathVariable int teamId) {
         Room room = teamService.findSelectedRoom(teamId);
