@@ -15,6 +15,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -72,24 +73,21 @@ public class NotificationWebSocketServer {
         webSocketMap.put(sid, this);
         this.sid = sid;
         addOnlineCount();           // 在线数加1
-        try {
-            sendData("我是丁真，欢迎加入聊天室");
-            pushNotifications();
-            log.info("有新客户端开始监听,sid=" + sid + ",当前在线人数为:" + getOnlineCount());
-        } catch (IOException e) {
-            log.error("websocket IO Exception");
-        }
+        pushNotifications();
+        log.info("有新客户端开始监听,sid=" + sid + ",当前在线人数为:" + getOnlineCount());
     }
 
 
     public void pushNotifications() {
         List<Notification> notificationList = notificationService.findByReceiverId(this.sid);
         try {
-            sendData(JSON.toJSONString(notificationList));
+            notificationList.sort(Comparator.comparing(Notification::getTime));
+            for (Notification notification : notificationList) {
+                sendData(JSON.toJSONString(notificationService.toDto(notification)));
+            }
         } catch (IOException e) {
             throw new MyException(4, "push notifications to " + sid + " failed");
         }
-
     }
 
 
