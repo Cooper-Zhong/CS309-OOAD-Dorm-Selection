@@ -30,8 +30,15 @@ public interface RoomRepo extends JpaRepository<Room, Integer> {
     @Query(value = "update rooms set team_id = :teamId where room_id = :roomId", nativeQuery = true)
     void updateRoomAssignedTeam(@Param("roomId") int roomId, @Param("teamId") int teamId);
 
-    @Query(value = "select * from rooms where team_id = :teamId", nativeQuery = true)
+    @Modifying
+    @Query(value = "update rooms set team_id = null where team_id = :teamId", nativeQuery = true)
+    void updateRoomAssignedTeamToNull(@Param("teamId") int teamId);
+
+    @Query(value = "select r from Room r where r.selectedTeam.teamId = :teamId")
     Room findSelectedRoom(@Param("teamId") int teamId);
+
+    @Query(value = "select swap_team_ids(:roomId1, :roomId2)", nativeQuery = true)
+    void swapRoom(@Param("roomId1") int roomId1, @Param("roomId2") int roomId2);
 
 
 }

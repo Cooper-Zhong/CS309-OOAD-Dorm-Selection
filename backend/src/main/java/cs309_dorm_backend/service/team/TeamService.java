@@ -36,9 +36,15 @@ public interface TeamService {
 
     Room selectRoom(SelectDto selectDto);
 
+    Room unselectRoom(SelectDto selectDto);
+
     Room findSelectedRoom(int teamId);
 
     boolean favoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult); // add a favorite room for a team that the student is in
 
     boolean unfavoriteRoom(FavoriteDto favoriteDto, BindingResult bindingResult); // remove a favorite room for a team that the student is in
+
+    void swapRoom(int roomId1, int roomId2);
+
+    void applySwap(int applyCreatorId, int applyReceiverId);
 }

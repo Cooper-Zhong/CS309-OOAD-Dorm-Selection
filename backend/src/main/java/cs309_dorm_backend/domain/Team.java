@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
@@ -51,13 +52,16 @@ public class Team {
     @Column(name = "creator_id", unique = true)
     private String creatorId;
 
+//    @Formula("(SELECT s.degree FROM students s WHERE s.student_id = creator_id)")
+//    private String degree;
+
     @OneToMany(mappedBy = "team")
     // only serialize id.
 //    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "studentId")
 //    @JsonIdentityReference(alwaysAsId = true)
     private Set<Student> teamMembers;
 
-    //    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany// a team can favorite many rooms
     @JoinTable(
             name = "favorite_rooms", // 中间表的名字

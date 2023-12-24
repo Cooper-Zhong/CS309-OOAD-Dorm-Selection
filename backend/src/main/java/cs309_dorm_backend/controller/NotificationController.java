@@ -3,10 +3,7 @@ package cs309_dorm_backend.controller;
 import cs309_dorm_backend.domain.Notification;
 import cs309_dorm_backend.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,12 +30,12 @@ public class NotificationController {
         return notificationService.findByReceiverId(receiverId);
     }
 
-    @GetMapping("/deleteById/{notificationId}")
+    @DeleteMapping("/deleteById/{notificationId}")
     public boolean deleteById(@PathVariable int notificationId) {
         return notificationService.deleteById(notificationId);
     }
 
-    @GetMapping("/deleteByReceiverId/{receiverId}")
+    @DeleteMapping("/deleteByReceiverId/{receiverId}")
     public boolean deleteByReceiverId(@PathVariable String receiverId) {
         return notificationService.deleteByReceiverId(receiverId);
     }

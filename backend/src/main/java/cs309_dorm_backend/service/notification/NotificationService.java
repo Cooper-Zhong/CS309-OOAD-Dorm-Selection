@@ -1,6 +1,7 @@
 package cs309_dorm_backend.service.notification;
 
 import cs309_dorm_backend.domain.Notification;
+import cs309_dorm_backend.dto.NotificationDto;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface NotificationService {
 
     boolean read(int notificationId);
 
+    NotificationDto toDto(Notification notification);
 }

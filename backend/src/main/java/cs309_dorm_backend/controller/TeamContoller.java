@@ -58,6 +58,16 @@ public class TeamContoller {
         }
     }
 
+    @PostMapping("/unselectRoom")
+    public GlobalResponse unselectRoom(@RequestBody SelectDto selectDto) {
+        Room room = teamService.unselectRoom(selectDto);
+        if (room == null) {
+            return new GlobalResponse<>(1, "Room already been selected by other team!", null);
+        } else {
+            return new GlobalResponse<>(0, "Successfully unselected!", room);
+        }
+    }
+
     @GetMapping("/findSelectedRoom/{teamId}")
     public GlobalResponse findSelectedRoom(@PathVariable int teamId) {
         Room room = teamService.findSelectedRoom(teamId);
@@ -76,6 +86,18 @@ public class TeamContoller {
         } else {
             return new GlobalResponse<>(0, studentId + " is in a team", team);
         }
+    }
+
+    @GetMapping("/swapRoom")
+    public GlobalResponse swapRoom(@RequestParam int applyRoomId, @RequestParam int acceptRoomId) {
+        teamService.swapRoom(applyRoomId, acceptRoomId);
+        return new GlobalResponse<>(0, "swap room successfully", null);
+    }
+
+    @GetMapping("/applySwap")
+    public GlobalResponse applySwap(@RequestParam int applyCreatorId, @RequestParam int applyReceiverId) {
+        teamService.applySwap(applyCreatorId, applyReceiverId);
+        return new GlobalResponse<>(0, "apply swap successfully", null);
     }
 
     @PostMapping("/addTeam")
@@ -117,7 +139,6 @@ public class TeamContoller {
             return new GlobalResponse<>(0, "success", student);
         }
     }
-
 
     @DeleteMapping("/deleteByCreator/{creatorId}")
     public GlobalResponse deleteTeamByCreator(@PathVariable String creatorId) {
