@@ -144,6 +144,11 @@ public class RoomServiceImpl implements RoomService {
         return room.getSelectedTeam();
     }
 
+    @Override
+    public void swapRoom(int roomId1, int roomId2) {
+        roomRepo.swapRoom(roomId1, roomId2);
+    }
+
     private Room convertToRoom(RoomDto roomDto) {
         Building building = buildingService.findById(roomDto.getBuildingId());
         if (building == null) {

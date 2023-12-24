@@ -1,7 +1,11 @@
 package cs309_dorm_backend.service.team;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.TeamRepo;
+import cs309_dorm_backend.domain.Notification;
 import cs309_dorm_backend.domain.Room;
 import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
@@ -9,8 +13,10 @@ import cs309_dorm_backend.dto.AlterLeaderDto;
 import cs309_dorm_backend.dto.FavoriteDto;
 import cs309_dorm_backend.dto.SelectDto;
 import cs309_dorm_backend.dto.TeamMemberDto;
+import cs309_dorm_backend.service.notification.NotificationService;
 import cs309_dorm_backend.service.room.RoomService;
 import cs309_dorm_backend.service.student.StudentService;
+import cs309_dorm_backend.websocket.NotificationWebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -35,6 +41,11 @@ public class TeamServiceImpl implements TeamService {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private NotificationService notificationService;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Team findById(int id) {
@@ -164,6 +175,13 @@ public class TeamServiceImpl implements TeamService {
             throw new MyException(7, "team is full");
         }
         teamRepo.setTeam(memberId, team.getTeamId());
+        Notification notification = notificationService.createNotification("system", memberId, "You joined the team successfully!");
+        notificationService.save(notification);
+        try {
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notification), memberId);
+        } catch (Exception e) {
+            throw new MyException(3, "websocket notification failed");
+        }
         return member;
     }
 
@@ -285,5 +303,69 @@ public class TeamServiceImpl implements TeamService {
         }
         return true;
 
+    }
+
+    @Override
+    @Transactional
+    public void swapRoom(int applyRoomId, int acceptRoomId) {
+        Room room1 = roomService.findById(applyRoomId);
+        Room room2 = roomService.findById(acceptRoomId);
+        if (room1 == null) {
+            throw new MyException(404, "room " + applyRoomId + " does not exist");
+        }
+        if (room2 == null) {
+            throw new MyException(404, "room " + acceptRoomId + " does not exist");
+        }
+        Team team1 = room1.getSelectedTeam();
+        Team team2 = room2.getSelectedTeam();
+        if (team1 == null) {
+            throw new MyException(404, "room " + applyRoomId + " is not assigned to any team");
+        }
+        if (team2 == null) {
+            throw new MyException(404, "room " + acceptRoomId + " is not assigned to any team");
+        }
+        room1.setSelectedTeam(team2);
+        room2.setSelectedTeam(team1);
+        roomService.save(room1);
+        roomService.save(room2);
+        Notification toApplicant = notificationService.createNotification("system", team1.getCreatorId(), "Your swap room application has been accepted.");
+        notificationService.save(toApplicant);
+        try {
+            NotificationWebSocketServer.sendData(JSON.toJSONString(toApplicant), team1.getCreatorId());
+        } catch (Exception e) {
+            throw new MyException(3, "websocket notification failed");
+        }
+    }
+
+    @Override
+    public void applySwap(int applyCreatorId, int applyReceiverId) {
+        Team team1 = findByCreator(String.valueOf(applyCreatorId));
+        if (team1 == null) {
+            throw new MyException(4, "team created by " + applyCreatorId + " does not exist");
+        }
+        Room room1 = roomService.findSelectedRoom(team1.getTeamId());
+        if (room1 == null) {
+            throw new MyException(4, "team created by " + applyCreatorId + " does not select any room");
+        }
+        JSONObject temp = new JSONObject();
+        JSONObject tempRoom = new JSONObject();
+        tempRoom.put("roomId", room1.getRoomId());
+        tempRoom.put("buildingId", room1.getBuilding().getBuildingId());
+        tempRoom.put("district", room1.getBuilding().getZone().getName());
+        tempRoom.put("roomNumber", room1.getRoomNumber());
+        tempRoom.put("floor", room1.getFloor());
+        tempRoom.put("roomType", room1.getRoomType());
+        tempRoom.put("gender", room1.getGender());
+        tempRoom.put("selectedTeamCreatorId", room1.getSelectedTeam().getCreatorId());
+
+        temp.put("applyRoom", tempRoom);
+        temp.put(("applyTeamName"), team1.getTeamName());
+        Notification notification = notificationService.createNotification("roomExchange", String.valueOf(applyReceiverId), temp.toJSONString());
+        notificationService.save(notification);
+        try {
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notification), String.valueOf(applyReceiverId));
+        } catch (Exception e) {
+            throw new MyException(3, "websocket notification failed");
+        }
     }
 }

@@ -3,6 +3,7 @@ package cs309_dorm_backend.service.notification;
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.NotificationRepo;
 import cs309_dorm_backend.domain.Notification;
+import cs309_dorm_backend.dto.NotificationDto;
 import cs309_dorm_backend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,5 +82,17 @@ public class NotificationServiceImpl implements NotificationService {
         } catch (Exception e) {
             throw new MyException(4, "notification " + notificationId + " does not exist");
         }
+    }
+
+    @Override
+    public NotificationDto toDto(Notification notification) {
+        return NotificationDto.builder()
+                .notificationId(notification.getNotificationId())
+                .type(notification.getType())
+                .receiverId(notification.getReceiver().getCampusId())
+                .read(notification.isRead())
+                .time(notification.getTime())
+                .content(notification.getContent())
+                .build();
     }
 }

@@ -30,6 +30,7 @@ public interface RoomService {
 
     Team findAssignedTeam(int roomId);
 
+    void swapRoom(int roomId1, int roomId2);
 
 
 }

@@ -88,6 +88,18 @@ public class TeamContoller {
         }
     }
 
+    @GetMapping("/swapRoom")
+    public GlobalResponse swapRoom(@RequestParam int applyRoomId, @RequestParam int acceptRoomId) {
+        teamService.swapRoom(applyRoomId, acceptRoomId);
+        return new GlobalResponse<>(0, "swap room successfully", null);
+    }
+
+    @GetMapping("/applySwap")
+    public GlobalResponse applySwap(@RequestParam int applyCreatorId, @RequestParam int applyReceiverId) {
+        teamService.applySwap(applyCreatorId, applyReceiverId);
+        return new GlobalResponse<>(0, "apply swap successfully", null);
+    }
+
     @PostMapping("/addTeam")
     public GlobalResponse addTeam(@Valid @RequestBody Team team, BindingResult bindingResult) {
         Team team1 = teamService.addTeam(team, bindingResult);
@@ -127,7 +139,6 @@ public class TeamContoller {
             return new GlobalResponse<>(0, "success", student);
         }
     }
-
 
     @DeleteMapping("/deleteByCreator/{creatorId}")
     public GlobalResponse deleteTeamByCreator(@PathVariable String creatorId) {

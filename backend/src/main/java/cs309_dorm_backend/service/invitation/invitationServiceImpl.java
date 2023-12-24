@@ -12,7 +12,7 @@ import cs309_dorm_backend.dto.InvitationDto;
 import cs309_dorm_backend.service.notification.NotificationService;
 import cs309_dorm_backend.service.student.StudentService;
 import cs309_dorm_backend.service.team.TeamService;
-import cs309_dorm_backend.websocket.MessageWebSocketServer;
+import cs309_dorm_backend.websocket.NotificationWebSocketServer;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,16 +70,22 @@ public class invitationServiceImpl implements InvitationService {
         try {
             Invitation invitation = save(convertToInvitation(invitationDto));
             JSONObject temp = new JSONObject();
-            temp.put("teamName", invitation.getTeam().getTeamName());
-            temp.put("timestamp", new Timestamp(System.currentTimeMillis()));
             Notification notification;
             if (invitationDto.isInvitation()) { // invitation
+                temp.put("teamName", invitation.getTeam().getTeamName());
+                temp.put("timestamp", new Timestamp(System.currentTimeMillis()));
                 notification = notificationService.createNotification("invitation", invitationDto.getStudentId(), temp.toJSONString());
-                MessageWebSocketServer.sendData(JSON.toJSONString(notification), invitationDto.getStudentId());
-            } else { // application, send to team creator
-                notification = notificationService.createNotification("invitation", invitationDto.getCreatorId(), temp.toJSONString());
                 try {
-                    MessageWebSocketServer.sendData(JSON.toJSONString(notification), invitationDto.getCreatorId());
+                    NotificationWebSocketServer.sendData(JSON.toJSONString(notification), invitationDto.getStudentId());
+                } catch (Exception e) {
+                    log.info(e.getMessage());
+                    throw new MyException(2, "websocket notification failed");
+                }
+            } else { // application, send to team creator
+                temp.put("senderName", invitation.getStudent().getName());
+                notification = notificationService.createNotification("application", invitationDto.getCreatorId(), temp.toJSONString());
+                try {
+                    NotificationWebSocketServer.sendData(JSON.toJSONString(notification), invitationDto.getCreatorId());
                 } catch (Exception e) {
                     log.info(e.getMessage());
                     throw new MyException(3, "websocket notification failed");

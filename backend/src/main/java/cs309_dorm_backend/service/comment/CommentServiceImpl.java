@@ -11,7 +11,7 @@ import cs309_dorm_backend.dto.SecondCommentDto;
 import cs309_dorm_backend.service.notification.NotificationService;
 import cs309_dorm_backend.service.room.RoomService;
 import cs309_dorm_backend.service.user.UserService;
-import cs309_dorm_backend.websocket.MessageWebSocketServer;
+import cs309_dorm_backend.websocket.NotificationWebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -174,7 +174,7 @@ public class CommentServiceImpl implements CommentService {
         temp.put("timestamp", secondComment.getTime());
         Notification notification = notificationService.createNotification("comment", parent.getAuthor().getCampusId(), temp.toJSONString());
         // websocket
-        MessageWebSocketServer.sendData(JSON.toJSONString(notification), parent.getAuthor().getCampusId());
+        NotificationWebSocketServer.sendData(JSON.toJSONString(notification), parent.getAuthor().getCampusId());
         return secondComment;
     }
 
