@@ -84,7 +84,14 @@ public class TeamServiceImpl implements TeamService {
         for (Student member : members) {
             teamRepo.removeStudentTeam(member.getStudentId());
         }
-        //remove favorite rooms ( on delete cascade )
+        // remove favorite rooms ( on delete cascade )
+        // remove assigned room, if any
+        Room room = roomService.findSelectedRoom(team.getTeamId());
+        if (room != null) {
+            room.setSelectedTeam(null);
+            roomService.save(room);
+        }
+        // remove team
         teamRepo.deleteByCreator(creatorId); // delete the team
         return true;
     }

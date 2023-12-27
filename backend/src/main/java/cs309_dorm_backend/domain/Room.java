@@ -59,6 +59,7 @@ public class Room {
     private Set<Comment> comments;
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "favoriteRooms", fetch = FetchType.LAZY) // a room can be favorited by many teams
     private Set<Team> favoriteTeams;
 

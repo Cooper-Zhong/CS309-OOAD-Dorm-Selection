@@ -14,6 +14,7 @@ import cs309_dorm_backend.service.student.StudentService;
 import cs309_dorm_backend.service.team.TeamService;
 import cs309_dorm_backend.websocket.NotificationWebSocketServer;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Service
-@Log
+@Slf4j
 public class invitationServiceImpl implements InvitationService {
 
     @Autowired
@@ -93,7 +94,8 @@ public class invitationServiceImpl implements InvitationService {
             }
             return invitation;
         } catch (Exception e) {
-            throw new MyException(4, "invitation failed");
+            log.error(e.getMessage());
+            throw new MyException(4, e.getMessage());
         }
     }
 
@@ -105,7 +107,9 @@ public class invitationServiceImpl implements InvitationService {
     private Invitation convertToInvitation(InvitationDto invitationDto) {
         Student creator = studentService.findById(invitationDto.getCreatorId());
         if (creator == null) {
-            throw new MyException(4, "creator" + invitationDto.getCreatorId() + " not found");
+            String msg = "creator" + invitationDto.getCreatorId() + " not found. ";
+            msg += "Please first create a team and then invite student to join the team.";
+            throw new MyException(4, msg);
         }
         Team team = teamService.findByCreator(creator.getStudentId());
         if (team == null) {
