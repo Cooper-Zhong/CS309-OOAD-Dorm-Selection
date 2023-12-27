@@ -36,9 +36,9 @@ public class RoomController {
                 .build();
     }
 
-    @GetMapping("/findOne/{buildingId}/{roomNumber}")
-    public GlobalResponse findOne(@PathVariable int buildingId, @PathVariable int roomNumber) {
-        Room room = roomService.findOne(buildingId, roomNumber);
+    @GetMapping("/findOne/{roomId}")
+    public GlobalResponse findOne(@PathVariable int roomId) {
+        Room room = roomService.findById(roomId);
         if (room == null) {
             return new GlobalResponse<>(1, "room not found", null);
         } else {

@@ -11,7 +11,6 @@ public interface RoomService {
     List<Room> findAll();
 
     Room findOne(int buildingId, int roomNumber);
-
     Room findById(int id);
 
     boolean delete(int buildingId, int roomNumber);
