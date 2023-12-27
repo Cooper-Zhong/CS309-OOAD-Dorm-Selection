@@ -9,12 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @className: RedisUtil
- * @description:
- * @author: sh.Liu
- * @date: 2022-03-09 14:07
- */
 @Component
 public class RedisUtil {
 

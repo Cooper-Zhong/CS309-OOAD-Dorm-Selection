@@ -1,6 +1,18 @@
 server:
   port: 8082
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    # local database
+    url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
+    # for aws
+    #    spring.datasource.url: jdbc:postgresql://cs309ooad.cjgxt58rjd8u.us-east-1.rds.amazonaws.com:1433/cs309ooad
+    #    spring.datasource.username: postgres
+    #    spring.datasource.password: ooad..sustech
+    #    spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    username: postgres
+    password: 2333
+
   redis:
     database: 0 # redis database index
     host: localhost
@@ -17,21 +29,14 @@ spring:
       max-wait: -1      # wait for valid connection, default -1(no wait)
       #if pool exhausted, then wait for 3000ms, if still exhausted, then throw JedisConnectionException
 
+  devtools:
+    restart:
+      enable: true # 开发热启动会监测应用程序的代码和资源文件的变化，并在检测到更改时自动重新启动应用程序。
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    # local database
-    url: jdbc:postgresql://localhost:5432/cs309_ooad?serverTimezone=GMT%2b8
-    # for aws
-#    spring.datasource.url: jdbc:postgresql://cs309ooad.cjgxt58rjd8u.us-east-1.rds.amazonaws.com:1433/cs309ooad
-#    spring.datasource.username: postgres
-#    spring.datasource.password: ooad..sustech
-#    spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-    username: postgres
-    password: 2333
+
 
   jpa:
     hibernate:
