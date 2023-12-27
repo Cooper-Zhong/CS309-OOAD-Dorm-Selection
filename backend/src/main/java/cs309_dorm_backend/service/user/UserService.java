@@ -24,5 +24,4 @@ public interface UserService {
 
     boolean deleteByCampusId(int campusId);
 
-
 }

@@ -7,6 +7,8 @@ import cs309_dorm_backend.dto.UserForm;
 import cs309_dorm_backend.dto.UserUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import cs309_dorm_backend.domain.User;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,14 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepo userRepo;
+
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepo userRepository;
+
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepo userRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<User> findAll() {
@@ -46,7 +56,9 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new MyException(3, "user Not found");
         }
-        if (!user.getPassword().equals(userInfo.getPassword())) {
+        boolean passwordMatched = passwordEncoder.matches(user.getPassword(),userInfo.getPassword());
+//        if (!user.getPassword().equals(userInfo.getPassword())) {
+        if(!passwordMatched){
             throw new MyException(4, "Wrong password");
         }
         log.info("User {} login success", userInfo.getCampusId());
@@ -88,9 +100,16 @@ public class UserServiceImpl implements UserService {
         } else if (userRepo.findUserByCampusId(userForm.getCampusId()) != null) {
             throw new MyException(6, "Campus ID already exists");
         } else {
-            return save(userForm.convertToUser());
+//            return save(userForm.convertToUser());
+            return save(registerEncode(userForm.convertToUser()));
         }
     }
+
+
+    public User registerEncode(User user) {
+        String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        return new User(user.getCampusId(), encodedPassword,user.getRole());
+    } //在注册用户时使用密码编码器对密码进行加密，并将加密后的密码设置到用户对象中。
 
     @Override
     public boolean deleteByCampusId(int campusId) {

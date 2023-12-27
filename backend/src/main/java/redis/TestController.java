@@ -30,4 +30,12 @@ public class TestController {
         String age = (String) operations.get("age");
         return age;
     }
+
+    @RequestMapping(value = "/testRedisConfig", method = RequestMethod.GET)
+    public String testRedisConfig() {
+        ValueOperations operations = redisConfig.redisTemplate().opsForValue();
+        operations.set("age", "11");
+
+        return "OK";
+    }
 }
