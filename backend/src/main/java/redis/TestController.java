@@ -14,21 +14,20 @@ public class TestController {
     private RedisConfig redisConfig;
 
     @Autowired
-    private RedisTemplate foreRedisTemplate;
-
-    @Autowired
-    private RedisTemplate wechatRedisTemplate;
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(value = "/testRedis", method = RequestMethod.GET)
     public String test() {
-//        RedisTemplate foreRedisTemplate = redisConfig.getForeRedisTemplate();
-        ValueOperations operations = foreRedisTemplate.opsForValue();
+        ValueOperations operations = redisTemplate.opsForValue();
         operations.set("age", "11");
 
-//        RedisTemplate wechatRedisTemplate = redisConfig.getWechatRedisTemplate();
-        ValueOperations operations2 = wechatRedisTemplate.opsForValue();
-        operations2.set("address", "bj");
-
         return "OK";
+    }
+
+    @RequestMapping(value = "/getRedis", method = RequestMethod.GET)
+    public String getRedis() {
+        ValueOperations operations = redisTemplate.opsForValue();
+        String age = (String) operations.get("age");
+        return age;
     }
 }
