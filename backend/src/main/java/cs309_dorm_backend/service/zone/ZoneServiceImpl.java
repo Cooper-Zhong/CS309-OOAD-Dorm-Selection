@@ -2,12 +2,15 @@ package cs309_dorm_backend.service.zone;
 
 import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dao.ZoneRepo;
+import cs309_dorm_backend.domain.Building;
 import cs309_dorm_backend.domain.Zone;
 import cs309_dorm_backend.dto.ZoneUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ZoneServiceImpl implements ZoneService {
@@ -49,6 +52,7 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
+    @Transactional
     public Zone update(ZoneUpdateDto zoneUpdateDto) {
         String oldName = zoneUpdateDto.getOldName();
         Zone zone = zoneRepo.findByName(oldName);

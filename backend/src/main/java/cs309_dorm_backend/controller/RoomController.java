@@ -2,11 +2,14 @@ package cs309_dorm_backend.controller;
 
 import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Room;
+import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.RoomDto;
+import cs309_dorm_backend.dto.SelectDto;
 import cs309_dorm_backend.service.room.RoomService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,17 +26,34 @@ public class RoomController {
     public List<Room> findAll() {
         return roomService.findAll();
     }
+
+    // Handling OPTIONS request explicitly
     @AntiReptile
-    @GetMapping("/findOne/{buildingId}/{roomNumber}")
-    public GlobalResponse findOne(@PathVariable int buildingId, @PathVariable int roomNumber) {
-        Room room = roomService.findOne(buildingId, roomNumber);
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
+    @AntiReptile
+    @GetMapping("/findOne/{roomId}")
+    public GlobalResponse findOne(@PathVariable int roomId) {
+        Room room = roomService.findById(roomId);
         if (room == null) {
             return new GlobalResponse<>(1, "room not found", null);
         } else {
             return new GlobalResponse<>(0, "success", room);
         }
     }
-
+    @AntiReptile
+    @GetMapping("/findAssignedTeam/{roomId}")
+    public GlobalResponse findAssignedTeam(@PathVariable int roomId) {
+        Team team = roomService.findAssignedTeam(roomId);
+        return new GlobalResponse<>(0, "success", team);
+    }
+    @AntiReptile
     @DeleteMapping("/delete/{buildingId}/{roomNumber}")
     public GlobalResponse deleteById(@PathVariable int buildingId, @PathVariable int roomNumber) {
         boolean result = roomService.delete(buildingId, roomNumber);
@@ -43,7 +63,7 @@ public class RoomController {
             return new GlobalResponse<>(1, "room not found", null);
         }
     }
-
+    @AntiReptile
     @PostMapping("/addOne")
     public GlobalResponse addOne(@RequestBody RoomDto roomDto) {
         Room room = roomService.addOne(roomDto);
@@ -53,8 +73,8 @@ public class RoomController {
             return new GlobalResponse<>(0, "success", room);
         }
     }
-
-    @PutMapping("/update")
+    @AntiReptile
+    @PostMapping("/update")
     public GlobalResponse update(@RequestBody RoomDto roomDto) {
         Room room = roomService.update(roomDto);
         if (room == null) {
@@ -63,5 +83,7 @@ public class RoomController {
             return new GlobalResponse<>(0, "success", room);
         }
     }
+
+
 }
 

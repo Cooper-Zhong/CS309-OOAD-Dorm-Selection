@@ -7,11 +7,11 @@ import java.util.List;
 public interface TeacherService {
     List<Teacher> findAll();
 
-    Teacher findById(int teacherId);
+    Teacher findById(String teacherId);
 
     Teacher save(Teacher teacherInfo);
 
     Teacher update(Teacher teacherInfo);
 
-    boolean deleteById(int teacherId);
+    boolean deleteById(String teacherId);
 }

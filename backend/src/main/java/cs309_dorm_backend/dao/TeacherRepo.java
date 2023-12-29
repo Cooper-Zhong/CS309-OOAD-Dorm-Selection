@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import cs309_dorm_backend.domain.Teacher;
 
 @Repository
-public interface TeacherRepo extends JpaRepository<Teacher, Integer> {
+public interface TeacherRepo extends JpaRepository<Teacher, String> {
 }

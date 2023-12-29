@@ -2,19 +2,35 @@ package cs309_dorm_backend.controller;
 
 import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Student;
+import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.service.student.StudentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/student")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
+
+    // Handling OPTIONS request explicitly
+    @AntiReptile
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
 
     @AntiReptile
     @GetMapping("/findAll")
@@ -23,7 +39,7 @@ public class StudentController {
     }
     @AntiReptile
     @GetMapping("/findById/{studentId}")
-    public GlobalResponse findById(@PathVariable int studentId) {
+    public GlobalResponse findById(@PathVariable String studentId) {
         Student student = studentService.findById(studentId);
         if (student == null) {
             return new GlobalResponse<>(1, "student not found", null);
@@ -32,33 +48,29 @@ public class StudentController {
         }
     }
 
-
-//    @PostMapping("/save")
-//    // if the id is not auto-increment, must be manually assigned before calling save():
-//    public Student addOne(@RequestBody Student student) {
-//        return studentService.save(student);
-//    }
-
-
-    @PutMapping("/update")
+    @AntiReptile
+    @PostMapping("/update")
     public GlobalResponse update(@RequestBody Student student) {
         Student student1 = studentService.update(student);
         if (student1 == null) {
             return new GlobalResponse<>(1, "student not found", null);
         } else {
+            log.info("Student {} updated", student1.getStudentId());
             return new GlobalResponse<>(0, "success", student1);
         }
     }
 
-
+    @AntiReptile
     @DeleteMapping("/deleteById/{campusId}")
-    public GlobalResponse deleteById(@PathVariable int campusId) {
-        boolean result = studentService.deleteById(campusId);
-        if (result) {
-            return new GlobalResponse<>(0, "success", null);
-        } else {
-            return new GlobalResponse<>(1, "student not found", null);
-        }
-    }
+    @Transactional
+    public GlobalResponse deleteById(@PathVariable String campusId) {
+        try {
+            boolean result = studentService.deleteById(campusId);
+            return new GlobalResponse<>(0, "Delete student " + campusId + " successfully", null);
+        } catch (Exception e) {
+            return new GlobalResponse<>(1, "delete failed", null);
 
+        }
+
+    }
 }

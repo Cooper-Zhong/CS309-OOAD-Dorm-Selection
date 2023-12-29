@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 
     @ApiModelProperty
-    private int campusId;
+    private String campusId;
     @ApiModelProperty
     private String role;
     @ApiModelProperty
