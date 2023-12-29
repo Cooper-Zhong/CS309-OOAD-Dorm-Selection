@@ -8,6 +8,7 @@ import cs309_dorm_backend.dto.UserForm;
 import cs309_dorm_backend.dto.UserUpdateDto;
 import cs309_dorm_backend.service.user.UserService;
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,14 +20,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Api(tags = "User Controller")
+@Slf4j
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+
+    @AntiReptile
     @PostMapping("/login")
     public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
         if (userService.checkLogin(userDto)) {
+            log.info("User {} login success", userDto.getCampusId());
             return GlobalResponse.<User>builder()
                     .code(0)
                     .msg("Login successfully.")
@@ -41,6 +46,7 @@ public class UserController {
     }
 
     // Handling OPTIONS request explicitly
+    @AntiReptile
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -50,9 +56,12 @@ public class UserController {
                 .build();
     }
 
+    @AntiReptile
     @PostMapping("/register")
     public GlobalResponse registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
+
         UserDto userDto = userService.register(userForm, result);
+        log.info("User {} register success", userDto.getCampusId());
         return GlobalResponse.builder()
                 .code(0)
                 .msg("Register successfully.")
@@ -60,25 +69,29 @@ public class UserController {
                 .build();
     }
 
+    @AntiReptile
     @PostMapping("/updatePassword")
     public GlobalResponse updatePassword(@RequestBody @Valid UserUpdateDto userUpdateDto, BindingResult result) {
         UserDto userDto = userService.updatePassword(userUpdateDto, result);
+        log.info("User {} update password success", userDto.getCampusId());
         return GlobalResponse.builder()
                 .code(0)
                 .msg("Edit password successfully.")
                 .data(userDto)
                 .build();
     }
+
     @AntiReptile
     @GetMapping("/findAll")
     @ApiOperation(value = "Find all users")
     public List<User> findAll() {
         return userService.findAll();
     }
+
     @AntiReptile
     @GetMapping("/findById/{campusId}")
     @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
-    public User findById(@PathVariable int campusId) {
+    public User findById(@PathVariable String campusId) {
         return userService.findByCampusId(campusId);
     }
 
@@ -87,9 +100,10 @@ public class UserController {
      *
      * @return 200: user deleted; 404: user not found.
      */
+    @AntiReptile
     @DeleteMapping("/deleteById/{campusId}")
     @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
-    public GlobalResponse deleteById(@PathVariable int campusId) {
+    public GlobalResponse deleteById(@PathVariable String campusId) {
         if (userService.deleteByCampusId(campusId)) {
             return GlobalResponse.builder()
                     .code(0)

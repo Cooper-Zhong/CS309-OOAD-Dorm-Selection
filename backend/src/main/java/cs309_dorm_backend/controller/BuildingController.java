@@ -23,13 +23,22 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
+
     @AntiReptile
     @GetMapping("/findAll")
     public List<Building> findAll() {
         return buildingService.findAll();
     }
 
-    @AntiReptile
     @GetMapping("/findById/{buildingId}")
     public GlobalResponse findById(@PathVariable int buildingId) {
         Building building = buildingService.findById(buildingId);
@@ -39,7 +48,7 @@ public class BuildingController {
             return new GlobalResponse<>(0, "success", building);
         }
     }
-    @AntiReptile
+
     @DeleteMapping("/deleteById/{buildingId}")
     public GlobalResponse deleteById(@PathVariable int buildingId) {
         boolean result = buildingService.deleteById(buildingId);
@@ -60,7 +69,7 @@ public class BuildingController {
         }
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public GlobalResponse update(@RequestBody BuildingDto buildingDto, BindingResult result) {
         Building building = buildingService.update(buildingDto, result);
         if (building == null) {

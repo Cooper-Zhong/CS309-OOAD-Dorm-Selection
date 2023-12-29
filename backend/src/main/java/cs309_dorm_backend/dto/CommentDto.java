@@ -14,7 +14,11 @@ import java.sql.Timestamp;
 public class CommentDto {
     @ApiModelProperty
     @NotBlank
-    private int authorId;
+    private String authorId;
+
+    @ApiModelProperty
+    @NotBlank
+    private String authorName;
 
     @ApiModelProperty
     @NotBlank

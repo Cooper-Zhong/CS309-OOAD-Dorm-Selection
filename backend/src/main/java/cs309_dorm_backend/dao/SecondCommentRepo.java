@@ -13,10 +13,10 @@ public interface SecondCommentRepo extends JpaRepository<SecondComment, Integer>
     public List<SecondComment> findAll();
 
     @Query(value = "select * from second_comments where time = :time and author_id = :authorId", nativeQuery = true)
-    public SecondComment findSecondComment(Timestamp time, int authorId);
+    public SecondComment findSecondComment(Timestamp time, String authorId);
 
     @Query(value = "select * from second_comments where author_id = :authorId", nativeQuery = true)
-    public List<SecondComment> findSecondCommentsByAuthorId(int authorId);
+    public List<SecondComment> findSecondCommentsByAuthorId(String authorId);
 
     @Query(value = "select * from second_comments where parent_comment_id = :parentId", nativeQuery = true)
     public List<SecondComment> findSecondCommentsByParentId(int parentId);

@@ -5,6 +5,7 @@ import cs309_dorm_backend.dao.UserRepo;
 import cs309_dorm_backend.dto.UserDto;
 import cs309_dorm_backend.dto.UserForm;
 import cs309_dorm_backend.dto.UserUpdateDto;
+import jodd.crypt.BCrypt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,27 +27,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
 
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepo userRepository;
-
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepo userRepository) {
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-    }
-
     @Override
     public List<User> findAll() {
         return userRepo.findAll();
     }
 
     @Override
-    public User findByCampusId(int campusId) {
-        return userRepo.findUserByCampusId(campusId);
+    public User findByCampusId(String campusId) {
+        return userRepo.findById(campusId).orElse(null);
     }
 
     @Override
     public Boolean checkLogin(UserDto userInfo) {
-        if (userInfo.getCampusId() == 0) {
+        if (userInfo.getCampusId() == null || userInfo.getCampusId().isEmpty()) {
             throw new MyException(1, "Campus ID shouldn't be null");
         }
         if (userInfo.getPassword().isEmpty()) {
@@ -56,12 +49,24 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new MyException(3, "user Not found");
         }
-        boolean passwordMatched = passwordEncoder.matches(user.getPassword(),userInfo.getPassword());
+        PasswordEncoder passwordEncoder = new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                String encodedPassword = BCrypt.hashpw(rawPassword.toString(), BCrypt.gensalt());
+                return encodedPassword;
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                boolean passwordMatches = BCrypt.checkpw(rawPassword.toString(), encodedPassword);
+                return passwordMatches;
+            }
+        };
+        boolean passwordMatch = passwordEncoder.matches(userInfo.getPassword(), user.getPassword());
 //        if (!user.getPassword().equals(userInfo.getPassword())) {
-        if(!passwordMatched){
+        if (!passwordMatch) {
             throw new MyException(4, "Wrong password");
         }
-        log.info("User {} login success", userInfo.getCampusId());
         return true;
     }
 
@@ -71,17 +76,17 @@ public class UserServiceImpl implements UserService {
             List<FieldError> errors = result.getFieldErrors();
             throw new MyException(4, errors.get(0).getDefaultMessage());
         }
-        int campusId = userUpdateDto.getCampusId();
+        String campusId = userUpdateDto.getCampusId();
         User user = userRepo.findUserByCampusId(campusId);
         if (user == null) {
             throw new MyException(404, "user " + campusId + " not found");
         }
         if (!user.getPassword().equals(userUpdateDto.getOldPassword())) {
             throw new MyException(5, "Old password is wrong");
-        } else {
-            user.setPassword(userUpdateDto.getNewPassword());
-            return save(user);
         }
+        user.setPassword(userUpdateDto.getNewPassword());
+        return save(user);
+
     }
 
     @Override // create or update
@@ -105,14 +110,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-    public User registerEncode(User user) {
+    private User registerEncode(User user) {
         String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
         return new User(user.getCampusId(), encodedPassword,user.getRole());
-    } //在注册用户时使用密码编码器对密码进行加密，并将加密后的密码设置到用户对象中。
+    }
 
     @Override
-    public boolean deleteByCampusId(int campusId) {
+    public boolean deleteByCampusId(String campusId) {
         Optional<User> userOptional = userRepo.findById(campusId);
         if (userOptional.isPresent()) {
             userRepo.deleteById(campusId);
@@ -120,6 +124,16 @@ public class UserServiceImpl implements UserService {
         } else {
             return false; // 实体不存在，无法删除
         }
+    }
+
+    @Override
+    public void updateName(String campusId, String name) {
+        User user = userRepo.findUserByCampusId(campusId);
+        if (user == null) {
+            throw new MyException(404, "user " + campusId + " not found");
+        }
+        user.setName(name);
+        save(user);
     }
 
     private UserDto convertUser(User user) {

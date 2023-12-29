@@ -6,6 +6,7 @@ import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.service.teacher.TeacherService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,14 +18,27 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+
+    // Handling OPTIONS request explicitly
+    @AntiReptile
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
+    }
+
     @AntiReptile
     @GetMapping("/findAll")
     public List<Teacher> findAll() {
         return teacherService.findAll();
     }
+
     @AntiReptile
     @GetMapping("/findById/{teacherId}")
-    public GlobalResponse findById(@PathVariable int teacherId) {
+    public GlobalResponse findById(@PathVariable String teacherId) {
         Teacher teacher = teacherService.findById(teacherId);
         if (teacher == null) {
             return new GlobalResponse<>(1, "teacher not found", null);
@@ -33,8 +47,9 @@ public class TeacherController {
         }
     }
 
+    @AntiReptile
     @DeleteMapping("/deleteById/{teacherId}")
-    public GlobalResponse deleteById(@PathVariable int teacherId) {
+    public GlobalResponse deleteById(@PathVariable String teacherId) {
         boolean result = teacherService.deleteById(teacherId);
         if (result) {
             return new GlobalResponse<>(0, "success", null);
@@ -42,8 +57,8 @@ public class TeacherController {
             return new GlobalResponse<>(1, "teacher not found", null);
         }
     }
-
-    @PutMapping("/update")
+    @AntiReptile
+    @PostMapping("/update")
     public GlobalResponse update(@RequestBody Teacher teacher) {
         Teacher teacher1 = teacherService.update(teacher);
         if (teacher1 == null) {

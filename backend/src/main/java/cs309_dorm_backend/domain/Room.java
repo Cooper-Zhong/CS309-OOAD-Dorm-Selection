@@ -5,6 +5,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Set;
 
@@ -14,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "rooms", uniqueConstraints = @UniqueConstraint(columnNames = {"building_id", "room_number"}))
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class Room {
 
     @Id
@@ -23,11 +26,13 @@ public class Room {
 
     @NotNull
     @JsonAlias("buildingId")
-    @JsonIdentityReference(alwaysAsId = true) //当序列化 Room 实体时，只会包含 Building 的 buildingId 属性
+//    @JsonIdentityReference(alwaysAsId = true) //当序列化 Room 实体时，只会包含 Building 的 buildingId 属性
     //使用 buildingId 属性作为标识来识别 Building 实体。
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "buildingId")
+//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "buildingId")
     @ManyToOne(fetch = FetchType.LAZY) // a room belongs to a building
-    @JoinColumn(name = "building_id", referencedColumnName = "building_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE) //当删除 building 时，删除该 building 下的所有 room
+    @JoinColumn(name = "building_id", referencedColumnName = "building_id", nullable = false,
+            foreignKey = @ForeignKey(name = "fk_room_building", value = ConstraintMode.CONSTRAINT))
     private Building building;
 
     @NotNull
@@ -39,7 +44,7 @@ public class Room {
     private int floor;
 
     @NotNull
-    @Column(name = "room_type",nullable = false) // 1,2,3,4 for single, double, triple, quad
+    @Column(name = "room_type", nullable = false) // 1,2,3,4 for single, double, triple, quad
     private int roomType;
 
     @NotNull
@@ -54,14 +59,18 @@ public class Room {
     private Set<Comment> comments;
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "favoriteRooms", fetch = FetchType.LAZY) // a room can be favorited by many teams
     private Set<Team> favoriteTeams;
 
 
-    @JsonIgnore
+    //    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     // a room can be assigned to one team
     @JoinColumn(name = "team_id", referencedColumnName = "team_id")
-    private Team assignedTeam; // a room can only be assigned to one team
+    @JsonProperty("selectedTeamCreatorId")
+    @JsonIdentityReference(alwaysAsId = true) //当序列化 Room 实体时，只会包含 Team 的 creatorId 属性
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "creatorId")
+    private Team selectedTeam; // a room can only be assigned to one team
 }
 

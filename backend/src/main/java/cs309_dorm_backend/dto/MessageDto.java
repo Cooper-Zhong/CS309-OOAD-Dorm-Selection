@@ -1,59 +1,38 @@
 package cs309_dorm_backend.dto;
+
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class MessageDto {
 
+
     @ApiModelProperty
     @NotBlank
+    private String senderId;
+
+    @ApiModelProperty
+    @NotBlank
+    private String senderName;
+
+    @ApiModelProperty
+    @NotBlank
+    private String receiverId;
+
+    private String receiverName;
+
+    @ApiModelProperty
+    @NotBlank
+    private String content;
+
+    private boolean read;
+
     private int messageId;
 
-    @ApiModelProperty
-    @NotBlank
-    private boolean isRead;
-
-    public void setMessageContent(String messageContent) {
-            this.messageContent = messageContent;
-    }
-    public int getMessageOwner() {
-            return messageOwnerId;
-    }
-    public boolean isRead() {
-            return isRead;
-    }
-
-    public void setRead(boolean read) {
-            isRead = read;
-    }
-
-    @Getter
-    @ApiModelProperty
-    @NotBlank
-    private String messageContent;
-    @ApiModelProperty
-    @NotBlank
-    private String messageTitle;
-    @Getter
-    @ApiModelProperty
-    @NotBlank
-    private String messageTime;
-    @ApiModelProperty
-    @NotBlank
-    private int messageOwnerId;
-
-    @ApiModelProperty
-    @NotBlank
-    private int messageSenderId;
-
-    public int getMessageSenderId() {
-        return messageSenderId;
-    }
 }

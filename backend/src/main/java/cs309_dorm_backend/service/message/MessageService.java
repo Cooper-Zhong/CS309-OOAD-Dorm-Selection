@@ -8,11 +8,24 @@ import java.util.List;
 
 public interface MessageService {
     List<Message> findAll();
-    Message findById(int messageId) ;
-    boolean deleteById(int messageId) ;
-    Message save(Message message) ;
+
+    Message findById(int messageId);
+
+    List<Message> findByReceiverId(String receiverId);
+
+    List<Message> findBySenderIdAndReceiverId(String senderId, String receiverId);
+
+    boolean deleteById(int messageId);
+
+    boolean deleteByReceiverId(String receiverId);
+
+    Message save(Message message);
 
     Message addOne(MessageDto messageDto, BindingResult result);
 
-    Message update(MessageDto messageDto, BindingResult result);
+    boolean read(int messageId);
+
+    MessageDto toDto(Message message);
+
+//    Message update(MessageDto messageDto, BindingResult result);
 }

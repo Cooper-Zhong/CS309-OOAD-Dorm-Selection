@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 public class FavoriteDto {
     @ApiModelProperty
     @NotBlank
-    private int studentId;
+    private String studentId;
 
     @ApiModelProperty
     @NotBlank
