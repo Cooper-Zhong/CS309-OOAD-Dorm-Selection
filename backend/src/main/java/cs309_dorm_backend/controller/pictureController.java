@@ -49,7 +49,7 @@ public class pictureController {
             String originalFilename = file.getOriginalFilename();
             File dest = new File(picturePath + originalFilename);
             file.transferTo(dest);
-            log.info("upload success" + originalFilename);
+            log.info("upload success " + originalFilename);
 
             return new GlobalResponse<>(0, "upload success ", originalFilename);
         } catch (IOException e) {
