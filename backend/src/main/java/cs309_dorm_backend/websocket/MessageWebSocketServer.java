@@ -79,6 +79,7 @@ public class MessageWebSocketServer {
     }
 
     public void pushMessages() {
+        log.info("push messages to: " + sid);
         List<Message> messageList = messageService.findBySenderIdAndReceiverId(this.sid,this.sid);
         try {
             messageList.sort(Comparator.comparing(Message::getTime));
