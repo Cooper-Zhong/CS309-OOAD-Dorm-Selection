@@ -28,7 +28,7 @@
                                 你好：</font>
                         </font>
                     </h2>
-                    <p>Welcome to SUSTech Dorm Selection System，您的账号正在进行邮箱验证，验证码为：<span style="color: #ff0000; font-size: 20px;">{0}</span>，有效期5分钟，请尽快填写验证码完成验证！
+                    <p>Welcome to SUSTech Dorm Selection System，您的账号正在进行邮箱验证，验证码为：<span style="color: #ff0000; font-size: 20px;">{0}</span>，有效期1分钟，请尽快填写验证码完成验证！
                     </p><br>
                     <div style="width:100%;margin:0 auto;">
                         <div style="padding:10px 10px 0;border-top:1px solid #ccc;color:#747474;margin-bottom:20px;line-height:1.3em;font-size:12px;">
