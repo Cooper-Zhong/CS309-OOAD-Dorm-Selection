@@ -71,6 +71,21 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public UserDto resetPassword(UserDto userDto, BindingResult result) {
+        if (result.hasErrors()) {
+            List<FieldError> errors = result.getFieldErrors();
+            throw new MyException(4, errors.get(0).getDefaultMessage());
+        }
+        String campusId = userDto.getCampusId();
+        User user = userRepo.findUserByCampusId(campusId);
+        if (user == null) {
+            throw new MyException(404, "user " + campusId + " not found");
+        }
+        user.setPassword(userDto.getPassword());
+        return save(user);
+    }
+
     @Override // create or update
     public UserDto save(User userInfo) {
         User user = userRepo.save(userInfo);

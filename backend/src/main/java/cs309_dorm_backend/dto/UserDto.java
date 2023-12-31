@@ -9,16 +9,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@ApiModel
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
 
-    @ApiModelProperty
     private String campusId;
-    @ApiModelProperty
     private String role;
-    @ApiModelProperty
     private String password;
 
 }
