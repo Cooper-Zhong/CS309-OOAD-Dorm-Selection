@@ -7,6 +7,7 @@ import cs309_dorm_backend.service.Verification.MailService;
 import cs309_dorm_backend.service.Verification.VerificationCodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
@@ -23,6 +24,17 @@ public class VerificationController {
     public VerificationController(MailService mailService, VerificationCodeService verificationCodeService) {
         this.mailService = mailService;
         this.verificationCodeService = verificationCodeService;
+    }
+
+
+    // Handling OPTIONS request explicitly
+    @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity
+                .ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
+                .build();
     }
 
     @GetMapping("/getCode/{toEmail}")

@@ -15,7 +15,7 @@ public class VerificationCodeService {
     }
 
     public void storeVerificationCode(String email, String verificationCode) {
-        redisTemplate.opsForValue().set(email, verificationCode, 1, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(email, verificationCode, 5, TimeUnit.MINUTES);
     }
 
     public String getVerificationCode(String email) {

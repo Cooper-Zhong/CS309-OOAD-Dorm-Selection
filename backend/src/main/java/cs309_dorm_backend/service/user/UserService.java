@@ -12,6 +12,9 @@ import java.util.List;
 public interface UserService {
 
     UserDto updatePassword(UserUpdateDto userUpdateDto, BindingResult result);
+
+    UserDto resetPassword(UserDto userDto, BindingResult result);
+
     User findByCampusId(String campusId);
 
     Boolean checkLogin(UserDto userInfo);

@@ -26,7 +26,6 @@ public class UserController {
     private UserService userService;
 
 
-
     @PostMapping("/login")
     public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
         if (userService.checkLogin(userDto)) {
@@ -74,6 +73,17 @@ public class UserController {
                 .code(0)
                 .msg("Edit password successfully.")
                 .data(userDto)
+                .build();
+    }
+
+    @PostMapping("/resetPassword")
+    public GlobalResponse resetPassword(@RequestBody @Valid UserDto userDto, BindingResult result) {
+        log.info("User {} reset password success", userDto.getCampusId());
+        userService.resetPassword(userDto, result);
+        return GlobalResponse.builder()
+                .code(0)
+                .msg("Reset password successfully.")
+                .data(null)
                 .build();
     }
 
