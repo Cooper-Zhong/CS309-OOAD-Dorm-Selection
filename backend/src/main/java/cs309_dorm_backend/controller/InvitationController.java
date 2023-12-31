@@ -74,4 +74,10 @@ public class InvitationController {
             return new GlobalResponse<>(1, "invitation not found", null);
         }
     }
+
+    @PostMapping("/rejectInvitation")
+    public GlobalResponse rejectInvitation(@RequestBody InvitationDto invitationDto) {
+        invitationService.rejectInvitation(invitationDto);
+        return new GlobalResponse<>(0, "reject success", null);
+    }
 }

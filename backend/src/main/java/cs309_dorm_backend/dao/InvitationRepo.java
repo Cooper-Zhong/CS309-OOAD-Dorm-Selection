@@ -19,5 +19,8 @@ public interface InvitationRepo extends JpaRepository<Invitation, Integer> {
     @Query(value = "delete from invitations where team_id = ?1 and student_id = ?2 and is_invitation = ?3", nativeQuery = true)
     void deleteInvitation(int teamId, String studentId, boolean isInvitation);
 
+    @Query(value = "select * from invitations where team_id = ?1 and student_id = ?2", nativeQuery = true)
+    Invitation findInvitation(int teamId, String studentId);
+
 
 }
