@@ -21,7 +21,7 @@ public class ZoneContoller {
     private ZoneService zoneService;
 
     // Handling OPTIONS request explicitly
-    @AntiReptile
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -30,12 +30,12 @@ public class ZoneContoller {
                 .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
                 .build();
     }
-    @AntiReptile
+
     @GetMapping("/findAll")
     public List<Zone> findAll() {
         return zoneService.findAll();
     }
-    @AntiReptile
+
     @GetMapping("/findByName/{name}")
     public GlobalResponse<Zone> findByName(@PathVariable String name) {
         Zone zone = zoneService.findByName(name);
@@ -46,7 +46,7 @@ public class ZoneContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/save")
     public GlobalResponse<Zone> addOne(@RequestBody Zone zone) {
         Zone zone1 = zoneService.save(zone);
@@ -58,7 +58,7 @@ public class ZoneContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/update")
     public GlobalResponse update(@RequestBody ZoneUpdateDto zoneUpdateDto) {
         Zone zone = zoneService.update(zoneUpdateDto);
@@ -70,7 +70,7 @@ public class ZoneContoller {
         }
     }
 
-    @AntiReptile
+
     @DeleteMapping("/deleteByName/{name}")
     public GlobalResponse deleteByName(@PathVariable String name) {
         boolean result = zoneService.deleteByName(name);

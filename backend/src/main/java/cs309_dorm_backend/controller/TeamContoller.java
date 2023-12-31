@@ -25,7 +25,7 @@ public class TeamContoller {
     private TeamService teamService;
 
     // Handling OPTIONS request explicitly
-    @AntiReptile
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -35,13 +35,13 @@ public class TeamContoller {
                 .build();
     }
 
-    @AntiReptile
+
     @GetMapping("/findAll")
     public List<Team> findAll() {
         return teamService.findAll();
     }
 
-    @AntiReptile
+
     @GetMapping("/findByCreator/{creatorId}")
     public GlobalResponse findById(@PathVariable String creatorId) {
         Team team = teamService.findByCreator(creatorId);
@@ -52,7 +52,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/selectRoom")
     public GlobalResponse selectRoom(@RequestBody SelectDto selectDto) {
         Room room = teamService.selectRoom(selectDto);
@@ -63,7 +63,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/unselectRoom")
     public GlobalResponse unselectRoom(@RequestBody SelectDto selectDto) {
         Room room = teamService.unselectRoom(selectDto);
@@ -74,7 +74,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @GetMapping("/findSelectedRoom/{teamId}")
     public GlobalResponse findSelectedRoom(@PathVariable int teamId) {
         Room room = teamService.findSelectedRoom(teamId);
@@ -85,7 +85,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @GetMapping("/isInTeam/{studentId}")
     public GlobalResponse isInTeam(@PathVariable String studentId) {
         Team team = teamService.isInTeam(studentId);
@@ -96,21 +96,21 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @GetMapping("/swapRoom")
     public GlobalResponse swapRoom(@RequestParam int applyRoomId, @RequestParam int acceptRoomId) {
         teamService.swapRoom(applyRoomId, acceptRoomId);
         return new GlobalResponse<>(0, "swap room successfully", null);
     }
 
-    @AntiReptile
+
     @GetMapping("/applySwap")
     public GlobalResponse applySwap(@RequestParam int applyCreatorId, @RequestParam int applyReceiverId) {
         teamService.applySwap(applyCreatorId, applyReceiverId);
         return new GlobalResponse<>(0, "apply swap successfully", null);
     }
 
-    @AntiReptile
+
     @PostMapping("/addTeam")
     public GlobalResponse addTeam(@Valid @RequestBody Team team, BindingResult bindingResult) {
         Team team1 = teamService.addTeam(team, bindingResult);
@@ -121,7 +121,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/updateTeam") // update team name
     public GlobalResponse updateTeamName(@RequestBody Team team) {
         Team team1 = teamService.updateTeam(team);
@@ -132,7 +132,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/alterLeader") // update team creator
     public GlobalResponse updateTeamCreator(@RequestBody AlterLeaderDto alterLeaderDto) {
         Student newleader = teamService.alterLeader(alterLeaderDto);
@@ -143,7 +143,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/addMember")
     public GlobalResponse addMember(@Valid @RequestBody TeamMemberDto teamMemberDto, BindingResult bindingResult) {
         Student student = teamService.addMember(teamMemberDto, bindingResult);
@@ -154,7 +154,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @DeleteMapping("/deleteByCreator/{creatorId}")
     public GlobalResponse deleteTeamByCreator(@PathVariable String creatorId) {
         boolean result = teamService.deleteTeamByCreator(creatorId);
@@ -166,7 +166,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @DeleteMapping("/deleteMember/{studentId}")
     public GlobalResponse deleteMember(@PathVariable String studentId) {
         boolean result = teamService.deleteMember(studentId);
@@ -178,7 +178,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/favoriteRoom")
     public GlobalResponse favoriteRoom(@Valid @RequestBody FavoriteDto favoriteDto, BindingResult bindingResult) {
         boolean res = teamService.favoriteRoom(favoriteDto, bindingResult);
@@ -189,7 +189,7 @@ public class TeamContoller {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/unfavoriteRoom")
     public GlobalResponse unfavoriteRoom(@Valid @RequestBody FavoriteDto favoriteDto, BindingResult bindingResult) {
         boolean res = teamService.unfavoriteRoom(favoriteDto, bindingResult);

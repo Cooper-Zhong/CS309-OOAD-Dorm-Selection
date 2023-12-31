@@ -23,7 +23,7 @@ public class MessageController {
 
 
     // Handling OPTIONS request explicitly
-    @AntiReptile
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -32,37 +32,37 @@ public class MessageController {
                 .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
                 .build();
     }
-    @AntiReptile
+
     @GetMapping("/findAll")
     public List<Message> findAll() {
         return messageService.findAll();
     }
-    @AntiReptile
+
     @GetMapping("/findById/{messageId}")
     public Message findById(@PathVariable int messageId) {
         return messageService.findById(messageId);
     }
-    @AntiReptile
+
     @GetMapping("/findByReceiverId/{receiverId}")
     public List<Message> findByReceiverId(@PathVariable String receiverId) {
         return messageService.findByReceiverId(receiverId);
     }
-    @AntiReptile
+
     @DeleteMapping("/deleteById/{messageId}")
     public boolean deleteById(@PathVariable int messageId) {
         return messageService.deleteById(messageId);
     }
-    @AntiReptile
+
     @DeleteMapping("/deleteByReceiverId/{receiverId}")
     public boolean deleteByReceiverId(@PathVariable String receiverId) {
         return messageService.deleteByReceiverId(receiverId);
     }
-    @AntiReptile
+
     @PostMapping("/addOne")
     public Message addOne(@RequestBody @Valid MessageDto messageDto, BindingResult result) {
         return messageService.addOne(messageDto, result);
     }
-    @AntiReptile
+
     @GetMapping("/read/{messageId}")
     public boolean read(@PathVariable int messageId) {
         return messageService.read(messageId);

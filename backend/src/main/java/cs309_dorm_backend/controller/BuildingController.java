@@ -33,7 +33,6 @@ public class BuildingController {
                 .build();
     }
 
-    @AntiReptile
     @GetMapping("/findAll")
     public List<Building> findAll() {
         return buildingService.findAll();
