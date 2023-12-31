@@ -110,6 +110,14 @@ public class TeamServiceImpl implements TeamService {
             throw new MyException(6, "student " + studentId + " is the creator of the team");
         }
         teamRepo.removeStudentTeam(studentId);
+        // send notification to member that is removed
+        Notification notification = notificationService.createNotification("system", studentId, "You have been removed from the team " + team.getTeamName() + ".");
+        notificationService.save(notification);
+        try {
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notification), studentId);
+        } catch (Exception e) {
+            throw new MyException(3, "websocket notification failed");
+        }
         return true;
     }
 
@@ -182,7 +190,18 @@ public class TeamServiceImpl implements TeamService {
             throw new MyException(7, "team is full");
         }
         teamRepo.setTeam(memberId, team.getTeamId());
-        Notification notification = notificationService.createNotification("system", memberId, "You joined the team successfully!");
+        // send notification to team members
+        for (Student member1 : members) {
+            Notification notification = notificationService.createNotification("system", member1.getStudentId(), "A new member " + member.getName() + " has joined the team.");
+            notificationService.save(notification);
+            try {
+                NotificationWebSocketServer.sendData(JSON.toJSONString(notification), member1.getStudentId());
+            } catch (Exception e) {
+                throw new MyException(3, "websocket notification failed");
+            }
+        }
+        // send notification to the new member
+        Notification notification = notificationService.createNotification("system", memberId, "You joined the team " + team.getTeamName() + " successfully.");
         notificationService.save(notification);
         try {
             NotificationWebSocketServer.sendData(JSON.toJSONString(notification), memberId);
@@ -236,6 +255,15 @@ public class TeamServiceImpl implements TeamService {
         if (memberTeam == null || memberTeam.getTeamId() != team.getTeamId()) { // if the student is not in this team
             throw new MyException(6, "student " + leaderId + " is not in this team");
         }
+        // send notification to the new leader
+        Notification notification = notificationService.createNotification("system", leaderId, "You are the new leader of the team " + team.getTeamName() + ".");
+        notificationService.save(notification);
+        try {
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notification), leaderId);
+        } catch (Exception e) {
+            throw new MyException(3, "websocket notification failed");
+        }
+
         teamRepo.updateTeamCreator(oldId, leaderId);
         return newleader;
     }

@@ -5,13 +5,16 @@ import cs309_dorm_backend.dao.NotificationRepo;
 import cs309_dorm_backend.domain.Notification;
 import cs309_dorm_backend.dto.NotificationDto;
 import cs309_dorm_backend.service.user.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Service
+@Slf4j
 public class NotificationServiceImpl implements NotificationService {
 
     @Autowired
@@ -53,8 +56,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Transactional
     public boolean deleteById(int notificationId) {
-        try {
+        try {// add transactional to update/delete operation
             notificationRepo.deleteById(notificationId);
             return true;
         } catch (Exception e) {
@@ -63,12 +67,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Transactional
     public boolean deleteByReceiverId(String receiverId) {
         try {
             notificationRepo.deleteByReceiverId(receiverId);
             return true;
         } catch (Exception e) {
-            throw new MyException(4, "notification " + receiverId + " does not exist");
+            log.error(e.getMessage());
+            throw new MyException(4, "notification belonging to " + receiverId + " does not exist");
         }
     }
 

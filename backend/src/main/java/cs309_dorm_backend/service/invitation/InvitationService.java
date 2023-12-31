@@ -17,6 +17,8 @@ public interface InvitationService {
 
     Invitation addInvitation(InvitationDto invitationDto);
 
+    void rejectInvitation(InvitationDto invitationDto);
+
     Invitation save(Invitation invitation);
 
 //    // team 邀请一个 student 加入 team
