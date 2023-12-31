@@ -21,14 +21,14 @@ public class RoomController {
 
     @Autowired
     private RoomService roomService;
-    @AntiReptile
+
     @GetMapping("/findAll")
     public List<Room> findAll() {
         return roomService.findAll();
     }
 
     // Handling OPTIONS request explicitly
-    @AntiReptile
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -37,7 +37,7 @@ public class RoomController {
                 .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
                 .build();
     }
-    @AntiReptile
+
     @GetMapping("/findOne/{roomId}")
     public GlobalResponse findOne(@PathVariable int roomId) {
         Room room = roomService.findById(roomId);
@@ -47,13 +47,13 @@ public class RoomController {
             return new GlobalResponse<>(0, "success", room);
         }
     }
-    @AntiReptile
+
     @GetMapping("/findAssignedTeam/{roomId}")
     public GlobalResponse findAssignedTeam(@PathVariable int roomId) {
         Team team = roomService.findAssignedTeam(roomId);
         return new GlobalResponse<>(0, "success", team);
     }
-    @AntiReptile
+
     @DeleteMapping("/delete/{buildingId}/{roomNumber}")
     public GlobalResponse deleteById(@PathVariable int buildingId, @PathVariable int roomNumber) {
         boolean result = roomService.delete(buildingId, roomNumber);
@@ -63,7 +63,7 @@ public class RoomController {
             return new GlobalResponse<>(1, "room not found", null);
         }
     }
-    @AntiReptile
+
     @PostMapping("/addOne")
     public GlobalResponse addOne(@RequestBody RoomDto roomDto) {
         Room room = roomService.addOne(roomDto);
@@ -73,7 +73,7 @@ public class RoomController {
             return new GlobalResponse<>(0, "success", room);
         }
     }
-    @AntiReptile
+
     @PostMapping("/update")
     public GlobalResponse update(@RequestBody RoomDto roomDto) {
         Room room = roomService.update(roomDto);

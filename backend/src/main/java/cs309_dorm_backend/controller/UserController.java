@@ -27,7 +27,7 @@ public class UserController {
     private UserService userService;
 
 
-    @AntiReptile
+
     @PostMapping("/login")
     public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
         if (userService.checkLogin(userDto)) {
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     // Handling OPTIONS request explicitly
-    @AntiReptile
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -56,10 +56,9 @@ public class UserController {
                 .build();
     }
 
-    @AntiReptile
     @PostMapping("/register")
     public GlobalResponse registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
-
+        log.info("User {} register", userForm.getCampusId());
         UserDto userDto = userService.register(userForm, result);
         log.info("User {} register success", userDto.getCampusId());
         return GlobalResponse.builder()
@@ -69,7 +68,6 @@ public class UserController {
                 .build();
     }
 
-    @AntiReptile
     @PostMapping("/updatePassword")
     public GlobalResponse updatePassword(@RequestBody @Valid UserUpdateDto userUpdateDto, BindingResult result) {
         UserDto userDto = userService.updatePassword(userUpdateDto, result);
@@ -81,14 +79,12 @@ public class UserController {
                 .build();
     }
 
-    @AntiReptile
     @GetMapping("/findAll")
     @ApiOperation(value = "Find all users")
     public List<User> findAll() {
         return userService.findAll();
     }
 
-    @AntiReptile
     @GetMapping("/findById/{campusId}")
     @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
     public User findById(@PathVariable String campusId) {
@@ -100,7 +96,7 @@ public class UserController {
      *
      * @return 200: user deleted; 404: user not found.
      */
-    @AntiReptile
+
     @DeleteMapping("/deleteById/{campusId}")
     @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
     public GlobalResponse deleteById(@PathVariable String campusId) {

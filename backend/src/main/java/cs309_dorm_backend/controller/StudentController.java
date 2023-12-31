@@ -22,7 +22,7 @@ public class StudentController {
     private StudentService studentService;
 
     // Handling OPTIONS request explicitly
-    @AntiReptile
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -32,12 +32,12 @@ public class StudentController {
                 .build();
     }
 
-    @AntiReptile
+
     @GetMapping("/findAll")
     public List<Student> findAll() {
         return studentService.findAll();
     }
-    @AntiReptile
+
     @GetMapping("/findById/{studentId}")
     public GlobalResponse findById(@PathVariable String studentId) {
         Student student = studentService.findById(studentId);
@@ -48,7 +48,7 @@ public class StudentController {
         }
     }
 
-    @AntiReptile
+
     @PostMapping("/update")
     public GlobalResponse update(@RequestBody Student student) {
         Student student1 = studentService.update(student);
@@ -60,7 +60,7 @@ public class StudentController {
         }
     }
 
-    @AntiReptile
+
     @DeleteMapping("/deleteById/{campusId}")
     @Transactional
     public GlobalResponse deleteById(@PathVariable String campusId) {

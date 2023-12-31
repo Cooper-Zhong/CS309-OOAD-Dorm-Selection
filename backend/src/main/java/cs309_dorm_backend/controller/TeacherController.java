@@ -20,7 +20,7 @@ public class TeacherController {
     private TeacherService teacherService;
 
     // Handling OPTIONS request explicitly
-    @AntiReptile
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -30,13 +30,13 @@ public class TeacherController {
                 .build();
     }
 
-    @AntiReptile
+
     @GetMapping("/findAll")
     public List<Teacher> findAll() {
         return teacherService.findAll();
     }
 
-    @AntiReptile
+
     @GetMapping("/findById/{teacherId}")
     public GlobalResponse findById(@PathVariable String teacherId) {
         Teacher teacher = teacherService.findById(teacherId);
@@ -47,7 +47,7 @@ public class TeacherController {
         }
     }
 
-    @AntiReptile
+
     @DeleteMapping("/deleteById/{teacherId}")
     public GlobalResponse deleteById(@PathVariable String teacherId) {
         boolean result = teacherService.deleteById(teacherId);
@@ -57,7 +57,7 @@ public class TeacherController {
             return new GlobalResponse<>(1, "teacher not found", null);
         }
     }
-    @AntiReptile
+
     @PostMapping("/update")
     public GlobalResponse update(@RequestBody Teacher teacher) {
         Teacher teacher1 = teacherService.update(teacher);

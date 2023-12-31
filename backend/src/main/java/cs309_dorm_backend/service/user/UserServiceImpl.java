@@ -5,7 +5,7 @@ import cs309_dorm_backend.dao.UserRepo;
 import cs309_dorm_backend.dto.UserDto;
 import cs309_dorm_backend.dto.UserForm;
 import cs309_dorm_backend.dto.UserUpdateDto;
-import jodd.crypt.BCrypt;
+//import jodd.crypt.BCrypt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -49,22 +49,26 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new MyException(3, "user Not found");
         }
-        PasswordEncoder passwordEncoder = new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence rawPassword) {
-                String encodedPassword = BCrypt.hashpw(rawPassword.toString(), BCrypt.gensalt());
-                return encodedPassword;
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                boolean passwordMatches = BCrypt.checkpw(rawPassword.toString(), encodedPassword);
-                return passwordMatches;
-            }
-        };
-        boolean passwordMatch = passwordEncoder.matches(userInfo.getPassword(), user.getPassword());
-//        if (!user.getPassword().equals(userInfo.getPassword())) {
-        if (!passwordMatch) {
+//        PasswordEncoder passwordEncoder = new PasswordEncoder() {
+//            @Override
+//            public String encode(CharSequence rawPassword) {
+//                BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
+//                String encodedPassword = BCryptPasswordEncoder.encode(rawPassword.toString());
+////                String encodedPassword = BCrypt.hashpw(rawPassword.toString(), BCrypt.gensalt());
+//                return encodedPassword;
+//            }
+//
+//            @Override
+//            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+//                BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
+//                boolean passwordMatches = BCryptPasswordEncoder.matches(rawPassword.toString(), encodedPassword);
+////                boolean passwordMatches = BCrypt.checkpw(rawPassword.toString(), encodedPassword);
+//                return passwordMatches;
+//            }
+//        };
+//        boolean passwordMatch = passwordEncoder.matches(userInfo.getPassword(), user.getPassword());
+        if (!user.getPassword().equals(userInfo.getPassword())) {
+//        if (!passwordMatch) {
             throw new MyException(4, "Wrong password");
         }
         return true;
@@ -105,8 +109,8 @@ public class UserServiceImpl implements UserService {
         } else if (userRepo.findUserByCampusId(userForm.getCampusId()) != null) {
             throw new MyException(6, "Campus ID already exists");
         } else {
-//            return save(userForm.convertToUser());
-            return save(registerEncode(userForm.convertToUser()));
+            return save(userForm.convertToUser());
+//            return save(registerEncode(userForm.convertToUser()));
         }
     }
 
