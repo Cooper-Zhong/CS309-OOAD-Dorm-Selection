@@ -2,6 +2,7 @@ package cs309_dorm_backend.controller;
 
 import java.util.List;
 
+import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.Building;
 import cs309_dorm_backend.dto.BuildingDto;
 import cs309_dorm_backend.dto.GlobalResponse;
