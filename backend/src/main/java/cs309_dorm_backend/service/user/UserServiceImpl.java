@@ -57,33 +57,47 @@ public class UserServiceImpl implements UserService {
             @Override
             public String encode(CharSequence rawPassword) {
                 BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
-                String encodedPassword = BCryptPasswordEncoder.encode(rawPassword.toString());
-//                String encodedPassword = BCrypt.hashpw(rawPassword.toString(), BCrypt.gensalt());
-                return encodedPassword;
+                return BCryptPasswordEncoder.encode(rawPassword.toString());
             }
 
             @Override
             public boolean matches(CharSequence rawPassword, String encodedPassword) {
                 BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
-                boolean passwordMatches = BCryptPasswordEncoder.matches(rawPassword.toString(), encodedPassword);
-//                boolean passwordMatches = BCrypt.checkpw(rawPassword.toString(), encodedPassword);
-                return passwordMatches;
+                return BCryptPasswordEncoder.matches(rawPassword.toString(), encodedPassword);
             }
         };
         boolean passwordMatch = passwordEncoder.matches(userInfo.getPassword(), user.getPassword());
-//        if (!user.getPassword().equals(userInfo.getPassword())) {
         String userId = user.getCampusId();
         String sessionId = session.getId();
-        String uniqueId = (String) session.getAttribute("uniqueId");
-        if (uniqueId == null || uniqueId.equals(userSessions.get(userId))) {
-            // 唯一标识符匹配，继续访问
-            return false;
-        }
+//        String uniqueId = (String) session.getAttribute("uniqueId");
+//        if (uniqueId == null || uniqueId.equals(userSessions.get(userId))) {
+//             唯一标识符匹配，继续访问
+//            return false;
+//        }
         if (!passwordMatch) {
+            log.info("User {} login fail", userInfo.getCampusId());
             throw new MyException(4, "Wrong password");
         }
         log.info("User {} login success", userInfo.getCampusId());
         return true;
+    }
+
+    public void encodePassword() {
+        List<User> users = userRepo.findAll();
+        for (User user : users) {
+            String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+            user.setPassword(encodedPassword);
+            userRepo.save(user);
+        }
+    }
+
+    public void decodePassword() {
+        List<User> users = userRepo.findAll();
+        for (User user : users) {
+            String decodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+            user.setPassword(decodedPassword);
+            userRepo.save(user);
+        }
     }
 
     @Override

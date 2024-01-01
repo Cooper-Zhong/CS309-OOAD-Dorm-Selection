@@ -31,6 +31,15 @@ public class UserController {
 
     private Map<String, String> userSessions = new HashMap<>();
 
+    @GetMapping("/encode")
+    public GlobalResponse encodePassword() {
+        userService.encodePassword();
+        return GlobalResponse.builder()
+                .code(0)
+                .msg("Encode password successfully.")
+                .build();
+    }
+
 
     @PostMapping("/login")
 //    public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
@@ -40,8 +49,8 @@ public class UserController {
         String uniqueId = (String) session.getAttribute("uniqueId");
         if (userService.checkLogin(userDto, session, userSessions)) {
 //        if (userService.checkLogin(userDto)) {
-                userSessions.put(userId, uniqueId);
-                session.setAttribute("uniqueId", uniqueId);
+                userSessions.put(userId, sessionId);
+//                session.setAttribute("uniqueId", uniqueId);
                 log.info("User {} login success", userDto.getCampusId());
                 return GlobalResponse.<User>builder()
                         .code(0)
