@@ -100,8 +100,6 @@ public class invitationServiceImpl implements InvitationService {
                 temp.put("teamName", invitation.getTeam().getTeamName());
                 temp.put("timestamp", new Timestamp(System.currentTimeMillis()));
                 notification = notificationService.createAndSaveNotification("invitation", invitationDto.getStudentId(), temp.toJSONString());
-                log.debug("debug: " + temp.toJSONString());
-                System.out.println((JSON.toJSONString(notification)));
                 try {
                     NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), invitationDto.getStudentId());
                 } catch (Exception e) {

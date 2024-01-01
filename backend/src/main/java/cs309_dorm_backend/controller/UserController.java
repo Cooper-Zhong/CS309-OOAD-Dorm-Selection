@@ -51,7 +51,6 @@ public class UserController {
 //        if (userService.checkLogin(userDto)) {
                 userSessions.put(userId, sessionId);
 //                session.setAttribute("uniqueId", uniqueId);
-                log.info("User {} login success", userDto.getCampusId());
                 return GlobalResponse.<User>builder()
                         .code(0)
                         .msg("Login successfully.")
