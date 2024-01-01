@@ -22,6 +22,10 @@ public interface UserService {
     Boolean checkLogin(UserDto userInfo, HttpSession session, Map<String, String> userSessions);
 //    Boolean checkLogin(UserDto userInfo);
 
+    void encodePassword();
+
+    void decodePassword();
+
 
     UserDto register(@Valid UserForm userForm, BindingResult result);
 
