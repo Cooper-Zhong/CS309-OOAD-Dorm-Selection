@@ -1,17 +1,12 @@
 package cs309_dorm_backend.controller;
 
-import cs309_dorm_backend.config.MyException;
 import cs309_dorm_backend.dto.GlobalResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,7 +17,7 @@ import java.nio.file.Paths;
 @RestController
 @RequestMapping("/picture")
 @Slf4j
-public class pictureController {
+public class PictureController {
 
 
 //    static String picturePath = "/Users/cooperz/SUSTech/2023_Fall/CS309_OOAD/CS309-OOAD-Dorm-Selection/backend/src/main/resources/pictures/";
@@ -65,7 +60,7 @@ public class pictureController {
             if (Files.exists(imagePath)) {
                 byte[] imageBytes = Files.readAllBytes(imagePath);
                 String base64Image = Base64.encodeBase64String(imageBytes);
-                log.info("download success" + filename);
+                log.info("download success " + filename);
                 return new GlobalResponse<>(0, "download success ", base64Image);
             } else {
                 log.warn("file not found " + filename +", use default png");

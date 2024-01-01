@@ -21,9 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import javax.persistence.EntityManager;
-
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
@@ -111,10 +108,10 @@ public class TeamServiceImpl implements TeamService {
         }
         teamRepo.removeStudentTeam(studentId);
         // send notification to member that is removed
-        Notification notification = notificationService.createNotification("system", studentId, "You have been removed from the team " + team.getTeamName() + ".");
+        Notification notification = notificationService.createAndSaveNotification("system", studentId, "You have been removed from the team " + team.getTeamName() + ".");
         notificationService.save(notification);
         try {
-            NotificationWebSocketServer.sendData(JSON.toJSONString(notification), studentId);
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), studentId);
         } catch (Exception e) {
             throw new MyException(3, "websocket notification failed");
         }
@@ -192,19 +189,19 @@ public class TeamServiceImpl implements TeamService {
         teamRepo.setTeam(memberId, team.getTeamId());
         // send notification to team members
         for (Student member1 : members) {
-            Notification notification = notificationService.createNotification("system", member1.getStudentId(), "A new member " + member.getName() + " has joined the team.");
+            Notification notification = notificationService.createAndSaveNotification("system", member1.getStudentId(), "A new member " + member.getName() + " has joined the team.");
             notificationService.save(notification);
             try {
-                NotificationWebSocketServer.sendData(JSON.toJSONString(notification), member1.getStudentId());
+                NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), member1.getStudentId());
             } catch (Exception e) {
                 throw new MyException(3, "websocket notification failed");
             }
         }
         // send notification to the new member
-        Notification notification = notificationService.createNotification("system", memberId, "You joined the team " + team.getTeamName() + " successfully.");
+        Notification notification = notificationService.createAndSaveNotification("system", memberId, "You joined the team " + team.getTeamName() + " successfully.");
         notificationService.save(notification);
         try {
-            NotificationWebSocketServer.sendData(JSON.toJSONString(notification), memberId);
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), memberId);
         } catch (Exception e) {
             throw new MyException(3, "websocket notification failed");
         }
@@ -256,10 +253,10 @@ public class TeamServiceImpl implements TeamService {
             throw new MyException(6, "student " + leaderId + " is not in this team");
         }
         // send notification to the new leader
-        Notification notification = notificationService.createNotification("system", leaderId, "You are the new leader of the team " + team.getTeamName() + ".");
+        Notification notification = notificationService.createAndSaveNotification("system", leaderId, "You are the new leader of the team " + team.getTeamName() + ".");
         notificationService.save(notification);
         try {
-            NotificationWebSocketServer.sendData(JSON.toJSONString(notification), leaderId);
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), leaderId);
         } catch (Exception e) {
             throw new MyException(3, "websocket notification failed");
         }
@@ -363,17 +360,16 @@ public class TeamServiceImpl implements TeamService {
         room2.setSelectedTeam(team1);
         roomService.save(room1);
         roomService.save(room2);
-        Notification toApplicant = notificationService.createNotification("system", team1.getCreatorId(), "Your swap room application has been accepted.");
-        notificationService.save(toApplicant);
+        Notification toApplicant = notificationService.createAndSaveNotification("system", team1.getCreatorId(), "Your swap room application has been accepted.");
         try {
-            NotificationWebSocketServer.sendData(JSON.toJSONString(toApplicant), team1.getCreatorId());
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(toApplicant)), team1.getCreatorId());
         } catch (Exception e) {
             throw new MyException(3, "websocket notification failed");
         }
     }
 
     @Override
-    public void applySwap(int applyCreatorId, int applyReceiverId) {
+    public void applySwap(String applyCreatorId, String applyReceiverId) {
         Team team1 = findByCreator(String.valueOf(applyCreatorId));
         if (team1 == null) {
             throw new MyException(4, "team created by " + applyCreatorId + " does not exist");
@@ -395,10 +391,10 @@ public class TeamServiceImpl implements TeamService {
 
         temp.put("applyRoom", tempRoom);
         temp.put(("applyTeamName"), team1.getTeamName());
-        Notification notification = notificationService.createNotification("roomExchange", String.valueOf(applyReceiverId), temp.toJSONString());
+        Notification notification = notificationService.createAndSaveNotification("roomExchange", applyReceiverId, temp.toJSONString());
         notificationService.save(notification);
         try {
-            NotificationWebSocketServer.sendData(JSON.toJSONString(notification), String.valueOf(applyReceiverId));
+            NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), applyReceiverId);
         } catch (Exception e) {
             throw new MyException(3, "websocket notification failed");
         }

@@ -46,5 +46,5 @@ public interface TeamService {
 
     void swapRoom(int roomId1, int roomId2);
 
-    void applySwap(int applyCreatorId, int applyReceiverId);
+    void applySwap(String applyCreatorId, String applyReceiverId);
 }

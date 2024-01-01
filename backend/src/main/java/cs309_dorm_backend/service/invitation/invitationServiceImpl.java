@@ -13,7 +13,6 @@ import cs309_dorm_backend.service.notification.NotificationService;
 import cs309_dorm_backend.service.student.StudentService;
 import cs309_dorm_backend.service.team.TeamService;
 import cs309_dorm_backend.websocket.NotificationWebSocketServer;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,17 +71,17 @@ public class invitationServiceImpl implements InvitationService {
         boolean isInvitation = invitationDto.isInvitation();
         Notification notification;
         if (isInvitation) {
-            notification = notificationService.createNotification("system", creatorId, "Student " + studentId + " rejected your invitation");
+            notification = notificationService.createAndSaveNotification("system", creatorId, "Student " + studentId + " rejected your invitation");
             try {
-                NotificationWebSocketServer.sendData(JSON.toJSONString(notification), creatorId);
+                NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), creatorId);
             } catch (Exception e) {
                 log.info(e.getMessage());
                 throw new MyException(1, "websocket notification failed");
             }
         } else {
-            notification = notificationService.createNotification("system", studentId, "Team by creator " + creatorId + " rejected your application");
+            notification = notificationService.createAndSaveNotification("system", studentId, "Team by creator " + creatorId + " rejected your application");
             try {
-                NotificationWebSocketServer.sendData(JSON.toJSONString(notification), studentId);
+                NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), studentId);
             } catch (Exception e) {
                 log.info(e.getMessage());
                 throw new MyException(2, "websocket notification failed");
@@ -100,18 +99,20 @@ public class invitationServiceImpl implements InvitationService {
             if (invitationDto.isInvitation()) { // invitation
                 temp.put("teamName", invitation.getTeam().getTeamName());
                 temp.put("timestamp", new Timestamp(System.currentTimeMillis()));
-                notification = notificationService.createNotification("invitation", invitationDto.getStudentId(), temp.toJSONString());
+                notification = notificationService.createAndSaveNotification("invitation", invitationDto.getStudentId(), temp.toJSONString());
+                log.debug("debug: " + temp.toJSONString());
+                System.out.println((JSON.toJSONString(notification)));
                 try {
-                    NotificationWebSocketServer.sendData(JSON.toJSONString(notification), invitationDto.getStudentId());
+                    NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), invitationDto.getStudentId());
                 } catch (Exception e) {
                     log.info(e.getMessage());
                     throw new MyException(2, "websocket notification failed");
                 }
             } else { // application, send to team creator
                 temp.put("senderName", invitation.getStudent().getName());
-                notification = notificationService.createNotification("application", invitationDto.getCreatorId(), temp.toJSONString());
+                notification = notificationService.createAndSaveNotification("application", invitationDto.getCreatorId(), temp.toJSONString());
                 try {
-                    NotificationWebSocketServer.sendData(JSON.toJSONString(notification), invitationDto.getCreatorId());
+                    NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), invitationDto.getCreatorId());
                 } catch (Exception e) {
                     log.info(e.getMessage());
                     throw new MyException(3, "websocket notification failed");

@@ -85,8 +85,6 @@ public class MessageServiceImpl implements MessageService {
         String receiverId = messageDto.getReceiverId();
         Message saved = save(convertToMessage(messageDto));
         // send message via websocket, if receiver is online
-        log.info("addOne:=====================");
-        log.info(JSON.toJSONString(toDto(saved)));
         MessageWebSocketServer.sendData(JSON.toJSONString(toDto(saved)), receiverId);
         return saved;
     }
