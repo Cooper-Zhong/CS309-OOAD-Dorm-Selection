@@ -1,5 +1,4 @@
 singleServerConfig:
-  #  连接空闲超时，单位：毫秒
   idleConnectionTimeout: 100000
   #  连接超时，单位：毫秒
   connectTimeout: 10000
