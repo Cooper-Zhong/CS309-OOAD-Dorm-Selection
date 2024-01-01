@@ -7,13 +7,19 @@ import cs309_dorm_backend.dto.UserForm;
 import cs309_dorm_backend.dto.UserUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import cs309_dorm_backend.domain.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import javax.net.ssl.HandshakeCompletedEvent;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -35,7 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean checkLogin(UserDto userInfo) {
+//    public Boolean checkLogin(UserDto userInfo) {
+    public Boolean checkLogin(UserDto userInfo, HttpSession session, Map<String, String> userSessions) {
         if (userInfo.getCampusId() == null || userInfo.getCampusId().isEmpty()) {
             throw new MyException(1, "Campus ID shouldn't be null");
         }
@@ -46,9 +53,36 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new MyException(3, "user Not found");
         }
-        if (!user.getPassword().equals(userInfo.getPassword())) {
+        PasswordEncoder passwordEncoder = new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
+                String encodedPassword = BCryptPasswordEncoder.encode(rawPassword.toString());
+//                String encodedPassword = BCrypt.hashpw(rawPassword.toString(), BCrypt.gensalt());
+                return encodedPassword;
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
+                boolean passwordMatches = BCryptPasswordEncoder.matches(rawPassword.toString(), encodedPassword);
+//                boolean passwordMatches = BCrypt.checkpw(rawPassword.toString(), encodedPassword);
+                return passwordMatches;
+            }
+        };
+        boolean passwordMatch = passwordEncoder.matches(userInfo.getPassword(), user.getPassword());
+//        if (!user.getPassword().equals(userInfo.getPassword())) {
+        String userId = user.getCampusId();
+        String sessionId = session.getId();
+        String uniqueId = (String) session.getAttribute("uniqueId");
+        if (uniqueId == null || uniqueId.equals(userSessions.get(userId))) {
+            // 唯一标识符匹配，继续访问
+            return false;
+        }
+        if (!passwordMatch) {
             throw new MyException(4, "Wrong password");
         }
+        log.info("User {} login success", userInfo.getCampusId());
         return true;
     }
 
@@ -102,8 +136,14 @@ public class UserServiceImpl implements UserService {
         } else if (userRepo.findUserByCampusId(userForm.getCampusId()) != null) {
             throw new MyException(6, "Campus ID already exists");
         } else {
-            return save(userForm.convertToUser());
+//            return save(userForm.convertToUser());
+            return save(registerEncode(userForm.convertToUser()));
         }
+    }
+
+    private User registerEncode(User user) {
+        String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        return new User(user.getCampusId(), encodedPassword,user.getRole());
     }
 
     @Override

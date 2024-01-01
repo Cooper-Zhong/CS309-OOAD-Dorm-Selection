@@ -13,8 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -25,25 +29,35 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    private Map<String, String> userSessions = new HashMap<>();
+
 
     @PostMapping("/login")
-    public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
-        if (userService.checkLogin(userDto)) {
-            log.info("User {} login success", userDto.getCampusId());
-            return GlobalResponse.<User>builder()
-                    .code(0)
-                    .msg("Login successfully.")
-                    .data(userService.findByCampusId(userDto.getCampusId()))
-                    .build();
-        } else {
-            return GlobalResponse.<String>builder()
-                    .code(1)
-                    .msg("login fail")
-                    .build();
-        }
+//    public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
+    public GlobalResponse checkLogin(@RequestBody UserDto userDto, HttpSession session) {
+        String userId = userDto.getCampusId();
+        String sessionId = session.getId();
+        String uniqueId = (String) session.getAttribute("uniqueId");
+        if (userService.checkLogin(userDto, session, userSessions)) {
+//        if (userService.checkLogin(userDto)) {
+                userSessions.put(userId, uniqueId);
+                session.setAttribute("uniqueId", uniqueId);
+                log.info("User {} login success", userDto.getCampusId());
+                return GlobalResponse.<User>builder()
+                        .code(0)
+                        .msg("Login successfully.")
+                        .data(userService.findByCampusId(userDto.getCampusId()))
+                        .build();
+            } else {
+                return GlobalResponse.<String>builder()
+                        .code(1)
+                        .msg("login fail")
+                        .build();
+            }
     }
 
     // Handling OPTIONS request explicitly
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -52,7 +66,6 @@ public class UserController {
                 .header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE")
                 .build();
     }
-
 
     @PostMapping("/register")
     public GlobalResponse registerUser(@RequestBody @Valid UserForm userForm, BindingResult result) {
@@ -104,6 +117,7 @@ public class UserController {
      *
      * @return 200: user deleted; 404: user not found.
      */
+
     @DeleteMapping("/deleteById/{campusId}")
     @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
     public GlobalResponse deleteById(@PathVariable String campusId) {
