@@ -24,7 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
     private UserService userService;
 
     @Override
-    public Notification createNotification(String type, String receiverId, String content) {
+    public Notification createAndSaveNotification(String type, String receiverId, String content) {
         Notification notification = Notification.builder()
                 .type(type)
                 .receiver(userService.findByCampusId(receiverId))

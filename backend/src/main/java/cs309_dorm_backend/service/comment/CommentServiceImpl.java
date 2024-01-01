@@ -172,9 +172,9 @@ public class CommentServiceImpl implements CommentService {
         temp.put("sender", author.getName());
         temp.put("content", secondCommentDto.getContent());
         temp.put("timestamp", secondComment.getTime());
-        Notification notification = notificationService.createNotification("comment", parent.getAuthor().getCampusId(), temp.toJSONString());
+        Notification notification = notificationService.createAndSaveNotification("comment", parent.getAuthor().getCampusId(), temp.toJSONString());
         // websocket
-        NotificationWebSocketServer.sendData(JSON.toJSONString(notification), parent.getAuthor().getCampusId());
+        NotificationWebSocketServer.sendData(JSON.toJSONString(notificationService.toDto(notification)), parent.getAuthor().getCampusId());
         return secondComment;
     }
 
