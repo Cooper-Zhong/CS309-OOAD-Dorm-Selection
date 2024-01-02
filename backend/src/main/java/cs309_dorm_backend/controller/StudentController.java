@@ -64,8 +64,10 @@ public class StudentController {
     public GlobalResponse deleteById(@PathVariable String campusId) {
         try {
             boolean result = studentService.deleteById(campusId);
+            log.info("Student {} deleted", campusId);
             return new GlobalResponse<>(0, "Delete student " + campusId + " successfully", null);
         } catch (Exception e) {
+            log.error("Delete student {} failed", campusId);
             return new GlobalResponse<>(1, "delete failed", null);
 
         }

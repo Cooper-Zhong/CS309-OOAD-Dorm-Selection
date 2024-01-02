@@ -3,6 +3,8 @@ package cs309_dorm_backend.controller;
 import cs309_dorm_backend.dto.GlobalResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,8 +36,8 @@ public class PictureController {
     }
 
     @PostMapping("/upload")
+    @CachePut(value = "pictures", key = "#originalFilename")
     public GlobalResponse<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
-
         if (file.isEmpty()) {
             return new GlobalResponse<>(1, "file is empty", null);
         }
@@ -54,6 +56,7 @@ public class PictureController {
     }
 
     @GetMapping("/download/{filename}")
+    @Cacheable(value = "pictures", key = "#filename")
     public GlobalResponse<String> downloadBase64(@PathVariable String filename) {
         try {
             Path imagePath = Paths.get(picturePath).resolve(filename);
