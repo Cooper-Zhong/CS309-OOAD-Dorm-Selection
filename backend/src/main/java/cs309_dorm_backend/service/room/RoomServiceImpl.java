@@ -9,6 +9,9 @@ import cs309_dorm_backend.dto.RoomDto;
 import cs309_dorm_backend.dto.SelectDto;
 import cs309_dorm_backend.service.building.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,21 +27,27 @@ public class RoomServiceImpl implements RoomService {
     private BuildingService buildingService;
 
     @Override
+    @Cacheable(value = "rooms")
     public List<Room> findAll() {
         return roomRepo.findAll();
     }
 
     @Override
+    @Cacheable(value = "rooms", key = "#room.roomId")
     public Room findOne(int buildingId, int roomNumber) {
-        return roomRepo.findOneRoom(buildingId, roomNumber);
+        Room room = roomRepo.findOneRoom(buildingId, roomNumber);
+        return room;
     }
 
     @Override
+    @Transactional
+    @Cacheable(value = "rooms", key = "#id")
     public Room findById(int id) {
         return roomRepo.findById(id).orElse(null);
     }
 
     @Override
+    @CacheEvict(value = "rooms", key = "#room.roomId")
     public boolean delete(int buildingId, int roomNumber) {
         Room room = findOne(buildingId, roomNumber);
         if (room != null) { // room exists
@@ -67,6 +76,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @CacheEvict(value = "rooms", key = "#room.roomId")
     public Room save(Room room) {
         return roomRepo.save(room);
     }

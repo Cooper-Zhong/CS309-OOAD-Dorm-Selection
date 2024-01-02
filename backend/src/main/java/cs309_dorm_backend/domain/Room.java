@@ -29,7 +29,7 @@ public class Room {
 //    @JsonIdentityReference(alwaysAsId = true) //当序列化 Room 实体时，只会包含 Building 的 buildingId 属性
     //使用 buildingId 属性作为标识来识别 Building 实体。
 //    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "buildingId")
-    @ManyToOne(fetch = FetchType.LAZY) // a room belongs to a building
+    @ManyToOne(fetch = FetchType.EAGER) // a room belongs to a building
     @OnDelete(action = OnDeleteAction.CASCADE) //当删除 building 时，删除该 building 下的所有 room
     @JoinColumn(name = "building_id", referencedColumnName = "building_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_room_building", value = ConstraintMode.CONSTRAINT))
