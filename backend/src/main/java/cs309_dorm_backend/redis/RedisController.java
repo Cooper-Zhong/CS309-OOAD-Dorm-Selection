@@ -12,11 +12,11 @@ public class RedisController {
     public RedisController(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
-    @AntiReptile
-    @GetMapping("save")
-    public Result save(String key, String value){
-        redisTemplate.opsForValue().set(key, value);
-        return Result.success();
-    }
+
+//    @GetMapping("save")
+//    public Result save(String key, String value){
+//        redisTemplate.opsForValue().set(key, value);
+//        return Result.success();
+//    }
 
 }

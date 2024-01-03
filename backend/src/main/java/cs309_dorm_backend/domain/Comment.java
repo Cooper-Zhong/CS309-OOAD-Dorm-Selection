@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -17,6 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "comments")
+//@RedisHash("comments")
 public class Comment {
 
     @Id

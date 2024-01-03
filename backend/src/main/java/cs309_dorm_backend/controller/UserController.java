@@ -1,6 +1,5 @@
 package cs309_dorm_backend.controller;
 
-import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.UserDto;
@@ -10,6 +9,7 @@ import cs309_dorm_backend.service.user.UserService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,6 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -27,10 +26,17 @@ import java.util.UUID;
 @Slf4j
 public class UserController {
 
+    private final RedisTemplate redisTemplate;
+    public UserController(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
     @Autowired
     private UserService userService;
 
     private Map<String, String> userSessions = new HashMap<>();
+
+
 
     @PostMapping("/login")
 //    public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
@@ -43,6 +49,9 @@ public class UserController {
                 userSessions.put(userId, uniqueId);
                 session.setAttribute("uniqueId", uniqueId);
                 log.info("User {} login success", userDto.getCampusId());
+
+                redisTemplate.opsForValue().set("user", userDto);
+
                 return GlobalResponse.<User>builder()
                         .code(0)
                         .msg("Login successfully.")
