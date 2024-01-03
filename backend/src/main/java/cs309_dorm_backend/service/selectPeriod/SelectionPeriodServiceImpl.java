@@ -16,12 +16,12 @@ public class SelectionPeriodServiceImpl implements SelectionPeriodService {
     private SelectionPeriodRepo selectionPeriodRepo;
 
     @Override
-    @CachePut(value = "selectionPeriods", key = "#selectionPeriod.periodId")
+//    @CachePut(value = "selectionPeriods", key = "#selectionPeriod.periodId")
     public SelectionPeriod update(SelectionPeriod selectionPeriod) {
         int periodId = selectionPeriod.getPeriodId();
         SelectionPeriod old = selectionPeriodRepo.findById(periodId).orElse(null);
         if (old == null) {
-            return null;
+            selectionPeriodRepo.save(selectionPeriod);
         }
         old.setStartTime(selectionPeriod.getStartTime());
         old.setEndTime(selectionPeriod.getEndTime());
@@ -29,13 +29,13 @@ public class SelectionPeriodServiceImpl implements SelectionPeriodService {
     }
 
     @Override
-    @Cacheable(value = "selectionPeriods", key = "#periodId")
+//    @Cacheable(value = "selectionPeriods", key = "#periodId")
     public SelectionPeriod findById(Integer periodId) {
         return selectionPeriodRepo.findById(periodId).orElse(null);
     }
 
     @Override
-    @Cacheable(value = "selectionPeriods")
+//    @Cacheable(value = "selectionPeriods")
     public List<SelectionPeriod> findAll() {
         return selectionPeriodRepo.findAll();
     }
