@@ -76,7 +76,10 @@ public class UserServiceImpl implements UserService {
 //        if (!user.getPassword().equals(userInfo.getPassword())) {
         String userId = user.getCampusId();
         String sessionId = session.getId();
-        String uniqueId = (String) session.getAttribute("uniqueId");
+        String uniqueId = null;
+        if(session.getAttribute("uniqueId")!=null){
+            uniqueId = (String) session.getAttribute("uniqueId");
+        }
         if (uniqueId == null || uniqueId.equals(userSessions.get(userId))) {
             // 唯一标识符匹配，继续访问
             return false;
