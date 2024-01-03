@@ -90,8 +90,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean checkPasswordEquals(String givenPassword, String encodedPassword) {
-        String givenEncodePassword = new BCryptPasswordEncoder().encode(givenPassword);
-        return new BCryptPasswordEncoder().matches(givenEncodePassword, encodedPassword);
+        BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String givenEncodePassword = BCryptPasswordEncoder.encode(givenPassword);
+        return BCryptPasswordEncoder.matches(givenEncodePassword, encodedPassword);
     }
 
 
@@ -106,7 +107,22 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new MyException(404, "user " + campusId + " not found");
         }
-        if (!checkPasswordEquals(userUpdateDto.getOldPassword(), user.getPassword())) {
+        PasswordEncoder passwordEncoder = new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
+                return BCryptPasswordEncoder.encode(rawPassword.toString());
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                BCryptPasswordEncoder BCryptPasswordEncoder = new BCryptPasswordEncoder();
+                return BCryptPasswordEncoder.matches(rawPassword.toString(), encodedPassword);
+            }
+        };
+
+        boolean passwordMatch = passwordEncoder.matches(userUpdateDto.getOldPassword(), user.getPassword());
+        if (!passwordMatch) {
             throw new MyException(5, "Old password is wrong");
         }
 //        if (!user.getPassword().equals(userUpdateDto.getOldPassword())) {

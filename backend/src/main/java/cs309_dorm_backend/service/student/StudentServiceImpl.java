@@ -61,6 +61,7 @@ public class StudentServiceImpl implements StudentService {
         } else {
             student.setUser(student1.getUser());
             userService.updateName(student1.getStudentId(), student1.getName());
+            student.setTeam(student1.getTeam());
             return studentRepo.save(student);
         }
     }
