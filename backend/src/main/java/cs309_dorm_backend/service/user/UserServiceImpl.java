@@ -14,8 +14,6 @@ import cs309_dorm_backend.domain.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import javax.net.ssl.HandshakeCompletedEvent;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -91,14 +89,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void decodePassword() {
-        List<User> users = userRepo.findAll();
-        for (User user : users) {
-            String decodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-            user.setPassword(decodedPassword);
-            userRepo.save(user);
-        }
+    private boolean checkPasswordEquals(String givenPassword, String encodedPassword) {
+        String givenEncodePassword = new BCryptPasswordEncoder().encode(givenPassword);
+        return new BCryptPasswordEncoder().matches(givenEncodePassword, encodedPassword);
     }
+
 
     @Override
     public UserDto updatePassword(UserUpdateDto userUpdateDto, BindingResult result) {
@@ -111,12 +106,15 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new MyException(404, "user " + campusId + " not found");
         }
-        if (!user.getPassword().equals(userUpdateDto.getOldPassword())) {
+        if (!checkPasswordEquals(userUpdateDto.getOldPassword(), user.getPassword())) {
             throw new MyException(5, "Old password is wrong");
         }
-        user.setPassword(userUpdateDto.getNewPassword());
-        return save(user);
-
+//        if (!user.getPassword().equals(userUpdateDto.getOldPassword())) {
+//            throw new MyException(5, "Old password is wrong");
+//        }
+//        user.setPassword(userUpdateDto.getNewPassword());
+        return saveEncodePassword(user,userUpdateDto.getNewPassword());
+//        return save(user);
     }
 
     @Override
@@ -130,8 +128,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new MyException(404, "user " + campusId + " not found");
         }
-        user.setPassword(userDto.getPassword());
-        return save(user);
+        return saveEncodePassword(user,userDto.getPassword());
     }
 
     @Override // create or update
@@ -151,13 +148,14 @@ public class UserServiceImpl implements UserService {
             throw new MyException(6, "Campus ID already exists");
         } else {
 //            return save(userForm.convertToUser());
-            return save(registerEncode(userForm.convertToUser()));
+            return saveEncodePassword(userForm.convertToUser(), userForm.getPassword());
         }
     }
 
-    private User registerEncode(User user) {
-        String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-        return new User(user.getCampusId(), encodedPassword,user.getRole());
+    private UserDto saveEncodePassword(User user,String newPassword) {
+        String encodedPassword = new BCryptPasswordEncoder().encode(newPassword);
+        user.setPassword(encodedPassword);
+        return save(user);
     }
 
     @Override

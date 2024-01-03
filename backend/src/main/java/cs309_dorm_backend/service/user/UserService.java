@@ -24,8 +24,6 @@ public interface UserService {
 
     void encodePassword();
 
-    void decodePassword();
-
 
     UserDto register(@Valid UserForm userForm, BindingResult result);
 

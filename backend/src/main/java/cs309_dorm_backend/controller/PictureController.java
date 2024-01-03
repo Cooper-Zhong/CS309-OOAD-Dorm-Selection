@@ -1,8 +1,11 @@
 package cs309_dorm_backend.controller;
 
 import cs309_dorm_backend.dto.GlobalResponse;
+import cs309_dorm_backend.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +25,11 @@ import java.nio.file.Paths;
 public class PictureController {
 
 
-//    static String picturePath = "/Users/cooperz/SUSTech/2023_Fall/CS309_OOAD/CS309-OOAD-Dorm-Selection/backend/src/main/resources/pictures/";
-    static String picturePath = "/home/cooper/cs309ooad/src/main/resources/pictures/";
+    static String picturePath = "/Users/cooperz/SUSTech/2023_Fall/CS309_OOAD/CS309-OOAD-Dorm-Selection/backend/src/main/resources/pictures/";
+//    static String picturePath = "/home/cooper/cs309ooad/src/main/resources/pictures/";
+
+//    @Autowired
+//    private CacheService cacheService;
 
     // Handling OPTIONS request explicitly
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
@@ -36,7 +42,7 @@ public class PictureController {
     }
 
     @PostMapping("/upload")
-    @CachePut(value = "pictures", key = "#originalFilename")
+//    @CacheEvict(value = "pictures", key = "#originalFilename")
     public GlobalResponse<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return new GlobalResponse<>(1, "file is empty", null);
@@ -47,6 +53,7 @@ public class PictureController {
             File dest = new File(picturePath + originalFilename);
             file.transferTo(dest);
             log.info("upload success " + originalFilename);
+//            cacheService.putToCache("pictures", originalFilename, );
 
             return new GlobalResponse<>(0, "upload success ", originalFilename);
         } catch (IOException e) {
@@ -56,7 +63,7 @@ public class PictureController {
     }
 
     @GetMapping("/download/{filename}")
-    @Cacheable(value = "pictures", key = "#filename")
+//    @Cacheable(value = "pictures", key = "#filename")
     public GlobalResponse<String> downloadBase64(@PathVariable String filename) {
         try {
             Path imagePath = Paths.get(picturePath).resolve(filename);
@@ -66,7 +73,7 @@ public class PictureController {
                 log.info("download success " + filename);
                 return new GlobalResponse<>(0, "download success ", base64Image);
             } else {
-                log.warn("file not found " + filename +", use default png");
+                log.warn("file not found " + filename + ", use default png");
                 Path defaultImagePath = Paths.get(picturePath).resolve("default.png");
                 byte[] imageBytes = Files.readAllBytes(defaultImagePath);
                 String base64Image = Base64.encodeBase64String(imageBytes);

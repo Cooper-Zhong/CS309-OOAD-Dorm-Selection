@@ -24,13 +24,13 @@ public class StudentServiceImpl implements StudentService {
     private UserService userService;
 
     @Override
-    @Cacheable(value = "students")
+//    @Cacheable(value = "students")
     public List<Student> findAll() {
         return studentRepo.findAll();
     }
 
     @Override
-    @Cacheable(value = "students", key = "#id")
+//    @Cacheable(value = "students", key = "#id")
     public Student findById(String id) {
         return studentRepo.findById(id).orElse(null);
     }
@@ -41,7 +41,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    @CachePut(value = "students", key = "#student.studentId")
+//    @CachePut(value = "students", key = "#student.studentId")
     public Student save(Student student) {
         String campusId = student.getStudentId();
         Student student1 = studentRepo.findById(campusId).orElse(null);
@@ -67,7 +67,7 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    @CacheEvict(value = "students", key = "#studentId")
+//    @CacheEvict(value = "students", key = "#studentId")
     public boolean deleteById(String studentId) {
         // set the corresponding team to null
         studentRepo.removeTeam(studentId);
