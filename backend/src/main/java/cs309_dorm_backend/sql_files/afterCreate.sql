@@ -143,6 +143,7 @@ create trigger after_delete_student
     for each row
 execute procedure after_delete_student();
 
+-- prepare zones and buildings
 
 insert into zones (name)
 values ('湖畔');
@@ -199,12 +200,10 @@ values (20, 7, 4);
 
 
 
-insert into select_period(gender, degree) values ('男','硕士生');
-insert into select_period(gender, degree) values ('男','博士生');
-insert into select_period(gender, degree) values ('女','硕士生');
-insert into select_period(gender, degree) values ('女','博士生');
-
-
+-- insert into select_period(gender, degree) values ('男','硕士生');
+-- insert into select_period(gender, degree) values ('男','博士生');
+-- insert into select_period(gender, degree) values ('女','硕士生');
+-- insert into select_period(gender, degree) values ('女','博士生');
 
 
 

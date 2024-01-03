@@ -10,19 +10,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
+                .authorizeRequests()
                 // Allow access from specific IPs
-                .antMatchers("/**").hasIpAddress("10.32.44.222") // Single IP
-                .antMatchers("/**").hasIpAddress("10.26.142.84") // Single IP
+                .antMatchers("/**").access("hasIpAddress('10.32.44.222') or hasIpAddress('10.32.60.95') or hasIpAddress('127.0.0.1')")
+//                .antMatchers("/**").access("hasIpAddress('10.32.44.222') or hasIpAddress('10.32.60.95') or hasIpAddress('127.0.0.1')")
+
+//                .antMatchers("/**").hasIpAddress("10.32.44.222") // Single IP
+//                .antMatchers("/**").hasIpAddress("10.26.142.84") // Single IP
 //                .antMatchers("/**").hasIpAddress("10.32.60.95") // Single IP
 //                .antMatchers("/**").hasIpAddress("127.0.0.1") // Single IP
                 .antMatchers("/**").permitAll()
 //                .antMatchers("/**").anonymous() // Allow anonymous access
                 .anyRequest().authenticated()
                 .and()
-            // Other configurations like form login, CSRF protection, etc.
-            .formLogin()
+                // Other configurations like form login, CSRF protection, etc.
+                .formLogin().permitAll()
                 .and()
-            .csrf().disable(); // Disabling CSRF for simplicity (consider enabling it in production)
+                .csrf().disable(); // Disabling CSRF for simplicity (consider enabling it in production)
     }
 }
