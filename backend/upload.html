@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片上传测试</title>
+</head>
+<body>
+    <h2>上传图片</h2>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">上传</button>
+
+    <script>
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert("请选择一个文件进行上传");
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            fetch('http://10.32.60.95:8082/picture/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络错误');
+                }
+                return response.text();
+            })
+            .then(data => {
+                alert(data); // 上传成功的信息
+            })
+            .catch(error => {
+                console.error('上传失败:', error);
+                alert('上传失败');
+            });
+        }
+    </script>
+</body>
+</html>

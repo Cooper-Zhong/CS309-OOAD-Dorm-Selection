@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下载图片测试</title>
+</head>
+<body>
+    <h2>下载图片</h2>
+    <button onclick="downloadFile('12111412.png')">下载图片</button>
+
+    <script>
+        function downloadFile(fileName) {
+            fetch('http://10.32.60.95:8082/picture/download/' + fileName)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('下载失败');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    // 创建一个 URL 对象
+                    const url = URL.createObjectURL(blob);
+                    
+                    // 创建一个链接并模拟点击下载
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(error => {
+                    console.error('下载失败:', error);
+                    alert('下载失败');
+                });
+        }
+    </script>
+</body>
+</html>
