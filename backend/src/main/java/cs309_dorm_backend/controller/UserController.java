@@ -1,6 +1,5 @@
 package cs309_dorm_backend.controller;
 
-import cn.keking.anti_reptile.annotation.AntiReptile;
 import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.GlobalResponse;
 import cs309_dorm_backend.dto.UserDto;
@@ -14,8 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -26,28 +29,45 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    private Map<String, String> userSessions = new HashMap<>();
+
+    @GetMapping("/encode")
+    public GlobalResponse encodePassword() {
+        userService.encodePassword();
+        return GlobalResponse.builder()
+                .code(0)
+                .msg("Encode password successfully.")
+                .build();
+    }
 
 
 
 
     @PostMapping("/login")
-    public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
-        if (userService.checkLogin(userDto)) {
-            log.info("User {} login success", userDto.getCampusId());
-            return GlobalResponse.<User>builder()
-                    .code(0)
-                    .msg("Login successfully.")
-                    .data(userService.findByCampusId(userDto.getCampusId()))
-                    .build();
-        } else {
-            return GlobalResponse.<String>builder()
-                    .code(1)
-                    .msg("login fail")
-                    .build();
-        }
+//    public GlobalResponse checkLogin(@RequestBody UserDto userDto) {
+    public GlobalResponse checkLogin(@RequestBody UserDto userDto, HttpSession session) {
+        String userId = userDto.getCampusId();
+        String sessionId = session.getId();
+        String uniqueId = (String) session.getAttribute("uniqueId");
+        if (userService.checkLogin(userDto, session, userSessions)) {
+//        if (userService.checkLogin(userDto)) {
+                userSessions.put(userId, sessionId);
+//                session.setAttribute("uniqueId", uniqueId);
+                return GlobalResponse.<User>builder()
+                        .code(0)
+                        .msg("Login successfully.")
+                        .data(userService.findByCampusId(userDto.getCampusId()))
+                        .build();
+            } else {
+                return GlobalResponse.<String>builder()
+                        .code(1)
+                        .msg("login fail")
+                        .build();
+            }
     }
 
     // Handling OPTIONS request explicitly
+
     @RequestMapping(value = "/", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity
@@ -78,13 +98,24 @@ public class UserController {
                 .data(userDto)
                 .build();
     }
-    @AntiReptile
+
+    @PostMapping("/resetPassword")
+    public GlobalResponse resetPassword(@RequestBody @Valid UserDto userDto, BindingResult result) {
+        log.info("User {} reset password success", userDto.getCampusId());
+        userService.resetPassword(userDto, result);
+        return GlobalResponse.builder()
+                .code(0)
+                .msg("Reset password successfully.")
+                .data(null)
+                .build();
+    }
+
     @GetMapping("/findAll")
     @ApiOperation(value = "Find all users")
     public List<User> findAll() {
         return userService.findAll();
     }
-    @AntiReptile
+
     @GetMapping("/findById/{campusId}")
     @ApiOperation(value = "Find a user by id", notes = "Get user information by their campus ID.")
     public User findById(@PathVariable String campusId) {
@@ -96,6 +127,7 @@ public class UserController {
      *
      * @return 200: user deleted; 404: user not found.
      */
+
     @DeleteMapping("/deleteById/{campusId}")
     @ApiOperation(value = "Delete a user by id", notes = "Delete a user by their campus ID.")
     public GlobalResponse deleteById(@PathVariable String campusId) {

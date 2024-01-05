@@ -143,6 +143,68 @@ create trigger after_delete_student
     for each row
 execute procedure after_delete_student();
 
+-- prepare zones and buildings
+
+insert into zones (name)
+values ('湖畔');
+insert into zones (name)
+values ('荔园');
+insert into zones (name)
+values ('二期');
+insert into zones (name)
+values ('欣园');
+
+insert into buildings (building_id, max_height, zone_id)
+values (1, 7, 1);
+insert into buildings (building_id, max_height, zone_id)
+values (2, 7, 1);
+insert into buildings (building_id, max_height, zone_id)
+values (3, 7, 1);
+insert into buildings (building_id, max_height, zone_id)
+values (4, 7, 1);
+insert into buildings (building_id, max_height, zone_id)
+values (5, 7, 1);
+
+insert into buildings (building_id, max_height, zone_id)
+values (6, 7, 2);
+insert into buildings (building_id, max_height, zone_id)
+values (7, 7, 2);
+insert into buildings (building_id, max_height, zone_id)
+values (8, 7, 2);
+insert into buildings (building_id, max_height, zone_id)
+values (9, 7, 2);
+insert into buildings (building_id, max_height, zone_id)
+values (10, 7, 2);
+
+insert into buildings (building_id, max_height, zone_id)
+values (11, 7, 3);
+insert into buildings (building_id, max_height, zone_id)
+values (12, 7, 3);
+insert into buildings (building_id, max_height, zone_id)
+values (13, 7, 3);
+insert into buildings (building_id, max_height, zone_id)
+values (14, 7, 3);
+insert into buildings (building_id, max_height, zone_id)
+values (15, 7, 3);
+
+insert into buildings (building_id, max_height, zone_id)
+values (16, 7, 4);
+insert into buildings (building_id, max_height, zone_id)
+values (17, 7, 4);
+insert into buildings (building_id, max_height, zone_id)
+values (18, 7, 4);
+insert into buildings (building_id, max_height, zone_id)
+values (19, 7, 4);
+insert into buildings (building_id, max_height, zone_id)
+values (20, 7, 4);
+
+
+
+-- insert into select_period(gender, degree) values ('男','硕士生');
+-- insert into select_period(gender, degree) values ('男','博士生');
+-- insert into select_period(gender, degree) values ('女','硕士生');
+-- insert into select_period(gender, degree) values ('女','博士生');
+
 
 
 

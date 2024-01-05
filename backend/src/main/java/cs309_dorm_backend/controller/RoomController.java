@@ -8,6 +8,9 @@ import cs309_dorm_backend.dto.SelectDto;
 import cs309_dorm_backend.service.room.RoomService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +39,9 @@ public class RoomController {
                 .build();
     }
 
-    @GetMapping("/findOne/{buildingId}/{roomNumber}")
-    public GlobalResponse findOne(@PathVariable int buildingId, @PathVariable int roomNumber) {
-        Room room = roomService.findOne(buildingId, roomNumber);
+    @GetMapping("/findOne/{roomId}")
+    public GlobalResponse findOne(@PathVariable int roomId) {
+        Room room = roomService.findById(roomId);
         if (room == null) {
             return new GlobalResponse<>(1, "room not found", null);
         } else {

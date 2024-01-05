@@ -6,6 +6,9 @@ import cs309_dorm_backend.domain.Student;
 import cs309_dorm_backend.domain.Team;
 import cs309_dorm_backend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,11 +24,13 @@ public class StudentServiceImpl implements StudentService {
     private UserService userService;
 
     @Override
+//    @Cacheable(value = "students")
     public List<Student> findAll() {
         return studentRepo.findAll();
     }
 
     @Override
+//    @Cacheable(value = "students", key = "#id")
     public Student findById(String id) {
         return studentRepo.findById(id).orElse(null);
     }
@@ -36,6 +41,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+//    @CachePut(value = "students", key = "#student.studentId")
     public Student save(Student student) {
         String campusId = student.getStudentId();
         Student student1 = studentRepo.findById(campusId).orElse(null);
@@ -55,15 +61,16 @@ public class StudentServiceImpl implements StudentService {
         } else {
             student.setUser(student1.getUser());
             userService.updateName(student1.getStudentId(), student1.getName());
+            student.setTeam(student1.getTeam());
             return studentRepo.save(student);
         }
     }
 
 
     @Override
+//    @CacheEvict(value = "students", key = "#studentId")
     public boolean deleteById(String studentId) {
         // set the corresponding team to null
-
         studentRepo.removeTeam(studentId);
         Optional<Student> studentOptional = studentRepo.findById(studentId);
         if (studentOptional.isPresent()) {

@@ -155,7 +155,7 @@ public class NotificationWebSocketServer {
             target = webSocketMap.get(toSid);
             if (target != null) {
                 target.sendData(message);
-                log.info("推送消息到客户端 " + toSid + "，推送内容:" + message);
+                log.info("push notification to " + toSid);
             }
         } catch (IOException e) {
             throw new MyException(4, "websocket send data error");

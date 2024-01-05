@@ -6,7 +6,7 @@ import cs309_dorm_backend.dto.NotificationDto;
 import java.util.List;
 
 public interface NotificationService {
-    Notification createNotification(String type, String receiverId, String content);
+    Notification createAndSaveNotification(String type, String receiverId, String content);
 
     Notification findById(int notificationId);
 

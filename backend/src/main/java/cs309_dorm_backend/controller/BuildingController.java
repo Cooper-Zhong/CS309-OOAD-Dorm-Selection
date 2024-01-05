@@ -33,13 +33,11 @@ public class BuildingController {
                 .build();
     }
 
-    @AntiReptile
     @GetMapping("/findAll")
     public List<Building> findAll() {
         return buildingService.findAll();
     }
 
-    @AntiReptile
     @GetMapping("/findById/{buildingId}")
     public GlobalResponse findById(@PathVariable int buildingId) {
         Building building = buildingService.findById(buildingId);
@@ -49,7 +47,7 @@ public class BuildingController {
             return new GlobalResponse<>(0, "success", building);
         }
     }
-    @AntiReptile
+
     @DeleteMapping("/deleteById/{buildingId}")
     public GlobalResponse deleteById(@PathVariable int buildingId) {
         boolean result = buildingService.deleteById(buildingId);

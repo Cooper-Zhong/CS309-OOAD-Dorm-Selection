@@ -79,11 +79,13 @@ public class MessageWebSocketServer {
     }
 
     public void pushMessages() {
-        List<Message> messageList = messageService.findBySenderIdAndReceiverId(this.sid,this.sid);
+        log.info("push messages to: " + sid);
+        List<Message> messageList = messageService.findBySenderIdAndReceiverId(this.sid, this.sid);
         try {
             messageList.sort(Comparator.comparing(Message::getTime));
             for (Message message : messageList) {
                 sendData(JSON.toJSONString(messageService.toDto(message)));
+                log.debug("push：" + message.getSender().getCampusId() + " -> " + message.getReceiver().getCampusId() + " " + message.getContent());
             }
         } catch (IOException e) {
             throw new MyException(4, "push messages to " + sid + " failed");
@@ -155,7 +157,7 @@ public class MessageWebSocketServer {
             target = webSocketMap.get(toSid);
             if (target != null) {
                 target.sendData(message);
-                log.info("推送消息到客户端 " + toSid + "，推送内容:" + message);
+                log.info("push notification to " + toSid);
             }
         } catch (IOException e) {
             throw new MyException(4, "websocket send data error");
@@ -172,7 +174,7 @@ public class MessageWebSocketServer {
 
 
     /**
-     * 实现服务器主动推送消息到 指定客户端
+     * 实现服务器主动推送消息到 当前客户端
      */
     public void sendData(String message) throws IOException {
         this.session.getBasicRemote().sendText(message);

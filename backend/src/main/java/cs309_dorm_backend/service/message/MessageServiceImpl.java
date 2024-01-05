@@ -7,6 +7,7 @@ import cs309_dorm_backend.domain.User;
 import cs309_dorm_backend.dto.MessageDto;
 import cs309_dorm_backend.service.user.UserService;
 import cs309_dorm_backend.websocket.MessageWebSocketServer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @Service
+@Slf4j
 public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageRepo messageRepo;

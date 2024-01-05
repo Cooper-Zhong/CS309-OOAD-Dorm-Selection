@@ -95,7 +95,7 @@ public class TeamContoller {
     }
 
     @GetMapping("/applySwap")
-    public GlobalResponse applySwap(@RequestParam int applyCreatorId, @RequestParam int applyReceiverId) {
+    public GlobalResponse applySwap(@RequestParam String applyCreatorId, @RequestParam String applyReceiverId) {
         teamService.applySwap(applyCreatorId, applyReceiverId);
         return new GlobalResponse<>(0, "apply swap successfully", null);
     }
