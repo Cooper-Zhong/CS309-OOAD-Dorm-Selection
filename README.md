@@ -26,7 +26,7 @@ CS309 OOAD group project, dormitory selection system
 - 微服务架构
 - 模块化
 
-Thanks to [Skylar](https://github.com/tianxunLu), [Zakcy](https://github.com/ZackyYoung), (OctCarp)[https://github.com/OctCarp], Jianyang Guo.
+Thanks to [Skylar](https://github.com/tianxunLu), [Zakcy](https://github.com/ZackyYoung), [OctCarp][https://github.com/OctCarp], Jianyang Guo.
 
 
 
